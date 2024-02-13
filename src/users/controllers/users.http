@@ -1,0 +1,31 @@
+
+# Manual testing http requests
+
+# POST /users/signup
+POST http://localhost:3000/users/signup
+Content-Type: application/json
+
+{
+  "email": "test@gmail.com",
+  "password": "123456"
+}
+
+
+# POST /users/signin
+POST http://localhost:3000/users/signin
+Content-Type: application/json
+
+{
+  "email": "test@gmail.com",
+  "password": "123456"
+}
+
+
+# GET /users/:uid
+GET http://localhost:3000/users/5f3e3e3e3e3e3e3e3e3e3e3e
+Authorization: Bearer <token>
+
+# GET /users/whoami
+GET http://localhost:3000/users/whoami
+Authorization: Bearer <token>
+
