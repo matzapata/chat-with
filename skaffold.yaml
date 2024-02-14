@@ -10,7 +10,7 @@ build:
     push: false
   artifacts:
     - image: matzapata/chatwith-server
-      context: auth
+      context: server
       docker:
         dockerfile: Dockerfile
       sync:

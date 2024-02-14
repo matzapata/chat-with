@@ -1,30 +1,34 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: auth-mongo-depl
+  name: chatwith-server-pg-depl
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: auth-mongo
+      app: chatwith-server-pg
   template:
     metadata:
       labels:
-        app: auth-mongo
+        app: chatwith-server-pg
     spec:
       containers:
-        - name: auth-mongo
-          image: mongo
+        - name: chatwith-server-pg
+          image: ankane/pgvector
+          env: 
+            - name: POSTGRES_USER
+              value: "postgres"
+            - name: POSTGRES_PASSWORD
+              value: "postgres"
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: chatwith-server-pg-service
+  name: chatwith-server-pg-srv
 spec:
   selector:
-    app: chatwith-server-pg-service
+    app: chatwith-server-pg
   ports:
     - name: db
-      protocol: TCP
-      port: 27017
-      targetPort: 27017
+      port: 5432
+      targetPort: 5432

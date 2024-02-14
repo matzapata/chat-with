@@ -6,30 +6,26 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: auth
+      app: chatwith-server
   template:
     metadata:
       labels:
-        app: auth
+        app: chatwith-server
     spec:
       containers:
         - name: chatwith-server
           image: matzapata/chatwith-server
           env:
-            # - name: HOST
-            #   value: "HOST"
-            # - name: MONGO_URI
-            #   value: 'mongodb://auth-mongo-srv:27017/auth'
-            # - name: JWT_KEY
-            #   valueFrom:
-            #     secretKeyRef:
-            #       name: jwt-secret
-            #       key: JWT_KEY
+            - name: COOKIE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: cookie-secret
+                  key: COOKIE_SECRET
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: chatwith-server-service
+  name: chatwith-server-srv
 spec:
   selector:
     app: chatwith-server

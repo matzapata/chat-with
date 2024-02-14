@@ -3,7 +3,7 @@ import { UsersService } from '../services/users.service';
 import { SignUpUserDto } from '../dto/signup-user.dto';
 import { SignInUserDto } from '../dto/signin-user.dto';
 
-@Controller('auth')
+@Controller('api/users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
@@ -17,9 +17,9 @@ export class UsersController {
     return { body, session };
   }
 
-  @Post('/signout')
-  async signout() {
-    return 'signout';
+  @Post('/logout')
+  async logout() {
+    return 'logout';
   }
 
   @Get('/whoami')

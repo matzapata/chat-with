@@ -4,8 +4,10 @@ import { UsersModule } from './users/users.module';
 // import { TypeOrmModule } from '@nestjs/typeorm';
 import * as Joi from 'joi';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import cookieSession from 'cookie-session';
+import * as cookieSession from 'cookie-session';
 import { APP_PIPE } from '@nestjs/core';
+import { UsersController } from './users/controllers/users.controller';
+import { UsersService } from './users/services/users.service';
 
 @Module({
   imports: [
@@ -36,8 +38,9 @@ import { APP_PIPE } from '@nestjs/core';
     //   }),
     // }),
   ],
-  controllers: [AppController],
+  controllers: [AppController, UsersController],
   providers: [
+    UsersService,
     {
       provide: APP_PIPE,
       useValue: new ValidationPipe({
