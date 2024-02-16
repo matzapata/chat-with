@@ -1,0 +1,28 @@
+
+# Manual testing http requests with extension REST Client
+
+### POST /users/signup
+POST http://{{host}}/api/users/signup
+Content-Type: application/json
+
+{
+  "email": "tesata@gmail.com",
+  "password": "123456789"
+}
+
+
+### POST /users/signin
+POST http://{{host}}/api/users/signin
+Content-Type: application/json
+
+{
+  "email": "tesata@gmail.com",
+  "password": "123456789"
+}
+
+
+### GET /users/whoami
+GET http://{{host}}/api/users/whoami
+Authorization : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjlkMGIzZGU3LWIxN2YtNGJhNC05OTE3LWZjODhhNGE5MWE2OCIsImVtYWlsIjoidGVzYXRhQGdtYWlsLmNvbSIsImlhdCI6MTcwODA3NTIxOSwiZXhwIjoxNzA4MDc4ODE5fQ.Emo6jYbcfWKRaqiHa3UAQcCoECqqooYDlO54F_N0Rtw
+
+

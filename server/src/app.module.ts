@@ -1,17 +1,13 @@
-import { MiddlewareConsumer, Module, ValidationPipe } from '@nestjs/common';
-import { AppController } from './app.controller';
+import { Module, ValidationPipe } from '@nestjs/common';
 import { UsersModule } from './users/users.module';
-// import { TypeOrmModule } from '@nestjs/typeorm';
 import * as Joi from 'joi';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import * as cookieSession from 'cookie-session';
+import { ConfigModule } from '@nestjs/config';
 import { APP_PIPE } from '@nestjs/core';
-import { UsersController } from './users/controllers/users.controller';
-import { UsersService } from './users/services/users.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from './users/entities/user.entity';
 
 @Module({
   imports: [
-    UsersModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: `.env.${process.env.NODE_ENV}`,
@@ -20,27 +16,18 @@ import { UsersService } from './users/services/users.service';
           .valid('development', 'production', 'test')
           .default('development'),
         PORT: Joi.number().default(3000),
-        COOKIE_SECRET: Joi.string().required(),
+        JWT_SECRET: Joi.string().required(),
       }),
     }),
-    // TypeOrmModule.forRootAsync({
-    //   inject: [ConfigService],
-    //   useFactory: (configService: ConfigService) => ({
-    //     type: configService.get<'sqlite' | 'postgres'>('DB_TYPE'),
-    //     database: 'test.sqlite',
-    //     entities: ['**/*.entity.ts'],
-    //     synchronize: false,
-    //     migrationsRun: true,
-    //     migrations: ['migrations/*.js'],
-    //     cli: {
-    //       migrationsDir: 'migrations',
-    //     },
-    //   }),
-    // }),
+    TypeOrmModule.forRoot({
+      type: 'sqlite',
+      database: 'db.sqlite',
+      entities: [User],
+      synchronize: true,
+    }),
+    UsersModule,
   ],
-  controllers: [AppController, UsersController],
   providers: [
-    UsersService,
     {
       provide: APP_PIPE,
       useValue: new ValidationPipe({
@@ -49,12 +36,4 @@ import { UsersService } from './users/services/users.service';
     },
   ],
 })
-export class AppModule {
-  constructor(private configService: ConfigService) {}
-
-  configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(cookieSession({ keys: [this.configService.get('COOKIE_KEY')] }))
-      .forRoutes('*');
-  }
-}
+export class AppModule {}
