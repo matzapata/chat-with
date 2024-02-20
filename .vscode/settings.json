@@ -3,11 +3,13 @@
         "source.fixAll.eslint": "always"
     },
     "cSpell.words": [
-        "chatwith"
+        "chatwith",
+        "Squeezy"
     ],
     "rest-client.environmentVariables": {
         "$shared": {
-            "version": "v1"
+            "version": "v1",
+            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjlkMGIzZGU3LWIxN2YtNGJhNC05OTE3LWZjODhhNGE5MWE2OCIsImVtYWlsIjoidGVzYXRhQGdtYWlsLmNvbSIsImlhdCI6MTcwODQ0MDMxOCwiZXhwIjoxNzA4NDQzOTE4fQ.6Mg8Wg7bejKKYOQlwfsetRZj_khdPb9H1gg0hvaSMS8"
         },
         "local": {
             "host": "localhost:3000",

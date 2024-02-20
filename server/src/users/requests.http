@@ -23,6 +23,6 @@ Content-Type: application/json
 
 ### GET /users/whoami
 GET http://{{host}}/api/users/whoami
-Authorization : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjlkMGIzZGU3LWIxN2YtNGJhNC05OTE3LWZjODhhNGE5MWE2OCIsImVtYWlsIjoidGVzYXRhQGdtYWlsLmNvbSIsImlhdCI6MTcwODA3NTIxOSwiZXhwIjoxNzA4MDc4ODE5fQ.Emo6jYbcfWKRaqiHa3UAQcCoECqqooYDlO54F_N0Rtw
+Authorization: Bearer {{token}}
 
 

@@ -5,6 +5,10 @@ import { ConfigModule } from '@nestjs/config';
 import { APP_PIPE } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './users/entities/user.entity';
+import { PaymentsModule } from './payments/payments.module';
+import { SubscriptionPlan } from './payments/entities/subscription-plan.entity';
+import { SubscriptionUser } from './payments/entities/subscription-user.entity';
+import { WebhookEvent } from './payments/entities/webhook-event.entity';
 
 @Module({
   imports: [
@@ -17,15 +21,20 @@ import { User } from './users/entities/user.entity';
           .default('development'),
         PORT: Joi.number().default(3000),
         JWT_SECRET: Joi.string().required(),
+        LEMONSQUEEZY_STORE_ID: Joi.string().required(),
+        LEMONSQUEEZY_API_KEY: Joi.string().required(),
+        LEMONSQUEEZY_WEBHOOK_SECRET: Joi.string().required(),
+        LEMONSQUEEZY_REDIRECT_URL: Joi.string().required(),
       }),
     }),
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: 'db.sqlite',
-      entities: [User],
+      entities: [User, SubscriptionPlan, SubscriptionUser, WebhookEvent],
       synchronize: true,
     }),
     UsersModule,
+    PaymentsModule,
   ],
   providers: [
     {

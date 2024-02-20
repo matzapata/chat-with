@@ -1,0 +1,24 @@
+
+# Manual testing http requests with extension REST Client
+
+### POST /api/payments/subscription/plans get plans
+GET http://{{host}}/api/payments/subscription/plans
+Content-Type: application/json
+
+### POST /api/payments/subscription/plans/refresh fetch plans from provider and store in db
+POST http://{{host}}/api/payments/subscription/plans/refresh
+Content-Type: application/json
+
+### POST /api/payments/subscription creates a subscription link for the user
+POST http://{{host}}/api/payments/subscription
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "variantId": "99201"
+}
+
+### GET /api/payments/subscription gets the subscription for the logged in user
+GET http://{{host}}/api/payments/subscription
+Content-Type: application/json
+Authorization: Bearer {{token}}
