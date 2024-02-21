@@ -18,6 +18,7 @@ import { WebhookEventsService } from './services/webhook-events-service';
 import { PaymentsService } from './services/payments.service';
 import { AdminGuard } from 'src/guards/admin.guard';
 import { WebhookEventName } from './entities/webhook-event.entity';
+import { EmailService } from 'src/emails/email.service';
 
 @Controller('api/payments')
 export class PaymentsController {
@@ -27,6 +28,7 @@ export class PaymentsController {
     private readonly subscriptionUserService: SubscriptionUserService,
     private readonly usersService: UsersService,
     private readonly webhookEventsService: WebhookEventsService,
+    private readonly emailService: EmailService,
   ) {}
 
   @Get('/subscription/plans')
@@ -161,7 +163,12 @@ export class PaymentsController {
         },
       );
 
-      // TODO: Send notifications
+      // Send email to user notifying them of subscription update
+      this.emailService.sendEmail({
+        to: user.email,
+        html: `Your subscription has been updated to ${data.status}`,
+        subject: 'Subscription updated',
+      });
 
       // Mark event as processed
       await this.webhookEventsService.setProcessed(webhookEvent.id, true);

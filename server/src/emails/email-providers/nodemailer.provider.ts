@@ -24,10 +24,10 @@ export class NodeMailerEmailProvider extends EmailProvider {
 
   async sendEmail(props: {
     to: string;
-    from: string;
+    from?: string;
     subject: string;
-    text: string;
-    html: string;
+    text?: string;
+    html?: string;
   }): Promise<void> {
     if (!this.isEmailValid(props.to)) {
       throw new Error('Invalid to email');
@@ -35,6 +35,9 @@ export class NodeMailerEmailProvider extends EmailProvider {
       throw new Error('Invalid from email');
     }
 
-    await this.transporter.sendMail(props);
+    await this.transporter.sendMail({
+      ...props,
+      from: props.from || this.configService.get('NODEMAILER_EMAIL_USER'),
+    });
   }
 }

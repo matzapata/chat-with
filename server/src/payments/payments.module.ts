@@ -11,6 +11,7 @@ import { SubscriptionPlansService } from './services/subscription-plans.service'
 import { SubscriptionUserService } from './services/subscription-user.service';
 import { WebhookEventsService } from './services/webhook-events-service';
 import { User } from 'src/users/entities/user.entity';
+import { EmailService } from 'src/emails/email.service';
 
 @Module({
   providers: [
@@ -20,6 +21,7 @@ import { User } from 'src/users/entities/user.entity';
     SubscriptionPlansService,
     SubscriptionUserService,
     WebhookEventsService,
+    EmailService,
   ],
   imports: [
     TypeOrmModule.forFeature([
