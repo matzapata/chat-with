@@ -12,7 +12,10 @@ export class UsersService {
   }
 
   findById(id: string): Promise<User | null> {
-    return this.repo.findOneBy({ id });
+    return this.repo.findOne({
+      where: { id },
+      relations: { subscription: true },
+    });
   }
 
   create(email: string, password: string): Promise<User> {

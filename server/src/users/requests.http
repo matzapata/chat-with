@@ -6,7 +6,7 @@ POST http://{{host}}/api/users/signup
 Content-Type: application/json
 
 {
-  "email": "tesata@gmail.com",
+  "email": "matuzapata@gmail.com",
   "password": "123456789"
 }
 
@@ -16,7 +16,7 @@ POST http://{{host}}/api/users/signin
 Content-Type: application/json
 
 {
-  "email": "tesata@gmail.com",
+  "email": "matuzapata@gmail.com",
   "password": "123456789"
 }
 

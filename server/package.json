@@ -20,6 +20,7 @@
     "test:e2e": "cross-env NODE_ENV=test jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@golevelup/ts-jest": "^0.4.0",
     "@lemonsqueezy/lemonsqueezy.js": "^2.1.0",
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.2.0",
@@ -40,6 +41,8 @@
     "typeorm": "^0.3.20"
   },
   "devDependencies": {
+    "@automock/adapters.nestjs": "^2.1.0",
+    "@automock/jest": "^2.1.0",
     "@nestjs/cli": "^10.0.0",
     "@nestjs/schematics": "^10.0.0",
     "@nestjs/testing": "^10.0.0",
@@ -76,6 +79,9 @@
     "collectCoverageFrom": [
       "**/*.(t|j)s"
     ],
+    "moduleNameMapper": {
+      "src/(.*)": "<rootDir>/$1"
+    },
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
   }

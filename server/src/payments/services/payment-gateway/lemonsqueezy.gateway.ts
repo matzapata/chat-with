@@ -1,21 +1,139 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import axios, { AxiosInstance } from 'axios';
 import crypto from 'crypto';
 import {
   PaymentGateway,
+  PaymentProviders,
   SubscriptionPlan,
   UserSubscription,
   WebhookEventData,
   WebhookEventName,
 } from './payment.gateway';
 
+interface PaginationObject {
+  currentPage: number;
+  from: number;
+  lastPage: number;
+  perPage: number;
+  to: number;
+  total: number;
+}
+
+interface VariantObject {
+  type: 'variants';
+  id: string;
+  attributes: {
+    price: number;
+    is_subscription: boolean;
+    interval: 'day' | 'week' | 'month' | 'year';
+    interval_count: number;
+    has_free_trial: boolean;
+    trial_interval: 'day' | 'week' | 'month' | 'year';
+    trial_interval_count: number;
+    pay_what_you_want: boolean;
+    min_price: number;
+    suggested_price: number;
+    product_id: number;
+    name: string;
+    slug: string;
+    description: string | null;
+    has_license_keys: boolean;
+    license_activation_limit: number;
+    is_license_limit_unlimited: boolean;
+    license_length_value: number;
+    license_length_unit: string;
+    is_license_length_unlimited: boolean;
+    sort: number;
+    status: 'pending' | 'draft' | 'published';
+    status_formatted: string;
+    created_at: string;
+    updated_at: string;
+    test_mode: boolean;
+  };
+}
+
+interface ProductObject {
+  type: 'products';
+  id: string;
+  attributes: {
+    store_id: number;
+    name: string;
+    slug: string;
+    description: string | null;
+    status: 'published' | 'draft';
+    status_formatted: string;
+    thumb_url: string | null;
+    large_thumb_url: string | null;
+    price: number;
+    price_formatted: string;
+    from_price: number | null;
+    to_price: number | null;
+    pay_what_you_want: boolean;
+    buy_now_url: string;
+    created_at: string;
+    updated_at: string;
+    test_mode: boolean;
+  };
+}
+
+interface SubscriptionObject {
+  type: 'subscriptions';
+  id: string;
+  attributes: {
+    store_id: number;
+    customer_id: number;
+    order_id: number;
+    order_item_id: number;
+    product_id: number;
+    variant_id: number;
+    product_name: string;
+    variant_name: string;
+    user_name: string;
+    user_email: string;
+    status:
+      | 'on_trial'
+      | 'active'
+      | 'paused'
+      | 'past_due'
+      | 'unpaid'
+      | 'cancelled'
+      | 'expired';
+    status_formatted: string;
+    card_brand: string | null;
+    card_last_four: string | null;
+    pause: { mode: 'void' | 'free'; resumes_at: string } | null;
+    cancelled: boolean;
+    trial_ends_at: string | null;
+    billing_anchor: number;
+    first_subscription_item: {
+      id: number;
+      subscription_id: number;
+      price_id: number;
+      quantity: number;
+      created_at: string;
+      updated_at: string;
+    } | null;
+    urls: {
+      update_payment_method: string;
+      customer_portal: string;
+      customer_portal_update_subscription: string;
+    };
+    renews_at: string;
+    ends_at: string | null;
+    created_at: string;
+    updated_at: string;
+    test_mode: boolean;
+  };
+}
+
 @Injectable()
 export class LemonSqueezyPaymentGateway implements PaymentGateway {
-  LemonSqueezyClient: AxiosInstance;
-  storeId: string;
-  redirectUrl: string;
-  apiKey: string;
+  private readonly client: AxiosInstance;
+  private readonly storeId: string;
+  private readonly redirectUrl: string;
+  private readonly apiKey: string;
+  private readonly name: PaymentProviders = PaymentProviders.lemonsqueezy;
 
   constructor(private readonly configService: ConfigService) {
     // Setup of variables
@@ -25,8 +143,10 @@ export class LemonSqueezyPaymentGateway implements PaymentGateway {
     );
     this.apiKey = this.configService.get<string>('LEMONSQUEEZY_API_KEY');
 
+    console.log('store', this.storeId, this.redirectUrl, this.apiKey);
+
     // Create client
-    this.LemonSqueezyClient = axios.create({
+    this.client = axios.create({
       baseURL: 'https://api.lemonsqueezy.com/v1',
       timeout: 1000,
       headers: {
@@ -35,25 +155,27 @@ export class LemonSqueezyPaymentGateway implements PaymentGateway {
     });
   }
 
-  async createCheckoutUrl(
+  async createSubscriptionCheckout(
     variant_id: string,
     user_email: string,
     user_id: string,
   ): Promise<string> {
-    const res = await this.LemonSqueezyClient.post('/checkouts', {
+    const res = await this.client.post('/checkouts', {
       data: {
         type: 'checkouts',
-        checkout_data: {
-          email: user_email, // Displays in the checkout form
-          custom: {
-            user_id: user_id, // Sent in the background; visible in webhooks and API calls
+        attributes: {
+          product_options: {
+            enabled_variants: [variant_id], // Only show the selected variant in the checkout
+            redirect_url: this.redirectUrl,
+            receipt_button_text: 'Go to your account',
+            receipt_thank_you_note: 'Thank you for signing up!',
           },
-        },
-        product_options: {
-          enabled_variants: [variant_id], // Only show the selected variant in the checkout
-          redirect_url: `${this.redirectUrl}`,
-          receipt_button_text: 'Go to your account',
-          receipt_thank_you_note: 'Thank you for signing up!',
+          checkout_data: {
+            email: user_email, // Displays in the checkout form
+            custom: {
+              user_id: user_id, // Sent in the background; visible in webhooks and API calls
+            },
+          },
         },
         relationships: {
           store: {
@@ -75,7 +197,7 @@ export class LemonSqueezyPaymentGateway implements PaymentGateway {
     return res.data.data.attributes.url;
   }
 
-  async getPlans(): Promise<SubscriptionPlan[]> {
+  async findAllPlans(): Promise<SubscriptionPlan[]> {
     let page = 1;
     const pageSize = 50;
     const plans: SubscriptionPlan[] = [];
@@ -85,19 +207,23 @@ export class LemonSqueezyPaymentGateway implements PaymentGateway {
       plans.push(
         ...res.data
           .filter((v) => v.attributes.is_subscription)
-          .map((v) => ({
-            name: res.included.find(
+          .map((v) => {
+            const product = res.included.find(
               (p) => p.id === String(v.attributes.product_id),
-            )?.attributes.name,
-            product_id: String(v.attributes.product_id),
-            variant_id: v.id,
-            description: v.attributes.description,
-            variant_name: v.attributes.name,
-            status: v.attributes.status,
-            price: v.attributes.price,
-            interval: v.attributes.interval,
-            interval_count: v.attributes.interval_count,
-          })),
+            );
+            return {
+              name: product?.attributes.name,
+              product_id: String(v.attributes.product_id),
+              variant_id: v.id,
+              description: v.attributes.description,
+              variant_name: v.attributes.name,
+              status: v.attributes.status,
+              price: v.attributes.price,
+              interval: v.attributes.interval,
+              interval_count: v.attributes.interval_count,
+              product_name: product?.attributes.name,
+            };
+          }),
       );
       if (res.meta.page.currentPage === res.meta.page.lastPage) {
         break;
@@ -107,39 +233,45 @@ export class LemonSqueezyPaymentGateway implements PaymentGateway {
     return plans;
   }
 
-  async getSubscription(subscriptionId: string): Promise<UserSubscription> {
-    const res = await this.LemonSqueezyClient.get(
-      `/subscriptions/${subscriptionId}`,
-    );
+  async findPlanById(variant_id: string): Promise<SubscriptionPlan> {
+    throw new Error('Method not implemented.');
+  }
+
+  async findSubscriptionById(
+    subscription_id: string,
+  ): Promise<UserSubscription> {
+    const res = await this.client.get(`/subscriptions/${subscription_id}`);
+    const subscription = res.data.data as SubscriptionObject;
     return {
-      product_id: res.data.data.attributes.product_id,
-      variant_id: res.data.data.attributes.variant_id,
-      product_name: res.data.data.attributes.product_name,
-      variant_name: res.data.data.attributes.variant_name,
-      user_email: res.data.data.attributes.user_email,
-      status: res.data.data.attributes.status,
-      pause: res.data.data.attributes.pause,
-      cancelled: res.data.data.attributes.cancelled,
-      trial_ends_at: res.data.data.attributes.trial_ends_at,
-      billing_anchor: res.data.data.attributes.billing_anchor,
-      renews_at: res.data.data.attributes.renews_at,
-      ends_at: res.data.data.attributes.ends_at,
-      created_at: res.data.data.attributes.created_at,
-      updated_at: res.data.data.attributes.updated_at,
-      test_mode: res.data.data.attributes.test_mode,
+      product_id: String(subscription.attributes.product_id),
+      variant_id: String(subscription.attributes.variant_id),
+      product_name: subscription.attributes.product_name,
+      variant_name: subscription.attributes.variant_name,
+      user_email: subscription.attributes.user_email,
+      status: subscription.attributes.status,
+      pause_mode: subscription.attributes.pause?.mode,
+      pause_resumes_at: subscription.attributes.pause?.resumes_at,
+      cancelled: subscription.attributes.cancelled,
+      billing_anchor: subscription.attributes.billing_anchor,
+      renews_at: subscription.attributes.renews_at,
+      ends_at: subscription.attributes.ends_at,
+      created_at: subscription.attributes.created_at,
+      updated_at: subscription.attributes.updated_at,
+      trial_ends_at: subscription.attributes.trial_ends_at,
+      test_mode: subscription.attributes.test_mode,
     };
   }
 
-  async getSubscriptionPortal(subscriptionId: string): Promise<string> {
-    const res = await this.LemonSqueezyClient.get(
-      `/subscriptions/${subscriptionId}`,
-    );
+  async createSubscriptionPortal(subscription_id: string): Promise<string> {
+    const res = await this.client.get(`/subscriptions/${subscription_id}`);
     return res.data.data.attributes.urls.customer_portal;
   }
-  async parseWebhookEvent(
+
+  // Webhook methods
+  async validateWebhook(
     body: { [key: string]: any },
     headers: { [key: string]: any },
-  ): Promise<{ event: WebhookEventName; data: WebhookEventData }> {
+  ): Promise<void> {
     const secret = this.configService.get<string>('LEMON_WEBHOOK_SECRET');
     const hmac = crypto.createHmac('sha256', secret);
     const digest = Buffer.from(
@@ -148,34 +280,41 @@ export class LemonSqueezyPaymentGateway implements PaymentGateway {
     );
     const signature = Buffer.from(headers['X-Signature'] || '', 'utf8');
     if (!crypto.timingSafeEqual(digest, signature)) {
-      throw new Error('Invalid signature.');
+      throw new UnauthorizedException('Invalid signature.');
     }
+  }
 
+  async parseWebhookEvent(body: {
+    [key: string]: any;
+  }): Promise<{ event: WebhookEventName; data: WebhookEventData }> {
     let event: WebhookEventName;
     let data: WebhookEventData;
-    switch (headers['X-Event-Name']) {
+
+    switch (body.meta.event_name) {
       case 'subscription_created':
+        const subscription = body.data as SubscriptionObject;
         event = WebhookEventName.subscription_created;
         data = {
           id: body.data.id,
-          subscription_id: body.data.attributes.subscription_id,
-          provider: 'lemonsqueezy',
+          subscription_id:
+            body.data.attributes.first_subscription_item.subscription_id,
+          provider: this.name,
           user_id: body.meta.custom_data.user_id,
-          variant_id: body.data.attributes.variant_id,
-          order_id: body.data.attributes.order_id,
-          status: body.data.attributes.status,
-          card_brand: body.data.attributes.card_brand,
-          card_last_four: body.data.attributes.card_last_four,
-          pause: body.data.attributes.pause,
-          cancelled: body.data.attributes.cancelled,
-          trial_ends_at: body.data.attributes.trial_ends_at,
-          billing_anchor: body.data.attributes.billing_anchor,
-          renews_at: body.data.attributes.renews_at,
-          ends_at: body.data.attributes.ends_at,
-          created_at: body.data.attributes.created_at,
-          updated_at: body.data.attributes.updated_at,
-          resumes_at: body.data.attributes.resumes_at,
-          test_mode: body.data.attributes.test_mode,
+          variant_id: String(subscription.attributes.variant_id),
+          order_id: String(subscription.attributes.order_id),
+          status: subscription.attributes.status,
+          card_brand: subscription.attributes.card_brand,
+          card_last_four: subscription.attributes.card_last_four,
+          pause_mode: subscription.attributes.pause?.mode ?? null,
+          pause_resumes_at: subscription.attributes.pause?.resumes_at ?? null,
+          cancelled: subscription.attributes.cancelled,
+          trial_ends_at: subscription.attributes.trial_ends_at,
+          billing_anchor: subscription.attributes.billing_anchor,
+          renews_at: subscription.attributes.renews_at,
+          ends_at: subscription.attributes.ends_at,
+          created_at: subscription.attributes.created_at,
+          updated_at: subscription.attributes.updated_at,
+          test_mode: subscription.attributes.test_mode,
         };
         break;
       case 'subscription_updated':
@@ -197,80 +336,17 @@ export class LemonSqueezyPaymentGateway implements PaymentGateway {
     };
   }
 
+  // Private utils
   private async listVariants(
     page?: number,
     size?: number,
   ): Promise<{
-    meta: {
-      page: {
-        currentPage: number;
-        from: number;
-        lastPage: number;
-        perPage: number;
-        to: number;
-        total: number;
-      };
-    };
-    data: {
-      type: 'variants';
-      id: string;
-      attributes: {
-        price: number;
-        is_subscription: boolean;
-        interval: string; // TODO: enum
-        interval_count: number;
-        has_free_trial: boolean;
-        trial_interval: string;
-        trial_interval_count: number;
-        pay_what_you_want: boolean;
-        min_price: number;
-        suggested_price: number;
-        product_id: number;
-        name: string;
-        slug: string;
-        description: string | null;
-        has_license_keys: boolean;
-        license_activation_limit: number;
-        is_license_limit_unlimited: boolean;
-        license_length_value: number;
-        license_length_unit: string;
-        is_license_length_unlimited: false;
-        sort: number;
-        status: string; // TODO: enum
-        status_formatted: string;
-        created_at: string;
-        updated_at: string;
-        test_mode: boolean;
-      };
-    }[];
-    included: {
-      type: 'products';
-      id: string;
-      attributes: {
-        store_id: number;
-        name: string;
-        slug: string;
-        description: string | null;
-        status: string;
-        status_formatted: string;
-        thumb_url: string | null;
-        large_thumb_url: string | null;
-        price: number;
-        price_formatted: string;
-        from_price: number | null;
-        to_price: number | null;
-        pay_what_you_want: boolean;
-        buy_now_url: string;
-        created_at: string;
-        updated_at: string;
-        test_mode: boolean;
-      };
-    }[];
+    meta: { page: PaginationObject };
+    data: VariantObject[];
+    included: ProductObject[];
   }> {
     const query = page ? `&page[number]=${page}&page[size]=${size}` : '';
-    const res = await this.LemonSqueezyClient.get(
-      '/variants?include=product' + query,
-    );
+    const res = await this.client.get('/variants?include=product' + query);
     return res.data;
   }
 }

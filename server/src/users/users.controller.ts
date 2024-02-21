@@ -32,10 +32,13 @@ export class UsersController {
   @Get('/whoami')
   @UseGuards(AuthGuard)
   async whoami(@CurrentUser() userId: string) {
-    console.log('userId: ', userId);
     const user = await this.usersService.findById(userId);
-    console.log('user: ', user);
-    return { id: user?.id, email: user?.email };
+    console.log('user', user);
+    return {
+      id: user?.id,
+      email: user?.email,
+      subscription: user?.subscription,
+    };
   }
 
   @Get('/all')

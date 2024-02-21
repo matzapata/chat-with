@@ -1,5 +1,11 @@
 import { SubscriptionUser } from 'src/payments/entities/subscription-user.entity';
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToOne,
+  JoinColumn,
+} from 'typeorm';
 
 @Entity()
 export class User {
@@ -13,5 +19,6 @@ export class User {
   password: string;
 
   @OneToOne(() => SubscriptionUser, (subscription) => subscription.user)
+  @JoinColumn()
   subscription: SubscriptionUser;
 }

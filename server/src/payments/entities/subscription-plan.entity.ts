@@ -19,6 +19,9 @@ export class SubscriptionPlan {
   product_id: string;
 
   @Column()
+  product_name: string;
+
+  @Column()
   status: string; // TODO: enum
 
   @Column()

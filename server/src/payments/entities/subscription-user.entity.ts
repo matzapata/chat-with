@@ -28,14 +28,32 @@ export class SubscriptionUser {
   @Column()
   renews_at: string;
 
-  @Column()
+  @Column({ nullable: true })
   ends_at: string;
 
-  @Column()
+  @Column({ nullable: true })
   trial_ends_at: string;
 
+  @Column({ nullable: true })
+  pause_mode: string; // TODO: enum
+
+  @Column({ nullable: true })
+  pause_resumes_at: string;
+
   @Column()
-  resumes_at: string;
+  cancelled: boolean;
+
+  @Column()
+  billing_anchor: number;
+
+  @Column()
+  created_at: string;
+
+  @Column()
+  updated_at: string;
+
+  @Column()
+  test_mode: boolean;
 
   @OneToOne(() => User, (user) => user.subscription)
   user: User;

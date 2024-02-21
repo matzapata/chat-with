@@ -3,11 +3,10 @@
 
 ### POST /api/payments/subscription/plans get plans
 GET http://{{host}}/api/payments/subscription/plans
-Content-Type: application/json
 
 ### POST /api/payments/subscription/plans/refresh fetch plans from provider and store in db
 POST http://{{host}}/api/payments/subscription/plans/refresh
-Content-Type: application/json
+Authorization: Bearer {{token}}
 
 ### POST /api/payments/subscription creates a subscription link for the user
 POST http://{{host}}/api/payments/subscription
@@ -15,10 +14,124 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "variantId": "99201"
+  "variant_id": "99201"
 }
 
 ### GET /api/payments/subscription gets the subscription for the logged in user
 GET http://{{host}}/api/payments/subscription
-Content-Type: application/json
 Authorization: Bearer {{token}}
+
+### GET /api/payments/subscription/portal
+GET http://{{host}}/api/payments/subscription/portal
+Authorization: Bearer {{token}}
+
+### POST /api/payments/webhook 
+POST http://{{host}}/api/payments/webhook
+Content-Type: application/json
+
+{
+  "meta": {
+    "test_mode": true,
+    "event_name": "subscription_created",
+    "webhook_id": "a557354b-b109-433d-9dc7-5fcc7882ab2b",
+    "custom_data": {
+      "user_id": "02bb7161-0636-4fd3-bc02-42afd4a55b45" // TODO: Set user_id here
+    }
+  },
+  "data": {
+    "id": "276159",
+    "type": "subscriptions",
+    "links": {
+      "self": "https://api.lemonsqueezy.com/v1/subscriptions/276159"
+    },
+    "attributes": {
+      "urls": {
+        "customer_portal": "https://matzapata.lemonsqueezy.com/billing?expires=1708537383&test_mode=1&user=528864&signature=a7ca79b4df217d964987b4a45eb94924259d56a006720791ca08824cf92353c8",
+        "update_payment_method": "https://matzapata.lemonsqueezy.com/subscription/276159/payment-details?expires=1708602183&signature=d04081cccd130730a9b0ea8fa95b8f51da5f0846e6a1be0a96126ac39a52b644",
+        "customer_portal_update_subscription": "https://matzapata.lemonsqueezy.com/billing/276159/update?expires=1708602183&user=528864&signature=8a50f5b8c687611aab43d3d5233c78d48ae0877f17606b20ef2c5d8802cee69a"
+      },
+      "pause": null,
+      "status": "active",
+      "ends_at": null,
+      "order_id": 2135611,
+      "store_id": 20568,
+      "cancelled": false,
+      "renews_at": "2024-03-21T11:42:57.000000Z",
+      "test_mode": true,
+      "user_name": "Matías Zapata",
+      "card_brand": "visa",
+      "created_at": "2024-02-21T11:42:58.000000Z",
+      "product_id": 92548,
+      "updated_at": "2024-02-21T11:43:02.000000Z",
+      "user_email": "matuzapata@gmail.com",
+      "variant_id": 99201,
+      "customer_id": 2312870,
+      "product_name": "Test",
+      "variant_name": "Default",
+      "order_item_id": 2096692,
+      "trial_ends_at": null,
+      "billing_anchor": 21,
+      "card_last_four": "4242",
+      "status_formatted": "Active",
+      "first_subscription_item": {
+        "id": 227212,
+        "price_id": 64306,
+        "quantity": 1,
+        "created_at": "2024-02-21T11:43:03.000000Z",
+        "updated_at": "2024-02-21T11:43:03.000000Z",
+        "is_usage_based": false,
+        "subscription_id": 276159
+      }
+    },
+    "relationships": {
+      "order": {
+        "links": {
+          "self": "https://api.lemonsqueezy.com/v1/subscriptions/276159/relationships/order",
+          "related": "https://api.lemonsqueezy.com/v1/subscriptions/276159/order"
+        }
+      },
+      "store": {
+        "links": {
+          "self": "https://api.lemonsqueezy.com/v1/subscriptions/276159/relationships/store",
+          "related": "https://api.lemonsqueezy.com/v1/subscriptions/276159/store"
+        }
+      },
+      "product": {
+        "links": {
+          "self": "https://api.lemonsqueezy.com/v1/subscriptions/276159/relationships/product",
+          "related": "https://api.lemonsqueezy.com/v1/subscriptions/276159/product"
+        }
+      },
+      "variant": {
+        "links": {
+          "self": "https://api.lemonsqueezy.com/v1/subscriptions/276159/relationships/variant",
+          "related": "https://api.lemonsqueezy.com/v1/subscriptions/276159/variant"
+        }
+      },
+      "customer": {
+        "links": {
+          "self": "https://api.lemonsqueezy.com/v1/subscriptions/276159/relationships/customer",
+          "related": "https://api.lemonsqueezy.com/v1/subscriptions/276159/customer"
+        }
+      },
+      "order-item": {
+        "links": {
+          "self": "https://api.lemonsqueezy.com/v1/subscriptions/276159/relationships/order-item",
+          "related": "https://api.lemonsqueezy.com/v1/subscriptions/276159/order-item"
+        }
+      },
+      "subscription-items": {
+        "links": {
+          "self": "https://api.lemonsqueezy.com/v1/subscriptions/276159/relationships/subscription-items",
+          "related": "https://api.lemonsqueezy.com/v1/subscriptions/276159/subscription-items"
+        }
+      },
+      "subscription-invoices": {
+        "links": {
+          "self": "https://api.lemonsqueezy.com/v1/subscriptions/276159/relationships/subscription-invoices",
+          "related": "https://api.lemonsqueezy.com/v1/subscriptions/276159/subscription-invoices"
+        }
+      }
+    }
+  }
+}

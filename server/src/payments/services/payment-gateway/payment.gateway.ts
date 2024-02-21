@@ -1,9 +1,10 @@
 export interface SubscriptionPlan {
   name: string;
   product_id: string;
+  product_name: string;
   variant_id: string;
-  description: string;
   variant_name: string;
+  description: string;
   status: string;
   price: number;
   interval: string;
@@ -16,15 +17,23 @@ export interface UserSubscription {
   product_name: string;
   variant_name: string;
   user_email: string;
-  status: string;
-  pause: string | null;
-  cancelled: string | null;
-  trial_ends_at: string | null;
+  status:
+    | 'on_trial'
+    | 'active'
+    | 'paused'
+    | 'past_due'
+    | 'unpaid'
+    | 'cancelled'
+    | 'expired';
+  pause_mode: 'void' | 'free' | null;
+  pause_resumes_at: string | null;
+  cancelled: boolean;
   billing_anchor: number;
   renews_at: string;
   ends_at: string;
   created_at: string;
   updated_at: string;
+  trial_ends_at: string | null;
   test_mode: boolean;
 }
 
@@ -42,10 +51,18 @@ export interface WebhookEventData {
   user_id: string;
   variant_id: string;
   order_id: string;
-  status: string; // TODO: enum
+  status:
+    | 'on_trial'
+    | 'active'
+    | 'paused'
+    | 'past_due'
+    | 'unpaid'
+    | 'cancelled'
+    | 'expired';
   card_brand: string;
   card_last_four: string;
-  pause: boolean;
+  pause_mode: 'void' | 'free' | null;
+  pause_resumes_at: string;
   cancelled: boolean;
   trial_ends_at: string;
   billing_anchor: number;
@@ -53,22 +70,35 @@ export interface WebhookEventData {
   ends_at: string;
   created_at: string;
   updated_at: string;
-  resumes_at: string;
   test_mode: boolean;
 }
 
-export abstract class PaymentGateway {
-  abstract getPlans(): Promise<SubscriptionPlan[]>;
+export enum PaymentProviders {
+  lemonsqueezy = 'lemonsqueezy',
+  // stripe = 'stripe',
+}
 
-  abstract createCheckoutUrl(
+export abstract class PaymentGateway {
+  abstract findPlanById(variant_id: string): Promise<SubscriptionPlan>;
+
+  abstract findAllPlans(): Promise<SubscriptionPlan[]>;
+
+  abstract findSubscriptionById(
+    subscription_id: string,
+  ): Promise<UserSubscription>;
+
+  abstract createSubscriptionPortal(subscription_id: string): Promise<string>;
+
+  abstract createSubscriptionCheckout(
     variant_id: string,
     user_email: string,
     user_id: string,
   ): Promise<string>;
 
-  abstract getSubscription(user_id: string): Promise<UserSubscription>;
-
-  abstract getSubscriptionPortal(user_id: string): Promise<string>;
+  abstract validateWebhook(
+    body: { [key: string]: any },
+    headers: { [h: string]: any },
+  ): Promise<void>;
 
   abstract parseWebhookEvent(
     body: { [key: string]: any },
