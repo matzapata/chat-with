@@ -26,6 +26,8 @@ import { WebhookEvent } from './payments/entities/webhook-event.entity';
         LEMONSQUEEZY_WEBHOOK_SECRET: Joi.string().required(),
         LEMONSQUEEZY_REDIRECT_URL: Joi.string().required(),
         ADMIN_UID: Joi.string().required(),
+        NODEMAILER_EMAIL_USER: Joi.string().required(),
+        NODEMAILER_EMAIL_PASSWORD: Joi.string().required(),
       }),
     }),
     TypeOrmModule.forRoot({
