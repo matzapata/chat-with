@@ -64,7 +64,7 @@ export enum PaymentProviders {
   // stripe = 'stripe',
 }
 
-export abstract class PaymentGateway {
+export abstract class PaymentProvider {
   abstract findPlanById(variant_id: string): Promise<SubscriptionPlan>;
 
   abstract findAllPlans(): Promise<SubscriptionPlan[]>;

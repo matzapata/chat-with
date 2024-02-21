@@ -1,2 +1,2 @@
 // Select the payment gateway to use
-export { LemonSqueezyPaymentGateway as PaymentsService } from './payment-gateway/lemonsqueezy.gateway';
+export { LemonSqueezyPaymentProvider as PaymentsService } from './payment-providers/lemonsqueezy.provider';

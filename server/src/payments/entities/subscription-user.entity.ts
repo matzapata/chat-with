@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { SubscriptionPlan } from './subscription-plan.entity';
-import { PaymentProviders } from '../services/payment-gateway/payment.gateway';
+import { PaymentProviders } from '../services/payment-providers/payment.provider';
 
 export enum SubscriptionStatus {
   on_trial = 'on_trial',

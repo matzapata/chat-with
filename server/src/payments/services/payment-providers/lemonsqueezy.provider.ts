@@ -3,12 +3,12 @@ import { ConfigService } from '@nestjs/config';
 import axios, { AxiosInstance } from 'axios';
 import crypto from 'crypto';
 import {
-  PaymentGateway,
+  PaymentProvider,
   PaymentProviders,
   SubscriptionPlan,
   UserSubscription,
   WebhookEventData,
-} from './payment.gateway';
+} from './payment.provider';
 import { SubscriptionStatus } from 'src/payments/entities/subscription-user.entity';
 import {
   SubscriptionInterval,
@@ -126,7 +126,7 @@ interface SubscriptionObject {
 }
 
 @Injectable()
-export class LemonSqueezyPaymentGateway implements PaymentGateway {
+export class LemonSqueezyPaymentProvider implements PaymentProvider {
   private readonly client: AxiosInstance;
   private readonly storeId: string;
   private readonly redirectUrl: string;
