@@ -7,6 +7,17 @@ import {
 } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { SubscriptionPlan } from './subscription-plan.entity';
+import { PaymentProviders } from '../services/payment-gateway/payment.gateway';
+
+export enum SubscriptionStatus {
+  on_trial = 'on_trial',
+  active = 'active',
+  paused = 'paused',
+  past_due = 'past_due',
+  unpaid = 'unpaid',
+  cancelled = 'cancelled',
+  expired = 'expired',
+}
 
 @Entity()
 export class SubscriptionUser {
@@ -17,28 +28,28 @@ export class SubscriptionUser {
   subscription_id: string; // from provider
 
   @Column()
-  provider: string; // TODO: enum
+  provider: PaymentProviders;
 
   @Column()
   order_id: string;
 
   @Column()
-  status: string; // TODO: enum
+  status: SubscriptionStatus;
 
   @Column()
-  renews_at: string;
+  renews_at: Date;
 
   @Column({ nullable: true })
-  ends_at: string;
+  ends_at: Date;
 
   @Column({ nullable: true })
-  trial_ends_at: string;
+  trial_ends_at: Date;
 
   @Column({ nullable: true })
-  pause_mode: string; // TODO: enum
+  pause_mode: 'void' | 'free' | null;
 
   @Column({ nullable: true })
-  pause_resumes_at: string;
+  pause_resumes_at: Date;
 
   @Column()
   cancelled: boolean;
@@ -47,10 +58,10 @@ export class SubscriptionUser {
   billing_anchor: number;
 
   @Column()
-  created_at: string;
+  created_at: Date;
 
   @Column()
-  updated_at: string;
+  updated_at: Date;
 
   @Column()
   test_mode: boolean;

@@ -16,6 +16,8 @@ import { SubscriptionPlansService } from './services/subscription-plans.service'
 import { SubscriptionUserService } from './services/subscription-user.service';
 import { WebhookEventsService } from './services/webhook-events-service';
 import { PaymentsService } from './services/payments.service';
+import { AdminGuard } from 'src/guards/admin.guard';
+import { WebhookEventName } from './entities/webhook-event.entity';
 
 @Controller('api/payments')
 export class PaymentsController {
@@ -33,7 +35,7 @@ export class PaymentsController {
   }
 
   @Post('/subscription/plans/refresh')
-  @UseGuards(AuthGuard) // TODO: should be only for admins
+  @UseGuards(AdminGuard)
   async refreshPlans() {
     const plans = await this.paymentService.findAllPlans();
     for (const plan of plans) {
@@ -108,7 +110,7 @@ export class PaymentsController {
     @Body() headers: { [key: string]: any },
   ) {
     // Verify webhook source
-    // await this.paymentService.validateWebhook(body, headers);
+    await this.paymentService.validateWebhook(body, headers);
 
     // Parse event and data
     const { data, event } = await this.paymentService.parseWebhookEvent(body);
@@ -122,7 +124,12 @@ export class PaymentsController {
     });
 
     try {
-      // TODO: Check event type to ensure this is subscription object
+      if (
+        event !== WebhookEventName.subscription_created &&
+        event !== WebhookEventName.subscription_updated
+      ) {
+        throw new BadRequestException('Unsupported event type');
+      }
 
       // get associated plan and user
       const plan = await this.subscriptionPlansService.findById(

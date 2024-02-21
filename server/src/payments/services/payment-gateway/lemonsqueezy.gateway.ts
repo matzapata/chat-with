@@ -8,8 +8,13 @@ import {
   SubscriptionPlan,
   UserSubscription,
   WebhookEventData,
-  WebhookEventName,
 } from './payment.gateway';
+import { SubscriptionStatus } from 'src/payments/entities/subscription-user.entity';
+import {
+  SubscriptionInterval,
+  SubscriptionPlanStatus,
+} from 'src/payments/entities/subscription-plan.entity';
+import { WebhookEventName } from 'src/payments/entities/webhook-event.entity';
 
 interface PaginationObject {
   currentPage: number;
@@ -26,10 +31,10 @@ interface VariantObject {
   attributes: {
     price: number;
     is_subscription: boolean;
-    interval: 'day' | 'week' | 'month' | 'year';
+    interval: SubscriptionInterval;
     interval_count: number;
     has_free_trial: boolean;
-    trial_interval: 'day' | 'week' | 'month' | 'year';
+    trial_interval: SubscriptionInterval;
     trial_interval_count: number;
     pay_what_you_want: boolean;
     min_price: number;
@@ -45,7 +50,7 @@ interface VariantObject {
     license_length_unit: string;
     is_license_length_unlimited: boolean;
     sort: number;
-    status: 'pending' | 'draft' | 'published';
+    status: SubscriptionPlanStatus;
     status_formatted: string;
     created_at: string;
     updated_at: string;
@@ -91,20 +96,13 @@ interface SubscriptionObject {
     variant_name: string;
     user_name: string;
     user_email: string;
-    status:
-      | 'on_trial'
-      | 'active'
-      | 'paused'
-      | 'past_due'
-      | 'unpaid'
-      | 'cancelled'
-      | 'expired';
+    status: SubscriptionStatus;
     status_formatted: string;
     card_brand: string | null;
     card_last_four: string | null;
     pause: { mode: 'void' | 'free'; resumes_at: string } | null;
     cancelled: boolean;
-    trial_ends_at: string | null;
+    trial_ends_at: Date | null;
     billing_anchor: number;
     first_subscription_item: {
       id: number;
@@ -250,14 +248,18 @@ export class LemonSqueezyPaymentGateway implements PaymentGateway {
       user_email: subscription.attributes.user_email,
       status: subscription.attributes.status,
       pause_mode: subscription.attributes.pause?.mode,
-      pause_resumes_at: subscription.attributes.pause?.resumes_at,
+      pause_resumes_at: subscription.attributes.pause?.resumes_at
+        ? new Date(subscription.attributes.pause?.resumes_at)
+        : null,
       cancelled: subscription.attributes.cancelled,
       billing_anchor: subscription.attributes.billing_anchor,
-      renews_at: subscription.attributes.renews_at,
-      ends_at: subscription.attributes.ends_at,
-      created_at: subscription.attributes.created_at,
-      updated_at: subscription.attributes.updated_at,
-      trial_ends_at: subscription.attributes.trial_ends_at,
+      renews_at: new Date(subscription.attributes.renews_at),
+      ends_at: new Date(subscription.attributes.ends_at),
+      created_at: new Date(subscription.attributes.created_at),
+      updated_at: new Date(subscription.attributes.updated_at),
+      trial_ends_at: subscription.attributes.trial_ends_at
+        ? new Date(subscription.attributes.trial_ends_at)
+        : null,
       test_mode: subscription.attributes.test_mode,
     };
   }
@@ -306,14 +308,16 @@ export class LemonSqueezyPaymentGateway implements PaymentGateway {
           card_brand: subscription.attributes.card_brand,
           card_last_four: subscription.attributes.card_last_four,
           pause_mode: subscription.attributes.pause?.mode ?? null,
-          pause_resumes_at: subscription.attributes.pause?.resumes_at ?? null,
+          pause_resumes_at: subscription.attributes.pause?.resumes_at
+            ? new Date(subscription.attributes.pause.resumes_at)
+            : null,
           cancelled: subscription.attributes.cancelled,
-          trial_ends_at: subscription.attributes.trial_ends_at,
+          trial_ends_at: new Date(subscription.attributes.trial_ends_at),
           billing_anchor: subscription.attributes.billing_anchor,
-          renews_at: subscription.attributes.renews_at,
-          ends_at: subscription.attributes.ends_at,
-          created_at: subscription.attributes.created_at,
-          updated_at: subscription.attributes.updated_at,
+          renews_at: new Date(subscription.attributes.renews_at),
+          ends_at: new Date(subscription.attributes.ends_at),
+          created_at: new Date(subscription.attributes.created_at),
+          updated_at: new Date(subscription.attributes.updated_at),
           test_mode: subscription.attributes.test_mode,
         };
         break;

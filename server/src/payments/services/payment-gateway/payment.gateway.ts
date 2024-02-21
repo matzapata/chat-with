@@ -1,3 +1,10 @@
+import {
+  SubscriptionInterval,
+  SubscriptionPlanStatus,
+} from 'src/payments/entities/subscription-plan.entity';
+import { SubscriptionStatus } from 'src/payments/entities/subscription-user.entity';
+import { WebhookEventName } from 'src/payments/entities/webhook-event.entity';
+
 export interface SubscriptionPlan {
   name: string;
   product_id: string;
@@ -5,9 +12,9 @@ export interface SubscriptionPlan {
   variant_id: string;
   variant_name: string;
   description: string;
-  status: string;
+  status: SubscriptionPlanStatus;
   price: number;
-  interval: string;
+  interval: SubscriptionInterval;
   interval_count: number;
 }
 
@@ -17,59 +24,38 @@ export interface UserSubscription {
   product_name: string;
   variant_name: string;
   user_email: string;
-  status:
-    | 'on_trial'
-    | 'active'
-    | 'paused'
-    | 'past_due'
-    | 'unpaid'
-    | 'cancelled'
-    | 'expired';
+  status: SubscriptionStatus;
   pause_mode: 'void' | 'free' | null;
-  pause_resumes_at: string | null;
+  pause_resumes_at: Date | null;
   cancelled: boolean;
   billing_anchor: number;
-  renews_at: string;
-  ends_at: string;
-  created_at: string;
-  updated_at: string;
-  trial_ends_at: string | null;
+  renews_at: Date;
+  ends_at: Date | null;
+  created_at: Date;
+  updated_at: Date;
+  trial_ends_at: Date | null;
   test_mode: boolean;
-}
-
-export enum WebhookEventName {
-  subscription_created = 'subscription_created',
-  subscription_updated = 'subscription_updated',
-  subscription_payment_failed = 'subscription_payment_failed',
-  subscription_payment_success = 'subscription_payment_success',
 }
 
 export interface WebhookEventData {
   id: string;
   subscription_id: string;
-  provider: string;
+  provider: PaymentProviders;
   user_id: string;
   variant_id: string;
   order_id: string;
-  status:
-    | 'on_trial'
-    | 'active'
-    | 'paused'
-    | 'past_due'
-    | 'unpaid'
-    | 'cancelled'
-    | 'expired';
+  status: SubscriptionStatus;
   card_brand: string;
   card_last_four: string;
   pause_mode: 'void' | 'free' | null;
-  pause_resumes_at: string;
+  pause_resumes_at: Date;
   cancelled: boolean;
-  trial_ends_at: string;
+  trial_ends_at: Date;
   billing_anchor: number;
-  renews_at: string;
-  ends_at: string;
-  created_at: string;
-  updated_at: string;
+  renews_at: Date;
+  ends_at: Date;
+  created_at: Date;
+  updated_at: Date;
   test_mode: boolean;
 }
 

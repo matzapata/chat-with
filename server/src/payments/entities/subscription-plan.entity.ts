@@ -1,6 +1,19 @@
 import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 import { SubscriptionUser } from './subscription-user.entity';
 
+export enum SubscriptionInterval {
+  day = 'day',
+  week = 'week',
+  month = 'month',
+  year = 'year',
+}
+
+export enum SubscriptionPlanStatus {
+  pending = 'pending',
+  draft = 'draft',
+  published = 'published',
+}
+
 @Entity()
 export class SubscriptionPlan {
   @Column()
@@ -22,13 +35,13 @@ export class SubscriptionPlan {
   product_name: string;
 
   @Column()
-  status: string; // TODO: enum
+  status: SubscriptionPlanStatus;
 
   @Column()
   price: number;
 
   @Column()
-  interval: string; // TODO: enum
+  interval: SubscriptionInterval;
 
   @Column()
   interval_count: number;
