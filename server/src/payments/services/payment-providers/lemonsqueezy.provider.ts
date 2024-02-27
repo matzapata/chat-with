@@ -141,8 +141,6 @@ export class LemonSqueezyPaymentProvider implements PaymentProvider {
     );
     this.apiKey = this.configService.get<string>('LEMONSQUEEZY_API_KEY');
 
-    console.log('store', this.storeId, this.redirectUrl, this.apiKey);
-
     // Create client
     this.client = axios.create({
       baseURL: 'https://api.lemonsqueezy.com/v1',

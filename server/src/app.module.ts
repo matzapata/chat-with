@@ -9,6 +9,7 @@ import { PaymentsModule } from './payments/payments.module';
 import { SubscriptionPlan } from './payments/entities/subscription-plan.entity';
 import { SubscriptionUser } from './payments/entities/subscription-user.entity';
 import { WebhookEvent } from './payments/entities/webhook-event.entity';
+import { ChatModule } from './chat/chat.module';
 
 @Module({
   imports: [
@@ -28,6 +29,9 @@ import { WebhookEvent } from './payments/entities/webhook-event.entity';
         ADMIN_UID: Joi.string().required(),
         NODEMAILER_EMAIL_USER: Joi.string().required(),
         NODEMAILER_EMAIL_PASSWORD: Joi.string().required(),
+        OPENAI_API_KEY: Joi.string().required(),
+        SUPABASE_URL: Joi.string().required(),
+        SUPABASE_SECRET: Joi.string().required(),
       }),
     }),
     TypeOrmModule.forRoot({
@@ -38,6 +42,7 @@ import { WebhookEvent } from './payments/entities/webhook-event.entity';
     }),
     UsersModule,
     PaymentsModule,
+    ChatModule,
   ],
   providers: [
     {
