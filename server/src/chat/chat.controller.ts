@@ -15,8 +15,9 @@ import { Express } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { TextLoader } from 'langchain/document_loaders/fs/text';
 import { FilesService } from './services/files.service';
-import { AuthGuard } from 'src/guards/auth.guard';
-import { CurrentUser } from 'src/decorators/current-user.decorator';
+import { AuthGuard } from 'src/users/guards/auth.guard';
+import { CurrentUser } from 'src/users/decorators/current-user.decorator';
+import { User } from 'src/users/entities/user.entity';
 
 @Controller('api/chat')
 @UseGuards(AuthGuard)
@@ -53,16 +54,16 @@ export class ChatController {
   }
 
   @Get('/files')
-  async getFiles(@CurrentUser() user_id: string) {
+  async getFiles(@CurrentUser() user: User) {
     // TODO: serialize
-    return this.filesService.findAllByUserId(user_id);
+    return this.filesService.findAllOwnedBy(user);
   }
 
   @UseInterceptors(FileInterceptor('file'))
   @Post('/files')
   async uploadFile(
     @UploadedFile() file: Express.Multer.File,
-    @CurrentUser() user_id: string,
+    @CurrentUser() user: User,
   ) {
     // store embedded files with corresponding metadata
     // also store file in db and in storage

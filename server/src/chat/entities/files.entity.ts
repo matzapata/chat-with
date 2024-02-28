@@ -12,7 +12,6 @@ export class File {
   @Column({ default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;
 
-  @Column()
   @ManyToOne(() => User, (user) => user.files)
   owner: User;
 }

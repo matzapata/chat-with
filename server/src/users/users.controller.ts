@@ -1,17 +1,14 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
-import { UsersService } from './services/users.service';
 import { SignUpUserDto } from './dto/signup-user.dto';
 import { SignInUserDto } from './dto/signin-user.dto';
 import { AuthService } from './services/auth.service';
-import { CurrentUser } from 'src/decorators/current-user.decorator';
-import { AuthGuard } from 'src/guards/auth.guard';
+import { CurrentUser } from 'src/users/decorators/current-user.decorator';
+import { AuthGuard } from 'src/users/guards/auth.guard';
+import { User } from './entities/user.entity';
 
 @Controller('api/users')
 export class UsersController {
-  constructor(
-    private readonly usersService: UsersService,
-    private readonly authService: AuthService,
-  ) {}
+  constructor(private readonly authService: AuthService) {}
 
   @Post('/signup')
   async signup(@Body() body: SignUpUserDto) {
@@ -31,19 +28,11 @@ export class UsersController {
 
   @Get('/whoami')
   @UseGuards(AuthGuard)
-  async whoami(@CurrentUser() userId: string) {
-    const user = await this.usersService.findById(userId);
-    console.log('user', user);
+  async whoami(@CurrentUser() user: User) {
     return {
       id: user?.id,
       email: user?.email,
       subscription: user?.subscription,
     };
-  }
-
-  @Get('/all')
-  @UseGuards(AuthGuard)
-  async all() {
-    return 'all';
   }
 }

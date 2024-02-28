@@ -10,6 +10,7 @@ import { SubscriptionPlan } from './payments/entities/subscription-plan.entity';
 import { SubscriptionUser } from './payments/entities/subscription-user.entity';
 import { WebhookEvent } from './payments/entities/webhook-event.entity';
 import { ChatModule } from './chat/chat.module';
+import { File } from './chat/entities/files.entity';
 
 @Module({
   imports: [
@@ -37,7 +38,7 @@ import { ChatModule } from './chat/chat.module';
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: 'db.sqlite',
-      entities: [User, SubscriptionPlan, SubscriptionUser, WebhookEvent],
+      entities: [User, SubscriptionPlan, SubscriptionUser, WebhookEvent, File],
       synchronize: true,
     }),
     UsersModule,

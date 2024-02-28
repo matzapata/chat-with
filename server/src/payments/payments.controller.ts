@@ -8,17 +8,18 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { CurrentUser } from 'src/decorators/current-user.decorator';
-import { AuthGuard } from 'src/guards/auth.guard';
+import { CurrentUser } from 'src/users/decorators/current-user.decorator';
+import { AuthGuard } from 'src/users/guards/auth.guard';
 import { UsersService } from 'src/users/services/users.service';
 import { CreateSubscriptionDto } from './dtos/create-subscription.dto';
 import { SubscriptionPlansService } from './services/subscription-plans.service';
 import { SubscriptionUserService } from './services/subscription-user.service';
 import { WebhookEventsService } from './services/webhook-events-service';
 import { PaymentsService } from '../infrastructure/payments/payments.service';
-import { AdminGuard } from 'src/guards/admin.guard';
+import { AdminGuard } from 'src/users/guards/admin.guard';
 import { WebhookEventName } from './entities/webhook-event.entity';
 import { EmailService } from 'src/infrastructure/emails/email.service';
+import { User } from 'src/users/entities/user.entity';
 
 @Controller('api/payments')
 export class PaymentsController {
@@ -60,8 +61,8 @@ export class PaymentsController {
 
   @Get('/subscription')
   @UseGuards(AuthGuard)
-  async getSubscription(@CurrentUser() user_id: string) {
-    const subs = await this.subscriptionUserService.findByUserId(user_id);
+  async getSubscription(@CurrentUser() user: User) {
+    const subs = await this.subscriptionUserService.findByUserId(user.id);
     if (!subs) {
       throw new NotFoundException('Subscription not found');
     }
@@ -72,19 +73,16 @@ export class PaymentsController {
   @Post('/subscription')
   @UseGuards(AuthGuard)
   async createSubscriptionCheckout(
-    @CurrentUser() user_id: string,
+    @CurrentUser() user: User,
     @Body() body: CreateSubscriptionDto,
   ) {
-    const subs = await this.subscriptionUserService.findByUserId(user_id);
+    const subs = await this.subscriptionUserService.findByUserId(user.id);
     if (subs) throw new BadRequestException('User already has a subscription');
-
-    const user = await this.usersService.findById(user_id);
-    if (!user) throw new NotFoundException('User not found');
 
     const url = await this.paymentService.createSubscriptionCheckout(
       body.variant_id,
       user.email,
-      user_id,
+      user.id,
     );
 
     return { url };
@@ -92,9 +90,10 @@ export class PaymentsController {
 
   @Get('/subscription/portal')
   @UseGuards(AuthGuard)
-  async getSubscriptionPortal(@CurrentUser() user_id: string) {
-    const userSubscription =
-      await this.subscriptionUserService.findByUserId(user_id);
+  async getSubscriptionPortal(@CurrentUser() user: User) {
+    const userSubscription = await this.subscriptionUserService.findByUserId(
+      user.id,
+    );
     if (!userSubscription) {
       throw new Error('User has no subscription');
     }

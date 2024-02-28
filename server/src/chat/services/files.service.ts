@@ -21,7 +21,7 @@ export class FilesService {
     return this.fileRepository.delete(id);
   }
 
-  async findAllByUserId(id: string): Promise<File[]> {
-    return this.fileRepository.find({ where: { owner: { id } } });
+  async findAllOwnedBy(owner: User): Promise<File[]> {
+    return this.fileRepository.find({ where: { owner } });
   }
 }

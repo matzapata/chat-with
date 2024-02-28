@@ -26,5 +26,5 @@ export class User {
 
   @OneToMany(() => File, (file) => file.owner)
   @JoinColumn()
-  files: File;
+  files: File[];
 }

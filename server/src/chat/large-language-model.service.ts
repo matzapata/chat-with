@@ -71,10 +71,11 @@ export class LargeLanguageModelService {
     // return LargeLanguageModelService.vectorStore.deleteDocuments(ids);
   }
 
-  public async loadFile(file: any) {
-    const loader = new TextLoader(
-      'src/document_loaders/example_data/example.txt',
-    );
+  public async loadFile(filePathOrBlob: string | Blob) {
+    // TODO: switch file type
+
+    const loader = new TextLoader(filePathOrBlob);
+    const contents = await loader.load();
 
     throw new Error('Not implemented');
   }
