@@ -5,6 +5,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { OpenAI } from 'langchain/llms/openai';
 import { TextLoader } from 'langchain/document_loaders/fs/text';
+import { Document } from 'langchain/document';
 
 @Injectable()
 export class LargeLanguageModelService {
@@ -71,12 +72,31 @@ export class LargeLanguageModelService {
     // return LargeLanguageModelService.vectorStore.deleteDocuments(ids);
   }
 
-  public async loadFile(filePathOrBlob: string | Blob) {
-    // TODO: switch file type
+  public async loadFile(
+    filePathOrBlob: string | Blob,
+    metadata: Record<string, any>,
+    type: 'plain/text' | 'others',
+  ) {
+    // Load file content
+    let contents: Document<Record<string, any>>[] = [];
+    switch (type) {
+      case 'plain/text':
+        const loader = new TextLoader(filePathOrBlob);
+        contents = await loader.load();
+        break;
+      default:
+        throw new Error('Unsupported file type');
+    }
 
-    const loader = new TextLoader(filePathOrBlob);
-    const contents = await loader.load();
+    // merge metadata
+    const documents = contents.map((d) => ({
+      pageContent: d.pageContent,
+      metadata: {
+        ...d.metadata,
+        ...metadata,
+      },
+    }));
 
-    throw new Error('Not implemented');
+    return this.loadDocuments(documents);
   }
 }

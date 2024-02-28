@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ChatController } from './chat.controller';
-import { LargeLanguageModelService } from './large-language-model.service';
+import { LargeLanguageModelService } from '../infrastructure/llms/large-language-model.service';
 import { FilesService } from './services/files.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { File } from './entities/files.entity';

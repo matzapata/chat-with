@@ -1,16 +1,23 @@
 
 ### POST /api/chat gets the subscription for the logged in user
 POST http://{{host}}/api/chat
+Authorization: Bearer {{token}}
 
 
-### POST /api/chat/files/upload uploads the file to the server
-POST http://{{host}}/api/chat/files/upload
+### POST /api/chat/files uploads the file to the server and generates the embeddings
+POST http://{{host}}/api/chat/files
+Authorization: Bearer {{token}}
 Content-Type: multipart/form-data; boundary=----boundary
 
 ------boundary
 Content-Disposition: form-data; name="file"; filename="example.txt"
 Content-Type: text/plain
 
-< ./docs/example.txt
+< ./data/example.txt
 ------boundary--
+
+
+### GET /api/chat/files lists the available files
+GET http://{{host}}/api/chat/files
+Authorization: Bearer {{token}}
 

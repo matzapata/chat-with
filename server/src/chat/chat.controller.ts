@@ -4,16 +4,16 @@ import {
   Delete,
   Get,
   Param,
+  ParseFilePipeBuilder,
   Post,
   UploadedFile,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { LargeLanguageModelService } from './large-language-model.service';
+import { LargeLanguageModelService } from '../infrastructure/llms/large-language-model.service';
 import { ChatDto } from './dtos/chat.dto';
 import { Express } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { TextLoader } from 'langchain/document_loaders/fs/text';
 import { FilesService } from './services/files.service';
 import { AuthGuard } from 'src/users/guards/auth.guard';
 import { CurrentUser } from 'src/users/decorators/current-user.decorator';
@@ -28,7 +28,7 @@ export class ChatController {
   ) {}
 
   @Post('/')
-  async chat(@Body() body: ChatDto) {
+  async chat(@Body() body: ChatDto, @CurrentUser() user: User) {
     // chat logic, query and retrieval
     // const res = await this.llmService.invoke('who is juan?', '', 5, { id: 1 });
     // await this.llmService.loadDocuments([
@@ -40,7 +40,8 @@ export class ChatController {
     // });
     // console.log(JSON.stringify(resc));
     const res = await this.llmService.invoke(body.query, 2, {
-      id: 15,
+      filename: body.filename,
+      owner: user.id,
     });
 
     return JSON.stringify(res);
@@ -62,25 +63,41 @@ export class ChatController {
   @UseInterceptors(FileInterceptor('file'))
   @Post('/files')
   async uploadFile(
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile(
+      new ParseFilePipeBuilder()
+        .addFileTypeValidator({
+          fileType: '',
+        })
+        .addMaxSizeValidator({
+          maxSize: 1000000,
+        })
+        .build(),
+    )
+    file: Express.Multer.File,
     @CurrentUser() user: User,
   ) {
-    // store embedded files with corresponding metadata
-    // also store file in db and in storage
+    // store file in db
+    const f = await this.filesService.create(user, file.originalname);
+    const metadata = { filename: file.originalname, owner: user.id, id: f.id };
 
-    const loader = new TextLoader(
+    // store embedded files with corresponding metadata
+    await this.llmService.loadFile(
       new Blob([file.buffer], { type: 'text/plain' }),
-      // 'src/document_loaders/example_data/example.txt',
+      metadata,
+      'plain/text',
     );
 
-    // await this.filesService.create(file.originalname, loader);
+    // TODO: store file in storage
 
-    return await loader.load();
+    return file;
   }
 
   @Delete('/files/:id')
   async deleteFile(@Param('id') id: string) {
-    // delete file from dbs and storage
+    // TODO: delete file from vector store
+    // TODO: delete file from storage
+
+    // delete file from files db
     await this.filesService.delete(id);
 
     return 'ok';
