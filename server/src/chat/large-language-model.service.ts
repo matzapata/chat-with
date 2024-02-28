@@ -4,11 +4,12 @@ import { createClient as supabaseCreateClient } from '@supabase/supabase-js';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { OpenAI } from 'langchain/llms/openai';
+import { TextLoader } from 'langchain/document_loaders/fs/text';
 
 @Injectable()
 export class LargeLanguageModelService {
   private static vectorStore: SupabaseVectorStore;
-  private static llm: any;
+  private static llm: OpenAI;
 
   constructor(private readonly configService: ConfigService) {
     // Initialize the vector store
@@ -39,7 +40,7 @@ export class LargeLanguageModelService {
 
   public async invoke(query: string, k: number, filter: any) {
     const context = await this.similaritySearch(query, k, filter);
-    const text = await LargeLanguageModelService.llm.call(
+    const text = await LargeLanguageModelService.llm.invoke(
       `Context information is below. \n---------------------\n${context.map((c) => c.pageContent + '\n')}\n---------------------\nGiven the context information and no prior knowledge, answer the question: ${query}`,
     );
     return {
@@ -63,5 +64,18 @@ export class LargeLanguageModelService {
     }[],
   ) {
     return LargeLanguageModelService.vectorStore.addDocuments(documents);
+  }
+
+  public async deleteDocuments(ids: string[]) {
+    throw new Error('Not implemented');
+    // return LargeLanguageModelService.vectorStore.deleteDocuments(ids);
+  }
+
+  public async loadFile(file: any) {
+    const loader = new TextLoader(
+      'src/document_loaders/example_data/example.txt',
+    );
+
+    throw new Error('Not implemented');
   }
 }

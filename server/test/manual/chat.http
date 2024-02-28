@@ -1,0 +1,16 @@
+
+### POST /api/chat gets the subscription for the logged in user
+POST http://{{host}}/api/chat
+
+
+### POST /api/chat/files/upload uploads the file to the server
+POST http://{{host}}/api/chat/files/upload
+Content-Type: multipart/form-data; boundary=----boundary
+
+------boundary
+Content-Disposition: form-data; name="file"; filename="example.txt"
+Content-Type: text/plain
+
+< ./docs/example.txt
+------boundary--
+

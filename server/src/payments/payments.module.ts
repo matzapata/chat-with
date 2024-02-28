@@ -6,12 +6,12 @@ import { WebhookEvent } from './entities/webhook-event.entity';
 import { PaymentsController } from './payments.controller';
 import { AuthService } from 'src/users/services/auth.service';
 import { UsersService } from 'src/users/services/users.service';
-import { PaymentsService } from './services/payments.service';
+import { PaymentsService } from '../infrastructure/payments/payments.service';
 import { SubscriptionPlansService } from './services/subscription-plans.service';
 import { SubscriptionUserService } from './services/subscription-user.service';
 import { WebhookEventsService } from './services/webhook-events-service';
 import { User } from 'src/users/entities/user.entity';
-import { EmailService } from 'src/emails/email.service';
+import { EmailService } from 'src/infrastructure/emails/email.service';
 
 @Module({
   providers: [

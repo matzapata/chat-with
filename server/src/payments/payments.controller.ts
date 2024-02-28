@@ -15,10 +15,10 @@ import { CreateSubscriptionDto } from './dtos/create-subscription.dto';
 import { SubscriptionPlansService } from './services/subscription-plans.service';
 import { SubscriptionUserService } from './services/subscription-user.service';
 import { WebhookEventsService } from './services/webhook-events-service';
-import { PaymentsService } from './services/payments.service';
+import { PaymentsService } from '../infrastructure/payments/payments.service';
 import { AdminGuard } from 'src/guards/admin.guard';
 import { WebhookEventName } from './entities/webhook-event.entity';
-import { EmailService } from 'src/emails/email.service';
+import { EmailService } from 'src/infrastructure/emails/email.service';
 
 @Controller('api/payments')
 export class PaymentsController {

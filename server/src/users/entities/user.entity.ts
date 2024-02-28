@@ -1,3 +1,4 @@
+import { File } from 'src/chat/entities/files.entity';
 import { SubscriptionUser } from 'src/payments/entities/subscription-user.entity';
 import {
   Entity,
@@ -5,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
   OneToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 
 @Entity()
@@ -21,4 +23,8 @@ export class User {
   @OneToOne(() => SubscriptionUser, (subscription) => subscription.user)
   @JoinColumn()
   subscription: SubscriptionUser;
+
+  @OneToMany(() => File, (file) => file.owner)
+  @JoinColumn()
+  files: File;
 }
