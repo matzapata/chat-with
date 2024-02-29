@@ -9,8 +9,6 @@
 # Server
 
 TODO: - google storage infra https://github.com/googleapis/nodejs-storage/blob/main/samples/uploadFromMemory.js
-TODO: - vector store remove files
-TODO: - llm https://js.langchain.com/docs/use_cases/question_answering/chat_history 
 TODO: - tests
 TODO: - resend email provider
 
