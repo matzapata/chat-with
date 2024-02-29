@@ -28,6 +28,7 @@ import { User } from 'src/users/entities/user.entity';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { ChatMetadataDto } from './dtos/chat-metadata.dto';
 import { ChatDto } from './dtos/chat.dto';
+import { StorageService } from 'src/infrastructure/storage/storage.service';
 
 // One chat conversation per file. so files and chats are associated
 // TODO: Require subscription to use this endpoint
@@ -38,6 +39,7 @@ export class ChatController {
   constructor(
     private readonly ragService: RetrievalAugmentedGenerationService,
     private readonly chatsService: ChatsService,
+    private readonly storageService: StorageService,
   ) {}
 
   @Get('/')
@@ -87,24 +89,31 @@ export class ChatController {
       embeddingsIds,
     );
 
-    // TODO: store file in storage
+    // store file in storage
+    await this.storageService.uploadFile(
+      `${user.id}/${chat.id}-${file.originalname}`,
+      file.buffer,
+    );
 
     return chat;
   }
 
   @Delete('/:id')
   async deleteChat(@Param('id') id: string) {
-    const file = await this.chatsService.findById(id);
+    const chat = await this.chatsService.findById(id);
 
     // delete file from vector store
-    await this.ragService.deleteDocuments(file.embeddings_ids);
+    await this.ragService.deleteDocuments(chat.embeddings_ids);
 
-    // TODO: delete file from storage
+    // delete file from storage
+    await this.storageService.deleteFile(
+      `${chat.owner.id}/${chat.id}-${chat.filename}`,
+    );
 
     // delete file from files db
     await this.chatsService.delete(id);
 
-    return file;
+    return chat;
   }
 
   @Put('/:id')

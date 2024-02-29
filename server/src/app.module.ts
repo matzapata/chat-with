@@ -34,6 +34,10 @@ import { ChatMessage } from './chat/entities/messages.entity';
         OPENAI_API_KEY: Joi.string().required(),
         SUPABASE_URL: Joi.string().required(),
         SUPABASE_SECRET: Joi.string().required(),
+        GCP_PROJECT_ID: Joi.string().required(),
+        GCP_CLIENT_EMAIL: Joi.string().required(),
+        GCP_PRIVATE_KEY: Joi.string().required(),
+        GCP_STORAGE_BUCKET: Joi.string().required(),
       }),
     }),
     TypeOrmModule.forRoot({
