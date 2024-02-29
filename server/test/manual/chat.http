@@ -1,7 +1,15 @@
 
+# Manual testing http requests with extension REST Client
+
 ### POST /api/chat gets the subscription for the logged in user
 POST http://{{host}}/api/chat
 Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "query": "Who is juan?",
+    "filename": "filename.txt"
+}
 
 
 ### POST /api/chat/files uploads the file to the server and generates the embeddings
@@ -19,5 +27,9 @@ Content-Type: text/plain
 
 ### GET /api/chat/files lists the available files
 GET http://{{host}}/api/chat/files
+Authorization: Bearer {{token}}
+
+### DELETE /api/chat/files/:od lists the available files
+DELETE http://{{host}}/api/chat/files/b0834fc8-3cee-4445-89b7-a547732d1934
 Authorization: Bearer {{token}}
 

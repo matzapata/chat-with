@@ -14,4 +14,7 @@ export class File {
 
   @ManyToOne(() => User, (user) => user.files)
   owner: User;
+
+  @Column('text', { array: true })
+  embeddings_ids: string[];
 }

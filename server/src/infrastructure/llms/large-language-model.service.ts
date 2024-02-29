@@ -3,9 +3,13 @@ import { SupabaseVectorStore } from '@langchain/community/vectorstores/supabase'
 import { createClient as supabaseCreateClient } from '@supabase/supabase-js';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { OpenAI } from 'langchain/llms/openai';
+// import { OpenAI } from 'langchain/llms/openai';
 import { TextLoader } from 'langchain/document_loaders/fs/text';
 import { Document } from 'langchain/document';
+import { OpenAI } from '@langchain/openai';
+import { JSONLoader } from 'langchain/document_loaders/fs/json';
+import { PDFLoader } from 'langchain/document_loaders/fs/pdf';
+import { CSVLoader } from 'langchain/document_loaders/fs/csv';
 
 @Injectable()
 export class LargeLanguageModelService {
@@ -58,34 +62,50 @@ export class LargeLanguageModelService {
     );
   }
 
+  // Load documents into the vector store and returns their ids
   public async loadDocuments(
     documents: {
       pageContent: string;
       metadata: Record<string, any>;
     }[],
-  ) {
+  ): Promise<string[]> {
     return LargeLanguageModelService.vectorStore.addDocuments(documents);
   }
 
   public async deleteDocuments(ids: string[]) {
-    throw new Error('Not implemented');
-    // return LargeLanguageModelService.vectorStore.deleteDocuments(ids);
+    return LargeLanguageModelService.vectorStore.delete({ ids });
   }
 
   public async loadFile(
     filePathOrBlob: string | Blob,
-    metadata: Record<string, any>,
-    type: 'plain/text' | 'others',
+    mimetype: string,
+    metadata?: Record<string, any>,
   ) {
     // Load file content
     let contents: Document<Record<string, any>>[] = [];
-    switch (type) {
-      case 'plain/text':
+    switch (mimetype) {
+      case 'text/plain': {
         const loader = new TextLoader(filePathOrBlob);
         contents = await loader.load();
         break;
+      }
+      case 'application/json': {
+        const loader = new JSONLoader(filePathOrBlob);
+        contents = await loader.load();
+        break;
+      }
+      case 'application/pdf': {
+        const loader = new PDFLoader(filePathOrBlob);
+        contents = await loader.load();
+        break;
+      }
+      case 'text/csv': {
+        const loader = new CSVLoader(filePathOrBlob);
+        contents = await loader.load();
+        break;
+      }
       default:
-        throw new Error('Unsupported file type');
+        throw new Error('Unsupported file type' + mimetype);
     }
 
     // merge metadata
