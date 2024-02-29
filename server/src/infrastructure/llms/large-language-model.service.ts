@@ -15,6 +15,13 @@ import { RunnablePassthrough, RunnableSequence } from 'langchain/runnables';
 import { formatDocumentsAsString } from 'langchain/util/document';
 import { AIMessage, HumanMessage } from 'langchain/schema';
 
+export enum MessageAgent {
+  user = 'USER',
+  ai = 'AI',
+}
+
+// TODO: Rename as smth like RAG service and create providers structure
+
 @Injectable()
 export class LargeLanguageModelService {
   private vectorStore: SupabaseVectorStore;
@@ -48,14 +55,14 @@ export class LargeLanguageModelService {
 
   public async invoke(
     query: string,
-    chat_history: { agent: 'ai' | 'human'; message: string }[],
+    chat_history: { agent: MessageAgent; message: string }[],
     k: number,
     filter: any,
   ) {
     return this.buildRagChain(k, filter).invoke({
       question: query,
       chat_history: chat_history.map((m) =>
-        m.agent == 'ai'
+        m.agent == MessageAgent.ai
           ? new AIMessage(m.message)
           : new HumanMessage(m.message),
       ),

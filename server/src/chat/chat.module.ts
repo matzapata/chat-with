@@ -1,13 +1,14 @@
 import { Module } from '@nestjs/common';
 import { ChatController } from './chat.controller';
 import { LargeLanguageModelService } from '../infrastructure/llms/large-language-model.service';
-import { FilesService } from './services/files.service';
+import { ChatsService } from './services/chat.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { File } from './entities/files.entity';
+import { Chat } from './entities/chat.entity';
+import { ChatMessage } from './entities/messages.entity';
 
 @Module({
   controllers: [ChatController],
-  imports: [TypeOrmModule.forFeature([File])],
-  providers: [LargeLanguageModelService, FilesService],
+  imports: [TypeOrmModule.forFeature([Chat, ChatMessage])],
+  providers: [LargeLanguageModelService, ChatsService],
 })
 export class ChatModule {}

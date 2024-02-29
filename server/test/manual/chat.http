@@ -1,19 +1,12 @@
 
 # Manual testing http requests with extension REST Client
 
-### POST /api/chat gets the subscription for the logged in user
-POST http://{{host}}/api/chat
+### GET /api/chats gets all the available chats for the user
+GET http://{{host}}/api/chats
 Authorization: Bearer {{token}}
-Content-Type: application/json
 
-{
-    "query": "Who is juan?",
-    "filename": "filename.txt"
-}
-
-
-### POST /api/chat/files uploads the file to the server and generates the embeddings
-POST http://{{host}}/api/chat/files
+### POST /api/chats creates a new chat from a file loading embeddings for it
+POST http://{{host}}/api/chats
 Authorization: Bearer {{token}}
 Content-Type: multipart/form-data; boundary=----boundary
 
@@ -25,11 +18,23 @@ Content-Type: text/plain
 ------boundary--
 
 
-### GET /api/chat/files lists the available files
-GET http://{{host}}/api/chat/files
+### GET /api/chats/:id Get the chat with the messages available
+GET http://{{host}}/api/chats/95ce48c4-912e-4360-8d3d-a02134a4b050
 Authorization: Bearer {{token}}
 
-### DELETE /api/chat/files/:od lists the available files
-DELETE http://{{host}}/api/chat/files/b0834fc8-3cee-4445-89b7-a547732d1934
+### DELETE /api/chats/:id delete the chat with the given id
+DELETE http://{{host}}/api/chats/b0834fc8-3cee-4445-89b7-a547732d1934
 Authorization: Bearer {{token}}
+
+
+### PUT /api/chats/:id add a message to the chat
+PUT http://{{host}}/api/chats/95ce48c4-912e-4360-8d3d-a02134a4b050
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "message": "Who is juan?"
+}
+
+
 

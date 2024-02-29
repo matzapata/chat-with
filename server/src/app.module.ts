@@ -10,7 +10,8 @@ import { SubscriptionPlan } from './payments/entities/subscription-plan.entity';
 import { SubscriptionUser } from './payments/entities/subscription-user.entity';
 import { WebhookEvent } from './payments/entities/webhook-event.entity';
 import { ChatModule } from './chat/chat.module';
-import { File } from './chat/entities/files.entity';
+import { Chat } from './chat/entities/chat.entity';
+import { ChatMessage } from './chat/entities/messages.entity';
 
 @Module({
   imports: [
@@ -43,7 +44,14 @@ import { File } from './chat/entities/files.entity';
       password: 'postgres',
       database: 'chatwith',
       synchronize: true,
-      entities: [User, SubscriptionPlan, SubscriptionUser, WebhookEvent, File],
+      entities: [
+        User,
+        SubscriptionPlan,
+        SubscriptionUser,
+        WebhookEvent,
+        Chat,
+        ChatMessage,
+      ],
     }),
     UsersModule,
     PaymentsModule,

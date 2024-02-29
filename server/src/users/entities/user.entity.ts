@@ -1,4 +1,4 @@
-import { File } from 'src/chat/entities/files.entity';
+import { Chat } from 'src/chat/entities/chat.entity';
 import { SubscriptionUser } from 'src/payments/entities/subscription-user.entity';
 import {
   Entity,
@@ -24,7 +24,7 @@ export class User {
   @JoinColumn()
   subscription: SubscriptionUser;
 
-  @OneToMany(() => File, (file) => file.owner)
+  @OneToMany(() => Chat, (c) => c.owner)
   @JoinColumn()
-  files: File[];
+  chats: Chat[];
 }

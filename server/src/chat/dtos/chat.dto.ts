@@ -1,9 +1,22 @@
-import { IsString } from 'class-validator';
+import { Expose, Transform } from 'class-transformer';
+import { ChatMessage } from '../entities/messages.entity';
 
 export class ChatDto {
-  @IsString()
+  @Expose()
+  id: string;
+
+  @Expose()
   filename: string;
 
-  @IsString()
-  query: string;
+  @Expose()
+  created_at: Date;
+
+  @Expose()
+  @Transform(({ obj }) => obj.owner.id)
+  owner: string;
+
+  // @Transform(({ obj }) => obj)
+  @Expose()
+  @Transform(({ obj }) => obj.messages)
+  messages: ChatMessage[];
 }

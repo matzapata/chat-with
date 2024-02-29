@@ -1,6 +1,6 @@
 import { Expose, Transform } from 'class-transformer';
 
-export class FileDto {
+export class ChatMetadataDto {
   @Expose()
   id: string;
 

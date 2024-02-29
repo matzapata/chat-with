@@ -1,72 +1,55 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
+  ForbiddenException,
   Get,
+  NotFoundException,
   Param,
   ParseFilePipeBuilder,
   Post,
+  Put,
   UploadedFile,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { LargeLanguageModelService } from '../infrastructure/llms/large-language-model.service';
-import { ChatDto } from './dtos/chat.dto';
+import {
+  LargeLanguageModelService,
+  MessageAgent,
+} from '../infrastructure/llms/large-language-model.service';
+import { PostMessageDto } from './dtos/post-message.dto';
 import { Express } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { FilesService } from './services/files.service';
+import { ChatsService } from './services/chat.service';
 import { AuthGuard } from 'src/users/guards/auth.guard';
 import { CurrentUser } from 'src/users/decorators/current-user.decorator';
 import { User } from 'src/users/entities/user.entity';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
-import { FileDto } from './dtos/file.dto';
+import { ChatMetadataDto } from './dtos/chat-metadata.dto';
+import { ChatDto } from './dtos/chat.dto';
 
-@Controller('api/chat')
+// One chat conversation per file. so files and chats are associated
+// TODO: Require subscription to use this endpoint
+
+@Controller('api/chats')
 @UseGuards(AuthGuard)
 export class ChatController {
   constructor(
     private readonly llmService: LargeLanguageModelService,
-    private readonly filesService: FilesService,
+    private readonly chatsService: ChatsService,
   ) {}
 
+  @Get('/')
+  @Serialize(ChatMetadataDto)
+  getChats(@CurrentUser() user: User) {
+    return this.chatsService.findAllOwnedBy(user);
+  }
+
   @Post('/')
-  async chat(@Body() body: ChatDto, @CurrentUser() user: User) {
-    // chat logic, query and retrieval
-    // const res = await this.llmService.invoke('who is juan?', '', 5, { id: 1 });
-    // const res = await this.llmService.loadDocuments([
-    //   { pageContent: 'juan is a scientist', metadata: { id: 15 } },
-    //   { pageContent: 'juan is a dentist', metadata: { id: 16 } },
-    // ]);
-    // const res = await this.llmService.deleteDocuments(['11', '12']);
-
-    // const resc = await this.llmService.similaritySearch('who is juan?', 2, {
-    //   id: 15,
-    // });
-    // console.log(JSON.stringify(resc));
-    const res = await this.llmService.invoke(body.query, 2, {
-      filename: body.filename,
-      owner: user.id,
-    });
-
-    return JSON.stringify(res);
-  }
-
-  @Get('/history')
-  getMessages() {
-    // get chat history
-    throw new Error('Not implemented');
-  }
-
-  @Get('/files')
-  @Serialize(FileDto)
-  async getFiles(@CurrentUser() user: User) {
-    return this.filesService.findAllOwnedBy(user);
-  }
-
-  @Post('/files')
-  @Serialize(FileDto)
+  @Serialize(ChatMetadataDto)
   @UseInterceptors(FileInterceptor('file'))
-  async uploadFile(
+  async createChat(
     @UploadedFile(
       new ParseFilePipeBuilder()
         .addFileTypeValidator({
@@ -81,6 +64,15 @@ export class ChatController {
     file: Express.Multer.File,
     @CurrentUser() user: User,
   ) {
+    // Check if there's already a chat for the file
+    const existingChat = await this.chatsService.findFileForOwner(
+      user,
+      file.originalname,
+    );
+    if (existingChat) {
+      throw new BadRequestException('Chat already exists for this file');
+    }
+
     // store embedded files with corresponding metadata
     const embeddingsIds = await this.llmService.loadFile(
       new Blob([file.buffer], { type: file.mimetype }),
@@ -89,7 +81,7 @@ export class ChatController {
     );
 
     // store file in db
-    const f = await this.filesService.create(
+    const chat = await this.chatsService.create(
       user,
       file.originalname,
       embeddingsIds,
@@ -97,12 +89,12 @@ export class ChatController {
 
     // TODO: store file in storage
 
-    return f;
+    return chat;
   }
 
-  @Delete('/files/:id')
-  async deleteFile(@Param('id') id: string) {
-    const file = await this.filesService.findById(id);
+  @Delete('/:id')
+  async deleteChat(@Param('id') id: string) {
+    const file = await this.chatsService.findById(id);
 
     // delete file from vector store
     await this.llmService.deleteDocuments(file.embeddings_ids);
@@ -110,8 +102,59 @@ export class ChatController {
     // TODO: delete file from storage
 
     // delete file from files db
-    await this.filesService.delete(id);
+    await this.chatsService.delete(id);
 
     return file;
+  }
+
+  @Put('/:id')
+  async postMessage(
+    @Body() body: PostMessageDto,
+    @CurrentUser() user: User,
+    @Param('id') id: string,
+  ) {
+    // Check user has permissions
+    const chat = await this.chatsService.findById(id);
+    if (!chat) {
+      throw new NotFoundException('Chat not found');
+    }
+    if (chat.owner.id !== user.id) {
+      throw new ForbiddenException('Not allowed');
+    }
+
+    // Create response
+    const res = await this.llmService.invoke(
+      body.message,
+      chat.messages.map((m) => ({ agent: m.agent, message: m.message })),
+      2,
+      { filename: chat.filename, owner: user.id },
+    );
+
+    // Add user and ai message to chat
+    const userMessage = await this.chatsService.addMessage(
+      id,
+      body.message,
+      MessageAgent.user,
+    );
+
+    // Add ai message to chat
+    const aiMessage = await this.chatsService.addMessage(
+      id,
+      res,
+      MessageAgent.ai,
+    );
+
+    return { userMessage, aiMessage };
+  }
+
+  @Get('/:id')
+  @Serialize(ChatDto)
+  async getChat(@Param('id') id: string) {
+    const chat = this.chatsService.findById(id);
+    if (!chat) {
+      throw new NotFoundException('Chat not found');
+    }
+
+    return chat;
   }
 }

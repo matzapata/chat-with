@@ -1,0 +1,27 @@
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Chat } from './chat.entity';
+import { MessageAgent } from 'src/infrastructure/llms/large-language-model.service';
+
+@Entity()
+export class ChatMessage {
+  @PrimaryGeneratedColumn('increment')
+  id: number;
+
+  @Column()
+  message: string;
+
+  @Column({ default: () => 'CURRENT_TIMESTAMP' })
+  created_at: Date;
+
+  @Column()
+  agent: MessageAgent;
+
+  @ManyToOne(() => Chat, (chat) => chat.messages, { cascade: true })
+  chat: Chat;
+}
