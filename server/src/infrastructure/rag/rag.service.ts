@@ -20,10 +20,8 @@ export enum MessageAgent {
   ai = 'AI',
 }
 
-// TODO: Rename as smth like RAG service and create providers structure
-
 @Injectable()
-export class LargeLanguageModelService {
+export class RetrievalAugmentedGenerationService {
   private vectorStore: SupabaseVectorStore;
   private llm: OpenAI;
 

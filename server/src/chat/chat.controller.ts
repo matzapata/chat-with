@@ -15,9 +15,9 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import {
-  LargeLanguageModelService,
+  RetrievalAugmentedGenerationService,
   MessageAgent,
-} from '../infrastructure/llms/large-language-model.service';
+} from '../infrastructure/rag/rag.service';
 import { PostMessageDto } from './dtos/post-message.dto';
 import { Express } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -36,7 +36,7 @@ import { ChatDto } from './dtos/chat.dto';
 @UseGuards(AuthGuard)
 export class ChatController {
   constructor(
-    private readonly llmService: LargeLanguageModelService,
+    private readonly ragService: RetrievalAugmentedGenerationService,
     private readonly chatsService: ChatsService,
   ) {}
 
@@ -74,7 +74,7 @@ export class ChatController {
     }
 
     // store embedded files with corresponding metadata
-    const embeddingsIds = await this.llmService.loadFile(
+    const embeddingsIds = await this.ragService.loadFile(
       new Blob([file.buffer], { type: file.mimetype }),
       file.mimetype,
       { filename: file.originalname, owner: user.id },
@@ -97,7 +97,7 @@ export class ChatController {
     const file = await this.chatsService.findById(id);
 
     // delete file from vector store
-    await this.llmService.deleteDocuments(file.embeddings_ids);
+    await this.ragService.deleteDocuments(file.embeddings_ids);
 
     // TODO: delete file from storage
 
@@ -123,7 +123,7 @@ export class ChatController {
     }
 
     // Create response
-    const res = await this.llmService.invoke(
+    const res = await this.ragService.invoke(
       body.message,
       chat.messages.map((m) => ({ agent: m.agent, message: m.message })),
       2,

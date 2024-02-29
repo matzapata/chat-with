@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Chat } from './chat.entity';
-import { MessageAgent } from 'src/infrastructure/llms/large-language-model.service';
+import { MessageAgent } from 'src/infrastructure/rag/rag.service';
 
 @Entity()
 export class ChatMessage {

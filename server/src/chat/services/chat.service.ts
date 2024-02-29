@@ -3,7 +3,7 @@ import { Repository } from 'typeorm';
 import { Chat } from '../entities/chat.entity';
 import { User } from 'src/users/entities/user.entity';
 import { ChatMessage } from '../entities/messages.entity';
-import { MessageAgent } from 'src/infrastructure/llms/large-language-model.service';
+import { MessageAgent } from 'src/infrastructure/rag/rag.service';
 
 export class ChatsService {
   constructor(
