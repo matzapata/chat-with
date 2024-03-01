@@ -14,7 +14,7 @@ TODO: - tests
 TODO: - resend email strategy
 TODO: - cleanup payments implementation
 TODO: - make auth modular to switch providers and bring in supabase or firebase, passport
-TODO: - deploy server with gcp initially for cost efficient but keep the door open for kubernetes
+TODO: - deployments. server with gcp initially for cost efficient but keep the door open for kubernetes
 
 # Infra
 
