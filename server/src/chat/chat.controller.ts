@@ -29,12 +29,12 @@ import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { ChatMetadataDto } from './dtos/chat-metadata.dto';
 import { ChatDto } from './dtos/chat.dto';
 import { StorageService } from 'src/infrastructure/storage/storage.service';
+import { PaidMemberGuard } from 'src/payments/guards/paid-members.guard';
 
 // One chat conversation per file. so files and chats are associated
-// TODO: Require subscription to use this endpoint
 
 @Controller('api/chats')
-@UseGuards(AuthGuard)
+@UseGuards(AuthGuard, PaidMemberGuard)
 export class ChatController {
   constructor(
     private readonly ragService: RetrievalAugmentedGenerationService,

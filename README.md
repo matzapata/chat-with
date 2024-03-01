@@ -11,7 +11,10 @@ Chat with any file. Leverage langchain and lemonsqueezy to create a saas with au
 
 TODO: - subscription guard
 TODO: - tests
-TODO: - resend email provider
+TODO: - resend email strategy
+TODO: - cleanup payments implementation
+TODO: - make auth modular to switch providers and bring in supabase or firebase, passport
+TODO: - deploy server with gcp initially for cost efficient but keep the door open for kubernetes
 
 # Infra
 
