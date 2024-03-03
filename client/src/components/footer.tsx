@@ -9,7 +9,7 @@ const items = [
 
 export default function Footer() {
   return (
-    <footer className="space-y-12 py-12 border-t md:flex md:justify-between md:space-y-0">
+    <footer className="space-y-12 py-12 border-t md:flex md:justify-between md:items-center md:space-y-0">
       <div className="px-4">
         <Logo />
       </div>

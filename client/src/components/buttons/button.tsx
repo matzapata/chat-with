@@ -17,7 +17,7 @@ export default function Button({
     sm: "py-[10px] px-[18px]",
     md: "py-[10px] px-[18px]",
     lg: "py-[10px] px-[18px]",
-    xl: "py-[10px] px-[18px]",
+    xl: "py-[12px] px-[18px]",
     "2xl": "py-[16px] px-[24px] text-lg",
   }[size];
 
