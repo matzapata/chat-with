@@ -3,8 +3,8 @@ import { MinusCircleIcon } from "./icons/minus-circle";
 import { PlusCircleIcon } from "./icons/plus-circle";
 import Image from "next/image";
 import images from "@/assets/images";
-import { PrimaryButton } from "./buttons/primary";
 import { brandConfig } from "@/config/brand";
+import { Button } from "./ui/button";
 
 export default function Faq() {
   const [openFaqId, setOpenFaqId] = useState<number | null>(null);
@@ -86,7 +86,7 @@ export default function Faq() {
             </p>
           </div>
 
-          <PrimaryButton className="mx-auto">Get in touch</PrimaryButton>
+          <Button variant="primary" className="mx-auto">Get in touch</Button>
         </div>
       </div>
     </div>

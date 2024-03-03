@@ -1,9 +1,9 @@
 "use client";
 
-import { PrimaryButton } from "@/components/buttons/primary";
 import Faq from "@/components/faq";
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar/landing";
+import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
 const plans = [
@@ -157,9 +157,9 @@ export default function PricingPage() {
 
               {/* Get started button */}
               <div className="p-6">
-                <PrimaryButton size="xl" className="w-full">
+                <Button variant="primary" size="xl" className="w-full">
                   Get started
-                </PrimaryButton>
+                </Button>
               </div>
             </div>
           ))}

@@ -2,9 +2,7 @@
 import { Bars4Icon, XMarkIcon } from "@heroicons/react/24/solid";
 import Logo from "../logo";
 import { useState } from "react";
-import { PrimaryButton } from "../buttons/primary";
-import { SecondaryGrayButton } from "../buttons/secondary-gray";
-import { TertiaryGrayButton } from "../buttons/tertiary-gray";
+import { Button } from "../ui/button";
 
 const navbarItems = [
   { title: "Home" },
@@ -54,9 +52,9 @@ function MobileNavbar() {
             ))}
           </div>
           <div className="py-6 px-4 space-y-3">
-            <PrimaryButton className="w-full">Sign up</PrimaryButton>
+            <Button variant="primary" className="w-full">Sign up</Button>
 
-            <SecondaryGrayButton className="w-full">Log in</SecondaryGrayButton>
+            <Button variant="secondary-gray" className="w-full">Log in</Button>
           </div>
         </div>
       )}
@@ -84,8 +82,8 @@ function DesktopNavbar() {
           </div>
 
           <div className="flex items-center space-x-4">
-            <TertiaryGrayButton>Log in</TertiaryGrayButton>
-            <PrimaryButton>Sign up</PrimaryButton>
+            <Button variant="tertiary-gray">Log in</Button>
+            <Button variant="primary">Sign up</Button>
           </div>
         </div>
       </div>

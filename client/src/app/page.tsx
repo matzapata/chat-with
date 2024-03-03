@@ -1,19 +1,14 @@
 "use client";
 
-import { PrimaryButton } from "@/components/buttons/primary";
-import { SecondaryGrayButton } from "@/components/buttons/secondary-gray";
 import { PlayCircleIcon } from "@/components/icons/play-circle";
 import Navbar from "@/components/navbar/landing";
 import Image from "next/image";
 import { useMediaQuery } from "react-responsive";
 import images from "@/assets/images";
 import logos from "@/assets/images/logos";
-import { useState } from "react";
-import { MinusCircleIcon } from "@/components/icons/minus-circle";
-import { PlusCircleIcon } from "@/components/icons/plus-circle";
-import Logo from "@/components/logo";
 import Footer from "@/components/footer";
 import Faq from "@/components/faq";
+import { Button } from "@/components/ui/button";
 
 const features = [
   {
@@ -54,8 +49,6 @@ const features = [
   },
 ];
 
-
-
 export default function Home() {
   const isDesktop = useMediaQuery({ query: "(min-width: 768px)" });
 
@@ -81,19 +74,21 @@ export default function Home() {
         </h2>
 
         <div className="mt-8 space-y-3 md:space-y-0 md:flex md:flex-row-reverse md:justify-center md:space-x-3">
-          <PrimaryButton
+          <Button
+            variant={"primary"}
             size={isDesktop ? "2xl" : "md"}
             className="w-full md:w-auto md:ml-4"
           >
             Sign up
-          </PrimaryButton>
-          <SecondaryGrayButton
+          </Button>
+          <Button
+            variant={"secondary-gray"}
             size={isDesktop ? "2xl" : "md"}
             className="w-full md:w-auto items-center space-x-2"
           >
             <PlayCircleIcon className="h-5 w-5 text-gray-700 inline-block" />
             <span className="text-gray-700">Demo</span>
-          </SecondaryGrayButton>
+          </Button>
         </div>
 
         <div className="py-16">
@@ -199,7 +194,6 @@ export default function Home() {
 
       {/* Frequently asked questions */}
       <Faq />
-
 
       {/* Footer */}
       <Footer />
