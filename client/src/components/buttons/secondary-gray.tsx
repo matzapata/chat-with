@@ -9,7 +9,7 @@ export function SecondaryGrayButton({
   return (
     <Button
       className={classNames(
-        "text-gray-700 border-gray-300 hover:bg-gray-50",
+        "text-gray-700 bg-white border border-gray-300 hover:bg-gray-50",
         className
       )}
       {...props}

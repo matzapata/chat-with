@@ -2,14 +2,16 @@
 import { Bars4Icon, XMarkIcon } from "@heroicons/react/24/solid";
 import Logo from "../logo";
 import { useState } from "react";
-import { HomeLineIcon } from "../icons/home-line";
-import { SettingsIcon } from "../icons/settings";
-import { Avatar } from "../avatar";
 import { PrimaryButton } from "../buttons/primary";
 import { SecondaryGrayButton } from "../buttons/secondary-gray";
 import { TertiaryGrayButton } from "../buttons/tertiary-gray";
 
-const navbarItems = [{ title: "Home" }, { title: "Pricing" }];
+const navbarItems = [
+  { title: "Home" },
+  { title: "Features" },
+  { title: "FAQ" },
+  { title: "Pricing" },
+];
 
 export default function Navbar() {
   return (
@@ -28,7 +30,7 @@ function MobileNavbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="border-b shadow-sm">
+    <div className={isOpen ? "border-b bg-white" : ""}>
       <div className="p-4 flex justify-between items-center border-b-gray-200">
         <Logo />
         <button
@@ -45,17 +47,16 @@ function MobileNavbar() {
       {isOpen && (
         <div>
           <div className="space-y-2 py-6 border-b">
-            <button className="px-4 py-3 font-semibold block text-gray-800">
-              Home
-            </button>
-            <button className="px-4 py-3 font-semibold block text-gray-800">
-              Pricing
-            </button>
+            {navbarItems.map((item, i) => (
+              <button key={i} className="px-4 py-3 font-semibold block text-gray-800">
+                {item.title}
+              </button>
+            ))}
           </div>
           <div className="py-6 px-4 space-y-3">
-            <PrimaryButton>Sign up</PrimaryButton>
+            <PrimaryButton className="w-full">Sign up</PrimaryButton>
 
-            <SecondaryGrayButton>Log in</SecondaryGrayButton>
+            <SecondaryGrayButton className="w-full">Log in</SecondaryGrayButton>
           </div>
         </div>
       )}
@@ -66,7 +67,7 @@ function MobileNavbar() {
 function DesktopNavbar() {
   return (
     <div>
-      <div className="border-b border-b-gray-200 flex justify-center">
+      <div className="flex justify-center">
         <div className="px-16 max-w-6xl w-full flex justify-between py-4 items-center">
           <div className="flex items-center">
             <Logo />
