@@ -19,11 +19,11 @@ const buttonVariants = cva(
         destructive: "bg-red-500 text-slate-50 hover:bg-red-500/90",
         "destructive-secondary": "bg-white text-red-500 hover:bg-red-50 border border-red-300",
         "destructive-tertiary": "bg-white text-red-500 hover:bg-red-50",
-        "destructive-link": "bg-white text-red-500 hover:text-red-600 p-0",
+        "destructive-link": "bg-white text-red-500 hover:text-red-600",
         
       },
       size: {
-        sm: "py-[8px] px-[12px]",
+        sm: "py-[8px] px-[12px] text-sm",
         md: "py-[10px] px-[14px]",
         lg: "py-[12px] px-[16px]",
         xl: "py-[12px] px-[18px]",
@@ -31,6 +31,17 @@ const buttonVariants = cva(
         icon: "h-10 w-10",
       },
     },
+    compoundVariants: [
+      // Overwrite padding for link variants
+      {
+        variant: "link-color",
+        className: "p-0",
+      },
+      {
+        variant: "link-gray",
+        className: "p-0",
+      }
+    ],
     defaultVariants: {
       variant: "primary",
       size: "md",

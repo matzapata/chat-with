@@ -5,7 +5,7 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import Logo from "../logo";
 import { useState } from "react";
 import { HomeLineIcon } from "../icons/home-line";
-import { LifeBouyIcon } from "../icons/life-bouy";
+import { LifeBuoyIcon } from "../icons/life-buoy";
 import { LogOutIcon } from "../icons/log-out";
 import { SettingsIcon } from "../icons/settings";
 import { Avatar } from "../avatar";
@@ -68,7 +68,7 @@ function MobileNavbar() {
               <div className="mb-6 space-y-2">
                 <SidebarNavItem
                   title="Support"
-                  icon={<LifeBouyIcon className="h-5 w-5 text-gray-500" />}
+                  icon={<LifeBuoyIcon className="h-5 w-5 text-gray-500" />}
                 />
                 <SidebarNavItem
                   title="Settings"
@@ -136,7 +136,7 @@ function DesktopNavbar() {
   return (
     <div>
       <div className="border-b border-b-gray-200 flex justify-center">
-        <div className="px-16 max-w-6xl w-full flex justify-between py-4 items-center">
+        <div className="px-8 max-w-6xl  w-full flex justify-between py-4 items-center">
           <div className="flex items-center">
             <Logo />
             <div className="flex items-center space-x-2 ml-4">
@@ -162,7 +162,7 @@ function DesktopNavbar() {
 
       {/* Submenu */}
       <div className="border-b border-b-gray-200 flex justify-center">
-        <div className="px-16 max-w-6xl w-full flex py-3 items-center">
+        <div className="px-8 max-w-6xl w-full flex py-3 items-center">
           <button className="px-3 py-1 text-md font-semibold text-gray-700">
             Filename.txt
           </button>

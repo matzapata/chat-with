@@ -86,7 +86,11 @@ export default function Faq() {
             </p>
           </div>
 
-          <Button variant="primary" className="mx-auto">Get in touch</Button>
+          <div className="flex justify-center">
+            <Button variant="primary" className="mx-auto">
+              Get in touch
+            </Button>
+          </div>
         </div>
       </div>
     </div>
