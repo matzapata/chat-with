@@ -5,8 +5,10 @@ import Image from "next/image";
 import images from "@/assets/images";
 import { brandConfig } from "@/config/brand";
 import { Button } from "./ui/button";
+import { useRouter } from "next/navigation";
 
 export default function Faq() {
+  const router = useRouter()
   const [openFaqId, setOpenFaqId] = useState<number | null>(null);
 
   return (
@@ -87,7 +89,7 @@ export default function Faq() {
           </div>
 
           <div className="flex justify-center">
-            <Button variant="primary" className="mx-auto">
+            <Button onClick={() => router.push("/contact")} variant="primary" className="mx-auto">
               Get in touch
             </Button>
           </div>

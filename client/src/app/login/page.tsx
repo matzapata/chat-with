@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -14,6 +13,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -27,6 +27,7 @@ const FormSchema = z.object({
 });
 
 export default function Login() {
+  const router = useRouter(); 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -43,7 +44,7 @@ export default function Login() {
     <div>
       <Navbar />
 
-      <div className="py-12 md:py-20 space-y-8 max-w-96 mx-auto">
+      <div className="py-12 md:py-20 space-y-8 max-w-lg mx-auto">
         <div className="space-y-2 text-center">
           <h1 className="text-gray-900 text-2xl md:text-3xl font-semibold">
             Log in to your account
@@ -95,14 +96,15 @@ export default function Login() {
               </div>
 
               <div className="flex justify-end">
-                <Button variant="link-color">Forgot password</Button>
+                <Button variant="link-color" type="button" onClick={() => router.push("/forgot-password")}>Forgot password</Button>
               </div>
 
               <div className="space-y-4">
-                <Button className="w-full" size="lg" variant="primary">
+                <Button type="submit" className="w-full" size="lg" variant="primary">
                   Sign in
                 </Button>
                 <Button
+                  type="button"
                   className="w-full space-x-3"
                   size="lg"
                   variant="secondary-gray"
@@ -116,7 +118,7 @@ export default function Login() {
 
           <div className="flex space-x-1 items-center justify-center">
             <p className="text-gray-600 text-sm">Don&apos;t have an account</p>
-            <Button size="sm" variant="link-color">
+            <Button onClick={() => router.push("/signup")} size="sm" variant="link-color">
               Sign up
             </Button>
           </div>

@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -14,17 +13,10 @@ export default function Billing() {
   return (
     <div className="py-8 md:py-12 space-y-8 max-w-6xl mx-auto">
       {/* Heading */}
-      <div className="px-4 md:px-8 md:space-y-8 ">
-        <div>
-          <h1 className="font-semibold text-2xl md:3xl text-gray-900">
-            Billing
-          </h1>
-          <p className="text-gray-600 md:hidden">
-            Manage your billing and payment details.
-          </p>
-        </div>
+      <div className="px-4 md:px-8 space-y-8 ">
+        <h1 className="font-semibold text-2xl md:3xl text-gray-900">Billing</h1>
 
-        <div className="hidden md:block space-y-1 pb-5 border-b">
+        <div className=" space-y-1 pb-5 border-b">
           <h2 className="text-lg font-semibold text-gray-900">Account plans</h2>
           <p className="text-gray-600">
             Pick an account plan that fits your workflow.
@@ -56,7 +48,7 @@ export default function Billing() {
 
       {/* Billing history */}
       <div className="md:px-8 md:space-y-6">
-        <div className="hidden md:block space-y-1 pb-5 border-b">
+        <div className="px-4 md:px-0 space-y-1 md:pb-5 md:border-b">
           <h2 className="text-lg font-semibold text-gray-900">
             Billing and invoicing
           </h2>
@@ -66,11 +58,11 @@ export default function Billing() {
         </div>
 
         <div className="space-y-6 md:space-y-0 md:grid md:grid-cols-3">
-          <div className="px-4 md:px-0">
+          <div className="px-4 md:px-0 hidden md:block">
             <h1 className="text-lg md:text-sm text-gray-900 font-semibold">
               Billing history
             </h1>
-            <p className="text-gray-600 text-sm hidden md:block">
+            <p className="text-gray-600 text-sm">
               Please reach out to our friendly team via billing@untitled.com
               with questions.
             </p>

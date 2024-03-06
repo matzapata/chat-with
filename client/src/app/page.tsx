@@ -9,6 +9,7 @@ import logos from "@/assets/images/logos";
 import Footer from "@/components/footer";
 import Faq from "@/components/faq";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 const features = [
   {
@@ -51,6 +52,7 @@ const features = [
 
 export default function Home() {
   const isDesktop = useMediaQuery({ query: "(min-width: 768px)" });
+  const router = useRouter()
 
   return (
     <main
@@ -64,7 +66,7 @@ export default function Home() {
       <Navbar />
 
       {/* hero section */}
-      <div className="px-4 mt-16 md:mt-24">
+      <div id="hero" className="px-4 mt-16 md:mt-24">
         <h1 className="md:text-6xl text-3xl font-semibold text-center text-gray-900">
           Beautiful analytics to grow smarter
         </h1>
@@ -75,6 +77,7 @@ export default function Home() {
 
         <div className="mt-8 space-y-3 md:space-y-0 md:flex md:flex-row-reverse md:justify-center md:space-x-3">
           <Button
+          onClick={() => router.push("/signup")}
             variant={"primary"}
             size={isDesktop ? "2xl" : "md"}
             className="w-full md:w-auto md:ml-4"
@@ -123,7 +126,10 @@ export default function Home() {
       </div>
 
       {/* Features section */}
-      <div className="border-t py-16 md:py-24 space-y-12 md:space-y-16">
+      <div
+        id="features"
+        className="border-t py-16 md:py-24 space-y-12 md:space-y-16"
+      >
         <div className="px-4 space-y-4 max-w-3xl mx-auto">
           <p className="text-center font-semibold text-brand-600">Features</p>
           <h1 className="text-3xl font-semibold text-gray-900 text-center">
@@ -193,7 +199,9 @@ export default function Home() {
       </div>
 
       {/* Frequently asked questions */}
-      <Faq />
+      <div id="faq">
+        <Faq />
+      </div>
 
       {/* Footer */}
       <Footer />

@@ -4,30 +4,33 @@ import { Bars4Icon, XMarkIcon } from "@heroicons/react/24/solid";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import Logo from "../logo";
 import { useState } from "react";
-import { HomeLineIcon } from "../icons/home-line";
 import { LifeBuoyIcon } from "../icons/life-buoy";
 import { LogOutIcon } from "../icons/log-out";
 import { SettingsIcon } from "../icons/settings";
 import { Avatar } from "../avatar";
+import Link from "next/link";
 
-const navbarItems = [
-  { title: "Home", icon: <HomeLineIcon className="h-5 w-5 text-gray-500" /> },
-];
 
-export default function Navbar() {
+interface NavbarItem {
+  title: string;
+  icon: React.ReactNode;
+  link: string;
+}
+
+export default function Navbar({ items, subItems }: { items: NavbarItem[]; subItems: NavbarItem[] }) {
   return (
     <>
       <div className="md:hidden">
-        <MobileNavbar />
+        <MobileNavbar items={items} subItems={subItems} />
       </div>
       <div className="hidden md:block">
-        <DesktopNavbar />
+        <DesktopNavbar items={items} subItems={subItems} />
       </div>
     </>
   );
 }
 
-function MobileNavbar() {
+function MobileNavbar({ items, subItems }: { items: NavbarItem[]; subItems: NavbarItem[] }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -58,7 +61,7 @@ function MobileNavbar() {
               </div>
 
               <div className="mt-5 space-y-2 px-2">
-                {navbarItems.map((item, i) => (
+                {items.map((item, i) => (
                   <SidebarNavItem key={i} title={item.title} icon={item.icon} />
                 ))}
               </div>
@@ -132,7 +135,7 @@ function SidebarNavItem({
   );
 }
 
-function DesktopNavbar() {
+function DesktopNavbar({ items, subItems }: { items: NavbarItem[]; subItems: NavbarItem[] }) {
   return (
     <div>
       <div className="border-b border-b-gray-200 flex justify-center">
@@ -140,36 +143,24 @@ function DesktopNavbar() {
           <div className="flex items-center">
             <Logo />
             <div className="flex items-center space-x-2 ml-4">
-              {navbarItems.map((item, i) => (
-                <button
+              {items.map((item, i) => (
+                <Link
                   key={i}
-                  className="px-3 py-1 text-md font-semibold text-gray-700"
+                  href={item.link}
+                  className={"px-3 py-1 text-md font-semibold text-gray-700"}
                 >
                   {item.title}
-                </button>
+                </Link>
               ))}
             </div>
           </div>
 
           <div className="flex items-center space-x-4">
-            <button className="rounded-md py-2 px-[10px] hover:bg-gray-50 ">
+            <Link href={"/app/settings"} className="rounded-md py-2 px-[10px] hover:bg-gray-50 ">
               <SettingsIcon className="h-5 w-5" />
-            </button>
+            </Link>
             <Avatar />
           </div>
-        </div>
-      </div>
-
-      {/* Submenu */}
-      <div className="border-b border-b-gray-200 flex justify-center">
-        <div className="px-8 max-w-6xl w-full flex py-3 items-center">
-          <button className="px-3 py-1 text-md font-semibold text-gray-700">
-            Filename.txt
-          </button>
-
-          <button className="px-3 py-1 text-md font-semibold text-gray-700">
-            Documents
-          </button>
         </div>
       </div>
     </div>

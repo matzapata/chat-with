@@ -1,10 +1,11 @@
+import Link from "next/link";
 import Logo from "./logo";
 
 const items = [
-  { title: "Home", link: "#" },
-  { title: "Pricing", link: "#" },
-  { title: "FAQ", link: "#" },
-  { title: "Features", link: "#" },
+  { title: "Home", href: "/" },
+  { title: "Pricing", href: "/pricing" },
+  { title: "FAQ", href: "/#faq" },
+  { title: "Features", href: "/#features" },
 ];
 
 export default function Footer() {
@@ -16,9 +17,9 @@ export default function Footer() {
 
       <div className="grid grid-cols-2 md:grid-cols-4 px-4 place-items-start md:place-items-center gap-y-3">
         {items.map((item, i) => (
-          <button className="text-gray-600 font-semibold" key={i}>
+          <Link className="text-gray-600 font-semibold" key={i} href={item.href}>
             {item.title}
-          </button>
+          </Link>
         ))}
       </div>
 
