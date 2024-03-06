@@ -5,7 +5,7 @@ const navbarItems = [
   {
     title: "Home",
     icon: <HomeLineIcon className="h-5 w-5 text-gray-500" />,
-    link: "/app",
+    link: "/app/chat",
   },
 ];
 
