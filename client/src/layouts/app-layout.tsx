@@ -36,7 +36,7 @@ export default function AppLayout({
         {/* Submenu */}
         {nestedItems && (
           <div className="border-b border-b-gray-200 flex justify-center bg-white">
-            <div className="px-2 md:px-6 w-full flex py-2 items-center">
+            <div className="px-2 md:px-8 w-full flex py-2 items-center">
               {nestedItems.map((item, i) => (
                 <Link
                   key={i}

@@ -11,33 +11,28 @@ import {
 import { Avatar } from "@/components/avatar";
 import { GptIcon } from "@/components/icons/gpt-icon";
 import { DocumentDuplicateIcon } from "@heroicons/react/24/outline";
-
-import AppLayout from "@/layouts/app-layout";
+import { useEffect, useRef } from "react";
 
 export default function Chat() {
+  const containerRef = useRef<any>(null);
+
   function onSubmit(e: any) {
     e.preventDefault();
     // console.log(data);
   }
 
+  useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.scrollTop = containerRef.current.scrollHeight; // Scroll to the bottom
+    }
+  }, []);
+
   return (
-    <AppLayout
-      className="sticky top-0 z-10 bg-white overflow-y-hidden"
-      nestedItems={[
-        {
-          link: "/app/chat",
-          title: "Filename.txt",
-        },
-        {
-          link: "/app/chat/documents",
-          title: "Documents",
-        },
-      ]}
-    >
+    <div className="fixed bottom-0 w-screen -z-50">
       <div className="max-w-4xl mx-auto">
         {/* messages */}
-        <div className="flex flex-1 flex-col relative ">
-          <div className="divide-y overflow-y-scroll no-scrollbar pb-[150px] divide-gray-100 max-w-3xl mx-auto h-screen px-4">
+        <div className="flex flex-1 flex-col relative">
+          <div ref={containerRef} className="divide-y overflow-y-scroll no-scrollbar py-[150px] divide-gray-100 max-w-3xl mx-auto h-screen px-4">
             <HumanMessage />
             <AiMessage />
             <HumanMessage />
@@ -84,7 +79,7 @@ export default function Chat() {
           </div>
         </div>
       </div>
-    </AppLayout>
+    </div>
   );
 }
 
