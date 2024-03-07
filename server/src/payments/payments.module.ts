@@ -4,7 +4,7 @@ import { SubscriptionPlan } from './entities/subscription-plan.entity';
 import { SubscriptionUser } from './entities/subscription-user.entity';
 import { WebhookEvent } from './entities/webhook-event.entity';
 import { PaymentsController } from './payments.controller';
-import { AuthService } from 'src/users/services/auth.service';
+import { AuthService } from 'src/infrastructure/auth/auth.service';
 import { UsersService } from 'src/users/services/users.service';
 import { PaymentsService } from '../infrastructure/payments/payments.service';
 import { SubscriptionPlansService } from './services/subscription-plans.service';

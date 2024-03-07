@@ -18,8 +18,14 @@ export class UsersService {
     });
   }
 
-  create(email: string, password: string): Promise<User> {
-    const user = this.repo.create({ email, password });
+  create(id: string, email: string): Promise<User> {
+    const user = this.repo.create({ id, email });
+    return this.repo.save(user);
+  }
+
+  async update(user: User, name: string): Promise<User> {
+    user.name = name;
+
     return this.repo.save(user);
   }
 }

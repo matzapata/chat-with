@@ -1,28 +1,16 @@
 
 # Manual testing http requests with extension REST Client
 
-### POST /users/signup
-POST http://{{host}}/api/users/signup
-Content-Type: application/json
-
-{
-  "email": "matuzapata@gmail.com",
-  "password": "123456789"
-}
-
-
-### POST /users/signin
-POST http://{{host}}/api/users/signin
-Content-Type: application/json
-
-{
-  "email": "matuzapata@gmail.com",
-  "password": "123456789"
-}
-
-
 ### GET /users/whoami
 GET http://{{host}}/api/users/whoami
 Authorization: Bearer {{token}}
 
 
+### PUT /users
+PUT http://{{host}}/api/users
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "name": "John Doe"
+}

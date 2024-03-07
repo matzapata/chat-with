@@ -3,22 +3,22 @@ import { SubscriptionUser } from 'src/payments/entities/subscription-user.entity
 import {
   Entity,
   Column,
-  PrimaryGeneratedColumn,
   OneToOne,
   JoinColumn,
   OneToMany,
+  PrimaryColumn,
 } from 'typeorm';
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryColumn()
   id: string;
 
   @Column()
   email: string;
 
-  @Column()
-  password: string;
+  @Column({ nullable: true })
+  name?: string;
 
   @OneToOne(() => SubscriptionUser, (subscription) => subscription.user)
   @JoinColumn()

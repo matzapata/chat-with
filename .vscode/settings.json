@@ -9,7 +9,7 @@
     "rest-client.environmentVariables": {
         "$shared": {
             "version": "v1",
-            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NDVlMTg1LTgzMWItNGQ4YS1iZWI3LWY3MjQwMGRkNWFkNyIsImVtYWlsIjoibWF0dXphcGF0YUBnbWFpbC5jb20iLCJpYXQiOjE3MDkyMjQyNjEsImV4cCI6MTcwOTIyNzg2MX0.lhUaQ0KG9K-NF-LVIkIzInCwNEUqoVoU2PWLXHxv120"
+            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEyMyIsImVtYWlsIjoidGVzdEBnbWFpbC5jb20iLCJpYXQiOjE3MDk4MzY0NDV9._rpVbvQPHsy_FKVVJsRwTGPO0tSxVxh2GhicvcZm5VM"
         },
         "local": {
             "host": "localhost:3000",

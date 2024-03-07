@@ -2,7 +2,7 @@ import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import { UsersService } from '../services/users.service';
 import { User } from '../entities/user.entity';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../../infrastructure/auth/auth.service';
 
 declare module 'express' {
   interface Request {
@@ -19,10 +19,15 @@ export class CurrentUserMiddleware implements NestMiddleware {
 
   async use(req: Request, res: Response, next: NextFunction) {
     const token = this.extractTokenFromHeader(req);
-    const payload = this.authService.verifyToken(token);
+    const payload = await this.authService.verifyToken(token);
 
     if (payload) {
-      req.currentUser = await this.usersService.findById(payload.id);
+      let user = await this.usersService.findById(payload.id);
+      if (!user) {
+        user = await this.usersService.create(payload.id, payload.email);
+      }
+
+      req.currentUser = user;
     } else req.currentUser = null;
 
     next();
