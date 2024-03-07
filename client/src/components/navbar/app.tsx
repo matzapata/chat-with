@@ -11,26 +11,26 @@ import { Avatar } from "../avatar";
 import Link from "next/link";
 
 
-interface NavbarItem {
+export interface NavbarItem {
   title: string;
-  icon: React.ReactNode;
   link: string;
+  icon?: React.ReactNode;
 }
 
-export default function Navbar({ items, subItems }: { items: NavbarItem[]; subItems: NavbarItem[] }) {
+export default function Navbar({ items }: { items: NavbarItem[]; }) {
   return (
     <>
-      <div className="md:hidden">
-        <MobileNavbar items={items} subItems={subItems} />
+      <div className="md:hidden bg-white">
+        <MobileNavbar items={items}  />
       </div>
-      <div className="hidden md:block">
-        <DesktopNavbar items={items} subItems={subItems} />
+      <div className="hidden md:block bg-white">
+        <DesktopNavbar items={items} />
       </div>
     </>
   );
 }
 
-function MobileNavbar({ items, subItems }: { items: NavbarItem[]; subItems: NavbarItem[] }) {
+function MobileNavbar({ items }: { items: NavbarItem[]; }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -135,11 +135,11 @@ function SidebarNavItem({
   );
 }
 
-function DesktopNavbar({ items, subItems }: { items: NavbarItem[]; subItems: NavbarItem[] }) {
+function DesktopNavbar({ items }: { items: NavbarItem[]; }) {
   return (
     <div>
       <div className="border-b border-b-gray-200 flex justify-center">
-        <div className="px-8 max-w-6xl  w-full flex justify-between py-4 items-center">
+        <div className="px-8 w-full flex justify-between py-4 items-center">
           <div className="flex items-center">
             <Logo />
             <div className="flex items-center space-x-2 ml-4">
