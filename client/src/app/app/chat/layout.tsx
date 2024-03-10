@@ -9,12 +9,12 @@ export default function ChatLayout({
     <AppLayout
       nestedItems={[
         {
-          link: "/app/chat",
-          title: "Filename.txt",
-        },
-        {
           link: "/app/chat/documents",
           title: "Documents",
+        },
+        {
+          link: "/app/chat",
+          title: "Filename.txt",
         },
       ]}
     >

@@ -20,6 +20,13 @@ export enum MessageAgent {
   ai = 'AI',
 }
 
+export enum MimeType {
+  pdf = 'application/pdf',
+  text = 'text/plain',
+  json = 'application/json',
+  csv = 'text/csv',
+}
+
 @Injectable()
 export class RetrievalAugmentedGenerationService {
   private vectorStore: SupabaseVectorStore;
@@ -146,28 +153,28 @@ Use three sentences maximum and keep the answer concise.
 
   public async loadFile(
     filePathOrBlob: string | Blob,
-    mimetype: string,
+    mimetype: MimeType,
     metadata?: Record<string, any>,
   ) {
     // Load file content
     let contents: Document<Record<string, any>>[] = [];
     switch (mimetype) {
-      case 'text/plain': {
+      case MimeType.text: {
         const loader = new TextLoader(filePathOrBlob);
         contents = await loader.load();
         break;
       }
-      case 'application/json': {
+      case MimeType.json: {
         const loader = new JSONLoader(filePathOrBlob);
         contents = await loader.load();
         break;
       }
-      case 'application/pdf': {
+      case MimeType.pdf: {
         const loader = new PDFLoader(filePathOrBlob);
         contents = await loader.load();
         break;
       }
-      case 'text/csv': {
+      case MimeType.csv: {
         const loader = new CSVLoader(filePathOrBlob);
         contents = await loader.load();
         break;

@@ -10,6 +10,9 @@ export class ChatMetadataDto {
   @Expose()
   created_at: Date;
 
+  @Expose()
+  mimetype: string;
+
   @Transform(({ obj }) => obj.user.id)
   owner: string;
 }

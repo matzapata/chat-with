@@ -1,5 +1,6 @@
 import { Expose, Transform } from 'class-transformer';
 import { ChatMessage } from '../entities/messages.entity';
+import { MimeType } from 'src/infrastructure/rag/rag.service';
 
 export class ChatDto {
   @Expose()
@@ -7,6 +8,9 @@ export class ChatDto {
 
   @Expose()
   filename: string;
+
+  @Expose()
+  mimetype: MimeType;
 
   @Expose()
   created_at: Date;

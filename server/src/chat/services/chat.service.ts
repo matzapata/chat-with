@@ -3,7 +3,7 @@ import { Repository } from 'typeorm';
 import { Chat } from '../entities/chat.entity';
 import { User } from 'src/users/entities/user.entity';
 import { ChatMessage } from '../entities/messages.entity';
-import { MessageAgent } from 'src/infrastructure/rag/rag.service';
+import { MessageAgent, MimeType } from 'src/infrastructure/rag/rag.service';
 
 export class ChatsService {
   constructor(
@@ -16,12 +16,14 @@ export class ChatsService {
   async create(
     owner: User,
     filename: string,
+    mimetype: MimeType,
     embeddings_ids: string[],
   ): Promise<Chat> {
     const chat = this.chatRepository.create({
       owner: owner,
       filename: filename,
       embeddings_ids: embeddings_ids,
+      mimetype,
     });
     return this.chatRepository.save(chat);
   }

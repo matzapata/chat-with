@@ -11,6 +11,7 @@ import Faq from "@/components/faq";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 
+// TODO: move to config
 const features = [
   {
     title: "Share team inboxes",

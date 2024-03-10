@@ -7,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { ChatMessage } from './messages.entity';
+import { MimeType } from 'src/infrastructure/rag/rag.service';
 
 @Entity()
 export class Chat {
@@ -15,6 +16,9 @@ export class Chat {
 
   @Column()
   filename: string;
+
+  @Column()
+  mimetype: MimeType;
 
   @Column({ default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;

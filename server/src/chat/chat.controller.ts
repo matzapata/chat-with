@@ -17,6 +17,7 @@ import {
 import {
   RetrievalAugmentedGenerationService,
   MessageAgent,
+  MimeType,
 } from '../infrastructure/rag/rag.service';
 import { PostMessageDto } from './dtos/post-message.dto';
 import { Express } from 'express';
@@ -29,12 +30,11 @@ import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { ChatMetadataDto } from './dtos/chat-metadata.dto';
 import { ChatDto } from './dtos/chat.dto';
 import { StorageService } from 'src/infrastructure/storage/storage.service';
-import { PaidMemberGuard } from 'src/payments/guards/paid-members.guard';
 
 // One chat conversation per file. so files and chats are associated
 
 @Controller('api/chats')
-@UseGuards(AuthGuard, PaidMemberGuard)
+@UseGuards(AuthGuard)
 export class ChatController {
   constructor(
     private readonly ragService: RetrievalAugmentedGenerationService,
@@ -78,7 +78,7 @@ export class ChatController {
     // store embedded files with corresponding metadata
     const embeddingsIds = await this.ragService.loadFile(
       new Blob([file.buffer], { type: file.mimetype }),
-      file.mimetype,
+      file.mimetype as MimeType,
       { filename: file.originalname, owner: user.id },
     );
 
@@ -86,14 +86,15 @@ export class ChatController {
     const chat = await this.chatsService.create(
       user,
       file.originalname,
+      file.mimetype as MimeType,
       embeddingsIds,
     );
 
     // store file in storage
-    await this.storageService.uploadFile(
-      `${user.id}/${chat.id}-${file.originalname}`,
-      file.buffer,
-    );
+    // await this.storageService.uploadFile(
+    //   `${user.id}/${chat.id}-${file.originalname}`,
+    //   file.buffer,
+    // );
 
     return chat;
   }
