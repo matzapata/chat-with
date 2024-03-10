@@ -7,17 +7,10 @@ import {
 } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { SubscriptionPlan } from './subscription-plan.entity';
-import { PaymentProviders } from '../../infrastructure/payments/providers/payment.provider';
-
-export enum SubscriptionStatus {
-  on_trial = 'on_trial',
-  active = 'active',
-  paused = 'paused',
-  past_due = 'past_due',
-  unpaid = 'unpaid',
-  cancelled = 'cancelled',
-  expired = 'expired',
-}
+import {
+  PaymentProviders,
+  SubscriptionStatus,
+} from '../../infrastructure/payments/providers/payment.provider';
 
 @Entity()
 export class SubscriptionUser {

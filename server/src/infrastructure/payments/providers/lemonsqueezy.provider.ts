@@ -5,16 +5,14 @@ import crypto from 'crypto';
 import {
   PaymentProvider,
   PaymentProviders,
+  SubscriptionInterval,
   SubscriptionPlan,
+  SubscriptionPlanStatus,
+  SubscriptionStatus,
   UserSubscription,
   WebhookEventData,
+  WebhookEventName,
 } from './payment.provider';
-import { SubscriptionStatus } from 'src/payments/entities/subscription-user.entity';
-import {
-  SubscriptionInterval,
-  SubscriptionPlanStatus,
-} from 'src/payments/entities/subscription-plan.entity';
-import { WebhookEventName } from 'src/payments/entities/webhook-event.entity';
 
 interface PaginationObject {
   currentPage: number;

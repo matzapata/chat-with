@@ -1,9 +1,32 @@
-import {
-  SubscriptionInterval,
-  SubscriptionPlanStatus,
-} from 'src/payments/entities/subscription-plan.entity';
-import { SubscriptionStatus } from 'src/payments/entities/subscription-user.entity';
-import { WebhookEventName } from 'src/payments/entities/webhook-event.entity';
+export enum WebhookEventName {
+  subscription_created = 'subscription_created',
+  subscription_updated = 'subscription_updated',
+  subscription_payment_failed = 'subscription_payment_failed',
+  subscription_payment_success = 'subscription_payment_success',
+}
+
+export enum SubscriptionStatus {
+  on_trial = 'on_trial',
+  active = 'active',
+  paused = 'paused',
+  past_due = 'past_due',
+  unpaid = 'unpaid',
+  cancelled = 'cancelled',
+  expired = 'expired',
+}
+
+export enum SubscriptionInterval {
+  day = 'day',
+  week = 'week',
+  month = 'month',
+  year = 'year',
+}
+
+export enum SubscriptionPlanStatus {
+  pending = 'pending',
+  draft = 'draft',
+  published = 'published',
+}
 
 export interface SubscriptionPlan {
   name: string;

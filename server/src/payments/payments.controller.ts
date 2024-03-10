@@ -17,9 +17,9 @@ import { SubscriptionUserService } from './services/subscription-user.service';
 import { WebhookEventsService } from './services/webhook-events-service';
 import { PaymentsService } from '../infrastructure/payments/payments.service';
 import { AdminGuard } from 'src/users/guards/admin.guard';
-import { WebhookEventName } from './entities/webhook-event.entity';
 import { EmailService } from 'src/infrastructure/emails/email.service';
 import { User } from 'src/users/entities/user.entity';
+import { WebhookEventName } from 'src/infrastructure/payments/providers/payment.provider';
 
 @Controller('api/payments')
 export class PaymentsController {

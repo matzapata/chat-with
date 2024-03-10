@@ -1,11 +1,5 @@
+import { WebhookEventName } from 'src/infrastructure/payments/providers/payment.provider';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-
-export enum WebhookEventName {
-  subscription_created = 'subscription_created',
-  subscription_updated = 'subscription_updated',
-  subscription_payment_failed = 'subscription_payment_failed',
-  subscription_payment_success = 'subscription_payment_success',
-}
 
 @Entity()
 export class WebhookEvent {

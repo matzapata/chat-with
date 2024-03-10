@@ -38,6 +38,7 @@ import { ChatMessage } from './chat/entities/messages.entity';
         GCP_CLIENT_EMAIL: Joi.string().required(),
         GCP_PRIVATE_KEY: Joi.string().required(),
         GCP_STORAGE_BUCKET: Joi.string().required(),
+        AUTH_JWKS_URI: Joi.string().required(),
       }),
     }),
     TypeOrmModule.forRoot({

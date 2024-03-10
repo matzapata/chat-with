@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import { UsersService } from '../services/users.service';
 import { User } from '../entities/user.entity';
 import { AuthService } from '../../infrastructure/auth/auth.service';
+import { KindeClient, GrantType } from '@kinde-oss/kinde-nodejs-sdk';
 
 declare module 'express' {
   interface Request {

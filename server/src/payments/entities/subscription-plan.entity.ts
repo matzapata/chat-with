@@ -1,18 +1,9 @@
 import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 import { SubscriptionUser } from './subscription-user.entity';
-
-export enum SubscriptionInterval {
-  day = 'day',
-  week = 'week',
-  month = 'month',
-  year = 'year',
-}
-
-export enum SubscriptionPlanStatus {
-  pending = 'pending',
-  draft = 'draft',
-  published = 'published',
-}
+import {
+  SubscriptionInterval,
+  SubscriptionPlanStatus,
+} from 'src/infrastructure/payments/providers/payment.provider';
 
 @Entity()
 export class SubscriptionPlan {
