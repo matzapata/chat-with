@@ -12,11 +12,9 @@ import { Avatar } from "@/components/avatar";
 import { GptIcon } from "@/components/icons/gpt-icon";
 import { DocumentDuplicateIcon } from "@heroicons/react/24/outline";
 import { useEffect, useRef } from "react";
-import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 
 export default function Chat() {
   const containerRef = useRef<any>(null);
-  const { isAuthenticated, isLoading, accessToken, accessTokenRaw } = useKindeBrowserClient();
 
   function onSubmit(e: any) {
     e.preventDefault();
@@ -28,10 +26,6 @@ export default function Chat() {
       containerRef.current.scrollTop = containerRef.current.scrollHeight; // Scroll to the bottom
     }
   }, []);
-
-  useEffect(() => {
-    console.log("accessToken", accessTokenRaw)
-  }, [accessTokenRaw])
 
   return (
     <div className="fixed bottom-0 w-screen -z-50">

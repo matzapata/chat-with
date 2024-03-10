@@ -14,7 +14,9 @@ TODO: - tests
 TODO: - resend email strategy
 TODO: - cleanup payments implementation
 TODO: - deployments. server with gcp initially for cost efficient but keep the door open for kubernetes
-TODO: - set up one time payments
+TODO: - set up one time payments (lifetime buy, like subscription with infinite expiration)
 
 # Infra
+
+
 

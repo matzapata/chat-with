@@ -9,10 +9,10 @@
     "rest-client.environmentVariables": {
         "$shared": {
             "version": "v1",
-            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEyMyIsImVtYWlsIjoidGVzdEBnbWFpbC5jb20iLCJpYXQiOjE3MDk4MzY0NDV9._rpVbvQPHsy_FKVVJsRwTGPO0tSxVxh2GhicvcZm5VM"
+            "token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjRiOjI1Ojc2OmNjOmFhOjYwOjBmOjU2OmE0OmNhOjk1OmE4OmFiOjhiOjVmOjIwIiwidHlwIjoiSldUIn0.eyJhdWQiOltdLCJhenAiOiIyNmQyYmZmODdmMGE0ODY4ODExNDU1MTM4NTM0MjYxYyIsImJpbGxpbmciOnsiaGFzX3BheW1lbnRfZGV0YWlscyI6ZmFsc2UsIm9yZ19lbnRpdGxlbWVudHMiOm51bGwsInBsYW4iOnsiYWdyZWVtZW50X2lkIjpudWxsLCJjb2RlIjpudWxsLCJjcmVhdGVkX29uIjpudWxsLCJoYXNfdHJpYWxfcGVyaW9kIjpudWxsLCJpbnZvaWNlX2R1ZV9vbiI6bnVsbCwibmFtZSI6bnVsbCwicGxhbl9jaGFyZ2VfdHlwZSI6bnVsbCwidHJpYWxfZXhwaXJlc19vbiI6bnVsbH19LCJleHAiOjE3MTAxNTMyODQsImlhdCI6MTcxMDA2Njg4MywiaXNzIjoiaHR0cHM6Ly9jaGF0d2l0aC5raW5kZS5jb20iLCJqdGkiOiI0MWY2NzBmMS0xMjUwLTQ5MGMtODI2ZS1hZWNiZGVjZWFlNGIiLCJzY3AiOlsib3BlbmlkIiwicHJvZmlsZSIsImVtYWlsIiwib2ZmbGluZSJdLCJzdWIiOiJrcF9iODRkZTM0NjYxOTI0NTBmOTFmMDBmYTgzODk1MGZkMCIsIngtaGFzdXJhLWVtYWlsIjoibWF0aWFzQHNwaGVyZW9uZS54eXoiLCJ4LWhhc3VyYS1vcmctY29kZSI6Im9yZ19iMzRmZGExMTc1YiIsIngtaGFzdXJhLXBlcm1pc3Npb25zIjpbXSwieC1oYXN1cmEtdXNlcl9wcm9wZXJ0aWVzIjp7ImtwX3Vzcl9taWRkbGVfbmFtZSI6e319fQ.DlOypLu1aHeJlavDqLXYRJwroQB6a4y7450jHXONaKWSO0sE6YlCP_6XB3oV2DWZ3-qu47SHFYh8VMlRV3dxkP5tH3JoQ7YKOoJVLaTLduZMaHrkRPoeUZTCh5Rs90QIcs8YEUyCTlckCKaQLBJQ6LT48jeRwujnYO9DD3Up6Rpdyr5hJ-JHtY1igcpQudgzRdIodtYhxqcrgF7ueKsMkGZMo48xr7CWt8QxVBo3LLCysqMEctgwB_q7W01zwVM7XIcZn2QOyrKk4i4T4F5Lc8Usr3jMTlPCAmExRvsWrQ2cldN8KWBycWsNHnTwyS3xn36HzgKvhKKAY1l-PoLB7g"
         },
         "local": {
-            "host": "localhost:3000",
+            "host": "localhost:4000",
         },
         "production": {
             "host": "chatwith-dev.io",
