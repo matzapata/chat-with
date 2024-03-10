@@ -12,7 +12,7 @@ export const MinusCircleIcon = (props: React.SVGProps<SVGSVGElement>) => (
       stroke="#98A2B3"
       strokeWidth="2"
       strokeLinecap="round"
-      stroke-linejoin="round"
+      strokeLinejoin="round"
     />
   </svg>
 );

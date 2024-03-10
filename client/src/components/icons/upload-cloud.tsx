@@ -12,7 +12,7 @@ export const UploadCloudIcon = (props: React.SVGProps<SVGSVGElement>) => (
       stroke="#475467"
       stroke-width="1.66667"
       stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeLinejoin="round"
     />
   </svg>
 );

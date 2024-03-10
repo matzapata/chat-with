@@ -12,7 +12,7 @@ export const EmailIcon = (props: React.SVGProps<SVGSVGElement>) => (
       stroke="#344054"
       stroke-width="2"
       stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeLinejoin="round"
     />
   </svg>
 );

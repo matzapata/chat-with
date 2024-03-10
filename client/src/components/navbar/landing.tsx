@@ -4,7 +4,10 @@ import Logo from "../logo";
 import { useState } from "react";
 import { Button } from "../ui/button";
 import Link from "next/link";
-import { useRouter } from 'next/navigation'
+import {
+  RegisterLink,
+  LoginLink,
+} from "@kinde-oss/kinde-auth-nextjs/components";
 
 const navbarItems = [
   { title: "Home", href: "/" },
@@ -28,7 +31,6 @@ export default function Navbar() {
 
 function MobileNavbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const router = useRouter()
 
   return (
     <div className={isOpen ? "border-b bg-white" : ""}>
@@ -49,15 +51,30 @@ function MobileNavbar() {
         <div>
           <div className="space-y-2 py-6 border-b">
             {navbarItems.map((item, i) => (
-              <Link href={item.href} key={i} className="px-4 py-3 font-semibold block text-gray-800">
+              <Link
+                href={item.href}
+                key={i}
+                className="px-4 py-3 font-semibold block text-gray-800"
+              >
                 {item.title}
               </Link>
             ))}
           </div>
           <div className="py-6 px-4 space-y-3">
-            <Button onClick={() => router.push("/signup")} variant="primary" className="w-full">Sign up</Button>
+            <RegisterLink postLoginRedirectURL="/app/chat">
+              <Button variant="primary" className="w-full">
+                Sign up
+              </Button>
+            </RegisterLink>
 
-            <Button onClick={() => router.push("/login")} variant="secondary-gray" className="w-full">Log in</Button>
+            <LoginLink postLoginRedirectURL="/app/chat">
+              <Button
+                variant="secondary-gray"
+                className="w-full"
+              >
+                Log in
+              </Button>
+            </LoginLink>
           </div>
         </div>
       )}
@@ -66,8 +83,6 @@ function MobileNavbar() {
 }
 
 function DesktopNavbar() {
-  const router = useRouter()
-
   return (
     <div>
       <div className="flex justify-center">
@@ -88,8 +103,15 @@ function DesktopNavbar() {
           </div>
 
           <div className="flex items-center space-x-4">
-            <Button className="bg-transparent" onClick={() => router.push("/login")} variant="tertiary-gray">Log in</Button>
-            <Button onClick={() => router.push("/signup")} variant="primary">Sign up</Button>
+            <LoginLink postLoginRedirectURL="/app/chat">
+              <Button className="bg-transparent" variant="tertiary-gray">
+                Log in
+              </Button>
+            </LoginLink>
+
+            <RegisterLink postLoginRedirectURL="/app/chat">
+              <Button variant="primary">Sign up</Button>
+            </RegisterLink>
           </div>
         </div>
       </div>

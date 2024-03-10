@@ -9,7 +9,15 @@ import { LogOutIcon } from "../icons/log-out";
 import { SettingsIcon } from "../icons/settings";
 import { Avatar } from "../avatar";
 import Link from "next/link";
-
+import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export interface NavbarItem {
   title: string;
@@ -17,11 +25,11 @@ export interface NavbarItem {
   icon?: React.ReactNode;
 }
 
-export default function Navbar({ items }: { items: NavbarItem[]; }) {
+export default function Navbar({ items }: { items: NavbarItem[] }) {
   return (
     <>
       <div className="md:hidden bg-white">
-        <MobileNavbar items={items}  />
+        <MobileNavbar items={items} />
       </div>
       <div className="hidden md:block bg-white">
         <DesktopNavbar items={items} />
@@ -30,7 +38,7 @@ export default function Navbar({ items }: { items: NavbarItem[]; }) {
   );
 }
 
-function MobileNavbar({ items }: { items: NavbarItem[]; }) {
+function MobileNavbar({ items }: { items: NavbarItem[] }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -93,9 +101,11 @@ function MobileNavbar({ items }: { items: NavbarItem[]; }) {
                   </div>
                 </div>
 
-                <button className="p-2">
-                  <LogOutIcon className="h-5 w-5 text-gray-500" />
-                </button>
+                <LogoutLink postLogoutRedirectURL="/">
+                  <button className="p-2">
+                    <LogOutIcon className="h-5 w-5 text-gray-500" />
+                  </button>
+                </LogoutLink>
               </div>
             </div>
           </div>
@@ -135,7 +145,7 @@ function SidebarNavItem({
   );
 }
 
-function DesktopNavbar({ items }: { items: NavbarItem[]; }) {
+function DesktopNavbar({ items }: { items: NavbarItem[] }) {
   return (
     <div>
       <div className="border-b border-b-gray-200 flex justify-center">
@@ -156,10 +166,25 @@ function DesktopNavbar({ items }: { items: NavbarItem[]; }) {
           </div>
 
           <div className="flex items-center space-x-4">
-            <Link href={"/app/settings"} className="rounded-md py-2 px-[10px] hover:bg-gray-50 ">
+            <Link
+              href={"/app/settings"}
+              className="rounded-md py-2 px-[10px] hover:bg-gray-50 "
+            >
               <SettingsIcon className="h-5 w-5" />
             </Link>
-            <Avatar />
+
+            <DropdownMenu>
+              <DropdownMenuTrigger className="focus:outline-none">
+                <Avatar />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <LogoutLink postLogoutRedirectURL="/">Logout</LogoutLink>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       </div>
