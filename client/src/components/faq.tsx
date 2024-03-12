@@ -1,11 +1,10 @@
 import { useState } from "react";
-import { MinusCircleIcon } from "./icons/minus-circle";
-import { PlusCircleIcon } from "./icons/plus-circle";
 import Image from "next/image";
 import images from "@/assets/images";
 import { brandConfig } from "@/config/brand";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
+import { IconMinusCircle, IconPlusCircle } from "./ui/icons";
 
 export default function Faq() {
   const router = useRouter()
@@ -37,11 +36,11 @@ export default function Faq() {
             <div>
               {openFaqId === i ? (
                 <button className="py-1" onClick={() => setOpenFaqId(null)}>
-                  <MinusCircleIcon className="h-6 w-6" />
+                  <IconMinusCircle className="h-6 w-6" />
                 </button>
               ) : (
                 <button className="py-1" onClick={() => setOpenFaqId(i)}>
-                  <PlusCircleIcon className="h-6 w-6" />
+                  <IconPlusCircle className="h-6 w-6" />
                 </button>
               )}
             </div>

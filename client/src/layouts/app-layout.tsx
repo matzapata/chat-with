@@ -1,7 +1,7 @@
 "use client";
 
-import { HomeLineIcon } from "@/components/icons/home-line";
 import Navbar, { NavbarItem } from "@/components/navbar/app";
+import { IconHome } from "@/components/ui/icons";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -26,7 +26,7 @@ export default function AppLayout({
             items ?? [
               {
                 title: "Home",
-                icon: <HomeLineIcon className="h-5 w-5 text-gray-500" />,
+                icon: <IconHome className="h-5 w-5 text-gray-500" />,
                 link: "/app/chat",
               },
             ]

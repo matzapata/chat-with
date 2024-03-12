@@ -1,4 +1,4 @@
-import { MimeType } from "@/services/chat-service";
+import { MimeType } from "@/lib/services/chat-service";
 import FileIcon from "./file-icon";
 
 export default function FileCard(props: {

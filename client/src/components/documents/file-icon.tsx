@@ -1,8 +1,5 @@
-import { MimeType } from "@/services/chat-service";
-import { PdfIcon } from "../icons/pdf-icon";
-import { TxtIcon } from "../icons/txt-icon";
-import { CsvIcon } from "../icons/csv-icon";
-import { FileIcon as GenericFileIcon } from "../icons/file-icon";
+import { MimeType } from "@/lib/services/chat-service";
+import { IconCsvFile, IconFile, IconPdfIcon, IconTxtFile } from "@/components/ui/icons";
 
 
 interface FileIconProps extends React.SVGProps<SVGSVGElement> {
@@ -11,12 +8,12 @@ interface FileIconProps extends React.SVGProps<SVGSVGElement> {
 
 export default function FileIcon({ mimetype, ...props }: FileIconProps) {
     if (mimetype === MimeType.pdf) {
-        return <PdfIcon {...props }/>
+        return <IconPdfIcon {...props }/>
     } else if (mimetype === MimeType.text) {
-        return <TxtIcon {...props }/>
+        return <IconTxtFile {...props }/>
     } else if (mimetype === MimeType.json) {
-        return <TxtIcon {...props }/>
+        return <IconTxtFile {...props }/>
     } else if (mimetype === MimeType.csv) {
-        return <CsvIcon {...props }/>
-    } else return <GenericFileIcon {...props }/> 
+        return <IconCsvFile {...props }/>
+    } else return <IconFile {...props }/> 
 }

@@ -1,6 +1,6 @@
 "use client";
 import { Bars4Icon, XMarkIcon } from "@heroicons/react/24/solid";
-import Logo from "../logo";
+import Logo from "../brand/logo";
 import { useState } from "react";
 import { Button } from "../ui/button";
 import Link from "next/link";

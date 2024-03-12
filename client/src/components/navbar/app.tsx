@@ -2,12 +2,9 @@
 
 import { Bars4Icon, XMarkIcon } from "@heroicons/react/24/solid";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import Logo from "../logo";
+import Logo from "../brand/logo";
 import { useState } from "react";
-import { LifeBuoyIcon } from "../icons/life-buoy";
-import { LogOutIcon } from "../icons/log-out";
-import { SettingsIcon } from "../icons/settings";
-import { Avatar } from "../avatar";
+import { Avatar } from "../replace-avatar";
 import Link from "next/link";
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import {
@@ -18,6 +15,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { IconLifeBuoy, IconLogOut, IconSettings } from "../ui/icons";
 
 export interface NavbarItem {
   title: string;
@@ -43,7 +41,7 @@ function MobileNavbar({ items }: { items: NavbarItem[] }) {
 
   return (
     <>
-      <div className="p-4 flex justify-between items-center border-b border-b-gray-200">
+      <div className="p-4 h-16 flex justify-between items-center border-b border-b-gray-200">
         <Logo />
         <button
           onClick={() => setIsOpen(true)}
@@ -79,11 +77,11 @@ function MobileNavbar({ items }: { items: NavbarItem[] }) {
               <div className="mb-6 space-y-2">
                 <SidebarNavItem
                   title="Support"
-                  icon={<LifeBuoyIcon className="h-5 w-5 text-gray-500" />}
+                  icon={<IconLifeBuoy className="h-5 w-5 text-gray-500" />}
                 />
                 <SidebarNavItem
                   title="Settings"
-                  icon={<SettingsIcon className="h-5 w-5 text-gray-500" />}
+                  icon={<IconSettings className="h-5 w-5 text-gray-500" />}
                 />
               </div>
 
@@ -103,7 +101,7 @@ function MobileNavbar({ items }: { items: NavbarItem[] }) {
 
                 <LogoutLink postLogoutRedirectURL="/">
                   <button className="p-2">
-                    <LogOutIcon className="h-5 w-5 text-gray-500" />
+                    <IconLogOut className="h-5 w-5 text-gray-500" />
                   </button>
                 </LogoutLink>
               </div>
@@ -148,8 +146,8 @@ function SidebarNavItem({
 function DesktopNavbar({ items }: { items: NavbarItem[] }) {
   return (
     <div>
-      <div className="border-b border-b-gray-200 flex justify-center">
-        <div className="px-8 w-full flex justify-between py-4 items-center">
+      <div className="border-b h-16 border-b-gray-200 flex justify-center">
+        <div className="px-8 w-full flex justify-between py-3 items-center">
           <div className="flex items-center">
             <Logo />
             <div className="flex items-center space-x-2 ml-4">
@@ -170,7 +168,7 @@ function DesktopNavbar({ items }: { items: NavbarItem[] }) {
               href={"/app/settings"}
               className="rounded-md py-2 px-[10px] hover:bg-gray-50 "
             >
-              <SettingsIcon className="h-5 w-5" />
+              <IconSettings className="h-5 w-5" />
             </Link>
 
             <DropdownMenu>

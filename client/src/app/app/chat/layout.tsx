@@ -1,24 +1,16 @@
-import AppLayout from "@/layouts/app-layout";
+import Navbar from "@/components/navbar/app";
 
-export default function ChatLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default async function ChatLayout({ children }: { children: React.ReactNode }) {
+
   return (
-    <AppLayout
-      nestedItems={[
-        {
-          link: "/app/chat/documents",
-          title: "Documents",
-        },
-        {
-          link: "/app/chat",
-          title: "Filename.txt",
-        },
-      ]}
-    >
-      {children}
-    </AppLayout>
+    <div className="flex flex-col min-h-screen">
+      <nav className="sticky top-0 z-50 shrink-0 h-16 bg-white w-screen">
+        <Navbar items={[]}/>
+      </nav>
+
+      <main>
+        {children}
+      </main>
+    </div>
   );
 }

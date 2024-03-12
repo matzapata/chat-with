@@ -1,6 +1,5 @@
 "use client";
 
-import { PlayCircleIcon } from "@/components/icons/play-circle";
 import Navbar from "@/components/navbar/landing";
 import Image from "next/image";
 import { useMediaQuery } from "react-responsive";
@@ -10,46 +9,8 @@ import Footer from "@/components/footer";
 import Faq from "@/components/faq";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-
-// TODO: move to config
-const features = [
-  {
-    title: "Share team inboxes",
-    description:
-      "Whether you have a team of 2 or 200, our shared team inboxes keep everyone on the same page and in the loop.",
-    icon: null,
-  },
-  {
-    title: "Share team inboxes",
-    description:
-      "Whether you have a team of 2 or 200, our shared team inboxes keep everyone on the same page and in the loop.",
-    icon: null,
-  },
-  {
-    title: "Share team inboxes",
-    description:
-      "Whether you have a team of 2 or 200, our shared team inboxes keep everyone on the same page and in the loop.",
-    icon: null,
-  },
-  {
-    title: "Share team inboxes",
-    description:
-      "Whether you have a team of 2 or 200, our shared team inboxes keep everyone on the same page and in the loop.",
-    icon: null,
-  },
-  {
-    title: "Share team inboxes",
-    description:
-      "Whether you have a team of 2 or 200, our shared team inboxes keep everyone on the same page and in the loop.",
-    icon: null,
-  },
-  {
-    title: "Share team inboxes",
-    description:
-      "Whether you have a team of 2 or 200, our shared team inboxes keep everyone on the same page and in the loop.",
-    icon: null,
-  },
-];
+import { brandConfig } from "@/config/brand";
+import { IconPlayCircle } from "@/components/ui/icons";
 
 export default function Home() {
   const isDesktop = useMediaQuery({ query: "(min-width: 768px)" });
@@ -90,7 +51,7 @@ export default function Home() {
             size={isDesktop ? "2xl" : "md"}
             className="w-full md:w-auto items-center space-x-2"
           >
-            <PlayCircleIcon className="h-5 w-5 text-gray-700 inline-block" />
+            <IconPlayCircle className="h-5 w-5 text-gray-700 inline-block" />
             <span className="text-gray-700">Demo</span>
           </Button>
         </div>
@@ -144,7 +105,7 @@ export default function Home() {
         </div>
 
         <div className="px-4 md:px-8 mx-auto place-items-center grid grid-col-1 md:grid-cols-3 gap-10 md:gap-x-8 md:gap-y-16">
-          {features.map((f, i) => (
+          {brandConfig.features.map((f, i) => (
             <div className="text-center max-w-96" key={i}>
               {/* Icon */}
               <div className="mx-auto mb-4 bg-brand-100 border-[6px] border-brand-50 h-10 w-10 rounded-full"></div>

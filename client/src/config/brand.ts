@@ -26,5 +26,43 @@ export const brandConfig = {
             answer:
                 "Yes, you can cancel your subscription at any time. You can also pause your subscription for up to 3 months.",
         },
-    ]
+    ],
+    features: [
+        {
+          title: "Share team inboxes",
+          description:
+            "Whether you have a team of 2 or 200, our shared team inboxes keep everyone on the same page and in the loop.",
+          icon: null,
+        },
+        {
+          title: "Share team inboxes",
+          description:
+            "Whether you have a team of 2 or 200, our shared team inboxes keep everyone on the same page and in the loop.",
+          icon: null,
+        },
+        {
+          title: "Share team inboxes",
+          description:
+            "Whether you have a team of 2 or 200, our shared team inboxes keep everyone on the same page and in the loop.",
+          icon: null,
+        },
+        {
+          title: "Share team inboxes",
+          description:
+            "Whether you have a team of 2 or 200, our shared team inboxes keep everyone on the same page and in the loop.",
+          icon: null,
+        },
+        {
+          title: "Share team inboxes",
+          description:
+            "Whether you have a team of 2 or 200, our shared team inboxes keep everyone on the same page and in the loop.",
+          icon: null,
+        },
+        {
+          title: "Share team inboxes",
+          description:
+            "Whether you have a team of 2 or 200, our shared team inboxes keep everyone on the same page and in the loop.",
+          icon: null,
+        },
+      ]
 }
