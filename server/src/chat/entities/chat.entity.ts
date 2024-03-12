@@ -18,6 +18,9 @@ export class Chat {
   filename: string;
 
   @Column()
+  filesize: number;
+
+  @Column()
   mimetype: MimeType;
 
   @Column({ default: () => 'CURRENT_TIMESTAMP' })

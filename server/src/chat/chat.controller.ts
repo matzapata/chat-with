@@ -86,11 +86,12 @@ export class ChatController {
     const chat = await this.chatsService.create(
       user,
       file.originalname,
+      file.size,
       file.mimetype as MimeType,
       embeddingsIds,
     );
 
-    // store file in storage
+    // TODO: store file in storage
     // await this.storageService.uploadFile(
     //   `${user.id}/${chat.id}-${file.originalname}`,
     //   file.buffer,

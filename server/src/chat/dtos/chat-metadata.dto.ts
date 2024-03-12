@@ -8,6 +8,9 @@ export class ChatMetadataDto {
   filename: string;
 
   @Expose()
+  filesize: number;
+
+  @Expose()
   created_at: Date;
 
   @Expose()

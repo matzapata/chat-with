@@ -10,6 +10,9 @@ export class ChatDto {
   filename: string;
 
   @Expose()
+  filesize: number;
+
+  @Expose()
   mimetype: MimeType;
 
   @Expose()

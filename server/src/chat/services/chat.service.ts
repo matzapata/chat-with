@@ -16,12 +16,14 @@ export class ChatsService {
   async create(
     owner: User,
     filename: string,
+    filesize: number,
     mimetype: MimeType,
     embeddings_ids: string[],
   ): Promise<Chat> {
     const chat = this.chatRepository.create({
       owner: owner,
       filename: filename,
+      filesize: filesize,
       embeddings_ids: embeddings_ids,
       mimetype,
     });
