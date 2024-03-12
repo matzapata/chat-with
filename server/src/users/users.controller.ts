@@ -19,9 +19,9 @@ export class UsersController {
     return updated;
   }
 
-  @Get('/whoami')
+  @Get('/')
   @Serialize(UserDto)
-  async whoami(@CurrentUser() user: User) {
+  async get(@CurrentUser() user: User) {
     return user;
   }
 }

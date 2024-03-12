@@ -7,6 +7,7 @@ export default function SettingsLayout({
 }) {
   return (
     <AppLayout
+      items={[]}
       nestedItems={[
         {
           link: "/app/settings",

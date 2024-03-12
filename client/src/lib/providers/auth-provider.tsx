@@ -1,6 +1,6 @@
 "use client";
 
-import apiClient from "@/config/api-client";
+import {apiService} from "@/lib/services/api-service";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import React, { useEffect } from "react";
 
@@ -12,7 +12,7 @@ export default function AuthProvider({
   const { isLoading, accessTokenRaw } = useKindeBrowserClient();
 
   useEffect(() => {
-    apiClient.defaults.headers.common.Authorization = `Bearer ${accessTokenRaw}`;
+    apiService.setAccessToken(accessTokenRaw ?? "");
   }, [accessTokenRaw]);
 
   if (isLoading) return null; // TODO: return loading component

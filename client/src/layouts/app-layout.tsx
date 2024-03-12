@@ -3,7 +3,6 @@
 import Navbar, { NavbarItem } from "@/components/navbar/app";
 import { IconHome } from "@/components/ui/icons";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 export default function AppLayout({
   children,
@@ -16,8 +15,6 @@ export default function AppLayout({
   items?: NavbarItem[];
   nestedItems?: NavbarItem[];
 }) {
-  const pathname = usePathname();
-
   return (
     <>
       <nav className={className ?? ""}>
@@ -35,15 +32,13 @@ export default function AppLayout({
 
         {/* Submenu */}
         {nestedItems && (
-          <div className="border-b border-b-gray-200 flex justify-center bg-white">
+          <div className="border-b h-10 border-b-gray-200 flex justify-center bg-white">
             <div className="px-2 md:px-8 w-full flex py-2 items-center">
               {nestedItems.map((item, i) => (
                 <Link
                   key={i}
                   href={item.link}
-                  className={`px-3 py-2 text-sm font-semibold text-gray-700 rounded ${
-                    pathname === item.link ? "bg-gray-50" : ""
-                  }`}
+                  className={"px-3 py-2 text-sm font-semibold text-gray-700 rounded hover:bg-gray-50"}
                 >
                   {item.title}
                 </Link>

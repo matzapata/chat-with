@@ -4,9 +4,7 @@ import { ButtonScrollToBottom } from "@/components/chat/button-scroll-to-bottom"
 export function ChatPanel({
   id,
   isLoading,
-  stop,
   append,
-  reload,
   input,
   setInput,
   messages,

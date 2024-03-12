@@ -1,5 +1,5 @@
-import apiClient from "@/config/api-client"
-import { AxiosProgressEvent } from "axios";
+import {apiService} from "@/lib/services/api-service"
+import { AxiosInstance, AxiosProgressEvent } from "axios";
 
 export enum MimeType {
     pdf = 'application/pdf',
@@ -17,16 +17,14 @@ export interface ChatMetadataDto {
     owner: string;
 }
 
-export enum MessageAgent {
+export enum MessageRole {
     user = 'USER',
     ai = 'AI',
 }
 
 export interface ChatMessage {
-    id: number;
-    message: string;
-    created_at: Date;
-    agent: MessageAgent;
+    content: string;
+    role: MessageRole;
 }
 
 
@@ -37,10 +35,10 @@ export interface ChatDto extends ChatMetadataDto {
 
 export class ChatService {
 
-    constructor() { }
+    constructor(private readonly client: AxiosInstance) { }
 
     async getAllChats(): Promise<ChatMetadataDto[]> {
-        const res = await apiClient.get("/api/chats")
+        const res = await this.client.get("/api/chats")
         return res.data.map((c: any) => ({ ...c, created_at: new Date(c.created_at) }))
     }
 
@@ -48,7 +46,7 @@ export class ChatService {
         const formData = new FormData()
         formData.append("file", file)
 
-        const res = await apiClient.post("/api/chats", formData, {
+        const res = await this.client.post("/api/chats", formData, {
             headers: { "Content-Type": "multipart/form-data" },
             onUploadProgress: (progressEvent: AxiosProgressEvent) => {
                 const percentCompleted = Math.round((progressEvent.loaded * 100) / (progressEvent?.total ?? 1))
@@ -59,21 +57,19 @@ export class ChatService {
     }
 
     async getChat(id: string): Promise<ChatDto> {
-        const res = await apiClient.get(`/api/chats/${id}`)
+        const res = await this.client.get(`/api/chats/${id}`)
         return { ...res.data, created_at: new Date(res.data.created_at) }
     }
 
     async postMessage(id: string, message: string): Promise<ChatMessage> {
-        const res = await apiClient.put(`/api/chats/${id}`, { message })
+        const res = await this.client.put(`/api/chats/${id}`, { message })
         return {
-            id: res.data.aiMessage.id,
-            message: res.data.aiMessage.message,
-            agent: MessageAgent.ai,
-            created_at: new Date(res.data.aiMessage.created_at)
+            content: res.data.aiMessage.message,
+            role: MessageRole.ai,
         }
     }
 
 
 }
 
-export const chatService = new ChatService()
+export const chatService = new ChatService(apiService.client)
