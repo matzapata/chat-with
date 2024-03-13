@@ -30,7 +30,6 @@ export class SubscriptionPlansService {
       variant_id: plan.variant_id,
       description: plan.description,
       variant_name: plan.variant_name,
-      status: plan.status,
       price: plan.price,
       interval: plan.interval,
       interval_count: plan.interval_count,

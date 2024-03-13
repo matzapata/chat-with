@@ -7,7 +7,6 @@ import {
   PaymentProviders,
   SubscriptionInterval,
   SubscriptionPlan,
-  SubscriptionPlanStatus,
   SubscriptionStatus,
   UserSubscription,
   WebhookEventData,
@@ -27,7 +26,7 @@ interface VariantObject {
   type: 'variants';
   id: string;
   attributes: {
-    price: number;
+    price: string;
     is_subscription: boolean;
     interval: SubscriptionInterval;
     interval_count: number;
@@ -48,7 +47,7 @@ interface VariantObject {
     license_length_unit: string;
     is_license_length_unlimited: boolean;
     sort: number;
-    status: SubscriptionPlanStatus;
+    status: 'published' | 'draft' | 'pending';
     status_formatted: string;
     created_at: string;
     updated_at: string;
@@ -200,7 +199,11 @@ export class LemonSqueezyPaymentProvider implements PaymentProvider {
       const res = await this.listVariants(page, pageSize);
       plans.push(
         ...res.data
-          .filter((v) => v.attributes.is_subscription)
+          .filter(
+            (v) =>
+              v.attributes.is_subscription &&
+              v.attributes.status === 'published',
+          )
           .map((v) => {
             const product = res.included.find(
               (p) => p.id === String(v.attributes.product_id),
@@ -209,10 +212,9 @@ export class LemonSqueezyPaymentProvider implements PaymentProvider {
               name: product?.attributes.name,
               product_id: String(v.attributes.product_id),
               variant_id: v.id,
-              description: v.attributes.description,
+              description: v.attributes.description.replace(/<[^>]*>?/gm, ''),
               variant_name: v.attributes.name,
-              status: v.attributes.status,
-              price: v.attributes.price,
+              price: Number(v.attributes.price),
               interval: v.attributes.interval,
               interval_count: v.attributes.interval_count,
               product_name: product?.attributes.name,

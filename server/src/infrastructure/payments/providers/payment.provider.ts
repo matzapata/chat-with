@@ -22,12 +22,6 @@ export enum SubscriptionInterval {
   year = 'year',
 }
 
-export enum SubscriptionPlanStatus {
-  pending = 'pending',
-  draft = 'draft',
-  published = 'published',
-}
-
 export interface SubscriptionPlan {
   name: string;
   product_id: string;
@@ -35,7 +29,6 @@ export interface SubscriptionPlan {
   variant_id: string;
   variant_name: string;
   description: string;
-  status: SubscriptionPlanStatus;
   price: number;
   interval: SubscriptionInterval;
   interval_count: number;

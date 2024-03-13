@@ -1,7 +1,7 @@
 
 # Manual testing http requests with extension REST Client
 
-### POST /api/payments/subscription/plans get plans
+### GET /api/payments/subscription/plans get plans
 GET http://{{host}}/api/payments/subscription/plans
 
 ### POST /api/payments/subscription/plans/refresh fetch plans from provider and store in db

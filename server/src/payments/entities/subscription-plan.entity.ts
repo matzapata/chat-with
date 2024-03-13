@@ -1,9 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 import { SubscriptionUser } from './subscription-user.entity';
-import {
-  SubscriptionInterval,
-  SubscriptionPlanStatus,
-} from 'src/infrastructure/payments/providers/payment.provider';
+import { SubscriptionInterval } from 'src/infrastructure/payments/providers/payment.provider';
 
 @Entity()
 export class SubscriptionPlan {
@@ -24,9 +21,6 @@ export class SubscriptionPlan {
 
   @Column()
   product_name: string;
-
-  @Column()
-  status: SubscriptionPlanStatus;
 
   @Column()
   price: number;

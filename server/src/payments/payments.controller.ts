@@ -38,21 +38,29 @@ export class PaymentsController {
   }
 
   @Post('/subscription/plans/refresh')
-  @UseGuards(AdminGuard)
+  // @UseGuards(AdminGuard)
   async refreshPlans() {
+    // TODO: use webhooks to keep plans updated
+
     const plans = await this.paymentService.findAllPlans();
+    console.log('plans', plans);
+
     for (const plan of plans) {
+      // TODO: filter out plans that are not active
+
       await this.subscriptionPlansService.upsert({
         description: plan.description,
         interval: plan.interval,
         interval_count: plan.interval_count,
         name: plan.name,
-        price: plan.price,
-        product_id: plan.product_id,
-        status: plan.status,
-        product_name: plan.product_name,
         variant_id: plan.variant_id,
         variant_name: plan.variant_name,
+        // TODO: remove product_name and work only with variants
+        product_name: plan.product_name,
+        product_id: plan.product_id,
+
+        price: plan.price,
+        // TODO: Include currency in plan
       });
     }
 
