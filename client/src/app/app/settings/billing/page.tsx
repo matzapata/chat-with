@@ -8,8 +8,16 @@ import {
   TableRow,
   Table,
 } from "@/components/ui/table";
+import { apiService } from "@/lib/services/api-service";
+import { paymentsService } from "@/lib/services/payments-service";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
-export default function Billing() {
+export default async function Billing() {
+  const { getAccessTokenRaw } = getKindeServerSession();
+  apiService.setAccessToken(await getAccessTokenRaw());
+
+  const plans = await paymentsService.getAllPlans();
+
   return (
     <div className="py-8 md:py-12 space-y-8 max-w-6xl mx-auto">
       {/* Heading */}
@@ -21,6 +29,8 @@ export default function Billing() {
           <p className="text-gray-600">
             Pick an account plan that fits your workflow.
           </p>
+
+          
         </div>
       </div>
 
@@ -36,9 +46,14 @@ export default function Billing() {
 
         <div className="space-y-4 col-span-2">
           {/* Plans cards */}
-          <PlanCard selected />
-          <PlanCard />
-          <PlanCard />
+          {plans.map((plan: any) => ( // TODO: remove any
+            <PlanCard
+              description={plan.description}
+              interval={plan.interval}
+              name={plan.variant_name}
+              price={plan.price}
+            />
+          ))}
 
           <Button variant="secondary-gray" size="sm">
             Manage
@@ -47,7 +62,70 @@ export default function Billing() {
       </div>
 
       {/* Billing history */}
-      <div className="md:px-8 md:space-y-6">
+      {/* <BillingAndInvoicing /> */}
+    </div>
+  );
+}
+
+function PlanCard(props: {
+  name: string;
+  price: number;
+  description: string;
+  interval: string;
+  selected?: boolean;
+}) {
+  return (
+    <div
+      className={`${
+        props.selected ? "border-brand-600 border-[2px]" : "border"
+      } rounded-xl`}
+    >
+      <div
+        className={`${
+          props.selected
+            ? "border-b-[2px] md:border-b-0 border-brand-600"
+            : "border-b"
+        } flex items-center p-4`}
+      >
+        <div className="flex flex-grow space-x-4 items-center">
+          <div className="h-7 w-7 bg-brand-100 border-4 border-brand-50 rounded-full"></div>
+          <div className="">
+            <h2 className="font-semibold md:font-medium md:text-sm text-gray-700">
+              {props.name} plan{" "}
+              <span className="text-gray-600 hidden md:inline-block">
+                ${props.price} per {props.interval}
+              </span>
+            </h2>
+            <p className="text-gray-600 md:text-sm hidden md:block">
+              {props.description}
+            </p>
+          </div>
+        </div>
+        <Checkbox
+          disabled={true}
+          checked={props.selected}
+          className="text-brand-600 border-gray-200 rounded"
+        />
+      </div>
+
+      <div className="p-4 space-y-1 md:hidden">
+        <div>
+          <span className="text-gray-700 text-3xl font-semibold">
+            ${props.price}
+          </span>
+          <span className="text-gray-600 ml-1">per {props.interval}</span>
+        </div>
+        <p className="text-gray-600">{props.description}</p>
+      </div>
+    </div>
+  );
+}
+
+
+// TODO: bring back or remove
+function BillingAndInvoicing() {
+  return (
+    <div className="md:px-8 md:space-y-6">
         <div className="px-4 md:px-0 space-y-1 md:pb-5 md:border-b">
           <h2 className="text-lg font-semibold text-gray-900">
             Billing and invoicing
@@ -100,55 +178,5 @@ export default function Billing() {
           </div>
         </div>
       </div>
-    </div>
-  );
-}
-
-function PlanCard({ selected }: { selected?: boolean }) {
-  return (
-    <div
-      className={`${
-        selected ? "border-brand-600 border-[2px]" : "border"
-      } rounded-xl`}
-    >
-      <div
-        className={`${
-          selected
-            ? "border-b-[2px] md:border-b-0 border-brand-600"
-            : "border-b"
-        } flex items-center p-4`}
-      >
-        <div className="flex flex-grow space-x-4 items-center">
-          <div className="h-7 w-7 bg-brand-100 border-4 border-brand-50 rounded-full"></div>
-          <div className="">
-            <h2 className="font-semibold md:font-medium md:text-sm text-gray-700">
-              Basic plan{" "}
-              <span className="text-gray-600 hidden md:inline-block">
-                $10 per month
-              </span>
-            </h2>
-            <p className="text-gray-600 md:text-sm hidden md:block">
-              Includes up to 10 users, 20GB individual data and access to all
-              features.
-            </p>
-          </div>
-        </div>
-        <Checkbox
-          checked={selected}
-          className="text-brand-600 border-gray-200 rounded"
-        />
-      </div>
-
-      <div className="p-4 space-y-1 md:hidden">
-        <div>
-          <span className="text-gray-700 text-3xl font-semibold">$10</span>
-          <span className="text-gray-600 ml-1">per month</span>
-        </div>
-        <p className="text-gray-600">
-          Includes up to 10 users, 20GB individual data and access to all
-          features.
-        </p>
-      </div>
-    </div>
-  );
+  )
 }

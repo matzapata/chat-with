@@ -84,10 +84,10 @@ export default function Documents() {
 
   return (
     <>
-    {/* TODO: fix layout */}
+      {/* TODO: DO component for submenu + think of removing it here and use navbar directly */}
       <nav>
         {/* Submenu */}
-        <div className="border-b border-b-gray-200 flex justify-center bg-white">
+        <div className="border-b h-10 border-b-gray-200 flex justify-center bg-white">
           <div className="px-2 md:px-8 w-full flex py-2 items-center">
             <button className="px-3 py-2 hover:bg-gray-50 text-sm font-semibold text-gray-700 rounded">
               Documents
