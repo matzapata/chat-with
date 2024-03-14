@@ -84,9 +84,7 @@ export class PaymentsController {
     @Body() headers: { [key: string]: any },
   ) {
     // Verify webhook source
-    // await this.paymentService.validateWebhook(body, headers);
-
-    console.log('hola');
+    await this.paymentService.validateWebhook(body, headers);
 
     // Parse event and data
     const { data, event } = await this.paymentService.parseWebhookEvent(body);
@@ -112,8 +110,6 @@ export class PaymentsController {
       if (!plan) throw new NotFoundException('Plan not found');
       const user = await this.usersService.findById(data.user_id);
       if (!user) throw new NotFoundException('User not found');
-
-      console.log(JSON.stringify(data));
 
       await this.userSubscriptionService.upsert(user, {
         variant_id: data.variant_id,

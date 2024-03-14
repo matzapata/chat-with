@@ -8,6 +8,7 @@ import { ChatScrollAnchor } from "@/components/chat/chat-scroll-anchor";
 import React from "react";
 import useChat from "@/lib/hooks/use-chat";
 import { ChatMessage } from "@/lib/services/chat-service";
+import { ChatMessageLoading } from "./chat-message-loading";
 
 export interface ChatProps extends React.ComponentProps<"div"> {
   initialMessages?: ChatMessage[];
@@ -23,7 +24,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
       <div className={cn("pb-[200px] pt-4 md:pt-10", className)}>
         {messages.length ? (
           <>
-            <ChatList messages={messages} />
+            <ChatList messages={messages} loading={isLoading} />
             <ChatScrollAnchor trackVisibility={isLoading} />
           </>
         ) : (
@@ -33,7 +34,6 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
       <ChatPanel
         id={id}
         isLoading={isLoading}
-        stop={stop}
         append={append}
         messages={messages}
         input={input}

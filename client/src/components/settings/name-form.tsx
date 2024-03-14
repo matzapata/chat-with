@@ -52,13 +52,11 @@ export default function NameForm(props: { name?: string }) {
       return userService.updateName(props.name, props.surname);
     },
     onSuccess: (data) => {
-      console.log("Success", data);
       setName(data.name);
       toast({ description: "Name updated successfully." });
       setOpen(false);
     },
     onError: (error) => {
-      console.log(error);
       toast({ description: `Sorry, something went wrong. Please try again.` });
     },
   });

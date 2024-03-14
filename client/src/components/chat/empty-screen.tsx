@@ -23,13 +23,15 @@ export function EmptyScreen({ setInput }: any) { // TODO:  Pick<UseChatHelpers, 
     <div className="mx-auto max-w-2xl px-4">
       <div className="rounded-lg border bg-white p-8">
         <h1 className="mb-2 text-lg font-semibold">
-          Welcome to Next.js AI Chatbot!
+          Welcome to Chatwith!
         </h1>
-        <p className="mb-2 leading-normal text-muted-foreground">
-          This is an open source AI chatbot app template built with{' '}
+        <p className="mb-2 leading-normal text-gray-900">
+          Make questions about your file and get exactly what you need{' '}
           .
         </p>
-        <p className="leading-normal text-muted-foreground">
+
+        {/* TODO: I think you need to remove examples */}
+        <p className="leading-normal text-gray-900">
           You can start a conversation here or try the following examples:
         </p>
         <div className="mt-4 flex flex-col items-start space-y-2">
@@ -40,7 +42,7 @@ export function EmptyScreen({ setInput }: any) { // TODO:  Pick<UseChatHelpers, 
               className="h-auto p-0 text-base"
               onClick={() => setInput(message.message)}
             >
-              <IconArrowRight className="mr-2 text-muted-foreground" />
+              <IconArrowRight className="mr-2 text-gray-900" />
               {message.heading}
             </Button>
           ))}

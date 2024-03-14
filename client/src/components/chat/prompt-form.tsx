@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Textarea from 'react-textarea-autosize'
 
@@ -12,22 +12,23 @@ import {
 } from '@/components/ui/tooltip'
 import { IconArrowElbow, IconPlus } from '@/components/ui/icons'
 
-// export interface PromptProps
-//   extends Pick<UseChatHelpers, 'input' | 'setInput'> {
-//   onSubmit: (value: string) => Promise<void>
-//   isLoading: boolean
-// }
+ interface PromptProps {
+  onSubmit: (value: string) => unknown
+  isLoading: boolean
+  input: string,
+  setInput: (value: string) => void
+}
 
 export function PromptForm({
   onSubmit,
   input,
   setInput,
   isLoading
-}: any) { // TODO: remove any
+}: PromptProps) { 
   const { formRef, onKeyDown } = useEnterSubmit()
-  const inputRef = React.useRef<HTMLTextAreaElement>(null)
+  const inputRef = useRef<HTMLTextAreaElement>(null)
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus()
     }
@@ -37,10 +38,6 @@ export function PromptForm({
     <form
       onSubmit={async e => {
         e.preventDefault()
-        if (!input?.trim()) {
-          return
-        }
-        setInput('')
         await onSubmit(input)
       }}
       ref={formRef}
@@ -49,7 +46,7 @@ export function PromptForm({
         <Tooltip>
           <TooltipTrigger asChild>
             <Link
-              href="/"
+              href="/app/chat"
               className={cn(
                 buttonVariants({ size: 'sm', variant: 'secondary-gray' }),
                 'absolute left-0 top-4 h-8 w-8 rounded-full bg-white p-0 sm:left-4'

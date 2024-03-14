@@ -7,7 +7,7 @@ export default async function ChatLayout({ children }: { children: React.ReactNo
       <nav className="sticky top-0 z-50 shrink-0 h-16 bg-white w-screen">
         <Navbar items={[
           {
-            title: "Home",
+            title: "Chats",
             link: "/app/chat",
           },
         ]}/>

@@ -55,7 +55,8 @@ export default function Navbar({ items }: { items: NavbarItem[] }) {
           <DropdownMenu>
             <DropdownMenuTrigger className="focus:outline-none">
               <Avatar>
-                <AvatarImage src={user?.picture ?? undefined} />
+                {/* TODO: add image */}
+                <AvatarImage src={undefined} /> 
                 <AvatarFallback>
                   {Array.from(user?.email ?? "c")[0].toUpperCase()}
                 </AvatarFallback>
@@ -119,6 +120,7 @@ export default function Navbar({ items }: { items: NavbarItem[] }) {
                   <div className="flex ml-2">
                     {/* Avatar */}
                     <Avatar>
+                      {/* TODO: add image */}
                       <AvatarImage src={user?.picture ?? undefined} />
                       <AvatarFallback>
                         {Array.from(user?.email ?? "c")[0].toUpperCase()}

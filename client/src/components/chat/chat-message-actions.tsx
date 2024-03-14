@@ -3,11 +3,11 @@
 import { Button } from '@/components/ui/button'
 import { IconCheck, IconCopy } from '@/components/ui/icons'
 import { useCopyToClipboard } from '@/lib/hooks/use-copy-to-clipboard'
+import { ChatMessage } from '@/lib/services/chat-service'
 import { cn } from '@/lib/utils'
-import { Message } from './message'
 
 interface ChatMessageActionsProps extends React.ComponentProps<'div'> {
-  message: Message
+  message: ChatMessage
 }
 
 export function ChatMessageActions({

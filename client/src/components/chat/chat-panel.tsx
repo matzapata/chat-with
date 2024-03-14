@@ -1,5 +1,15 @@
 import { PromptForm } from "@/components/chat/prompt-form";
 import { ButtonScrollToBottom } from "@/components/chat/button-scroll-to-bottom";
+import { ChatMessage } from "@/lib/services/chat-service";
+
+interface ChatPanelProps {
+  id: string;
+  isLoading: boolean;
+  append: (message: string) => void;
+  input: string;
+  setInput: (value: string) => void;
+  messages: ChatMessage[];
+}
 
 export function ChatPanel({
   id,
@@ -8,12 +18,12 @@ export function ChatPanel({
   input,
   setInput,
   messages,
-}: any) {
+}: ChatPanelProps) {
   return (
     <div className="fixed inset-x-0 bottom-0 bg-gradient-to-b from-muted/10 from-10% to-muted/30 to-50%">
       <ButtonScrollToBottom />
       <div className="mx-auto sm:max-w-2xl sm:px-4">
-        {/* TODO: stop and regenerate */}
+        {/* TODO: stop and regenerate, also retry */}
         {/* <div className="flex h-10 items-center justify-center">
           {isLoading ? (
             <Button
@@ -39,18 +49,11 @@ export function ChatPanel({
         </div> */}
         <div className="space-y-4 border-t bg-white px-4 py-2 shadow-lg sm:rounded-t-xl sm:border md:py-4">
           <PromptForm
-            onSubmit={async (value: any) => {
-              await append({
-                id,
-                content: value,
-                role: "user",
-              });
-            }}
+            onSubmit={(v) => append(v)}
             input={input}
             setInput={setInput}
             isLoading={isLoading}
           />
-          {/* <FooterText className="hidden sm:block" /> */}
         </div>
       </div>
     </div>

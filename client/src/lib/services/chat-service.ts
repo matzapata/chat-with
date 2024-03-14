@@ -1,4 +1,4 @@
-import {apiService} from "@/lib/services/api-service"
+import { apiService } from "@/lib/services/api-service"
 import { AxiosInstance, AxiosProgressEvent } from "axios";
 
 export enum MimeType {
@@ -53,12 +53,17 @@ export class ChatService {
                 onUploadProgress?.(percentCompleted)
             },
         })
-        return res.data
+        return { ...res.data, created_at: new Date(res.data.created_at) }
     }
 
     async getChat(id: string): Promise<ChatDto> {
         const res = await this.client.get(`/api/chats/${id}`)
-        return { ...res.data, created_at: new Date(res.data.created_at) }
+        return {
+            ...res.data, messages: res.data.messages.map((m: { id: string, message: string, created_at: string, agent: "USER" | "AI" }) => ({
+                content: m.message,
+                role: m.agent === 'USER' ? MessageRole.user : MessageRole.ai
+            })), created_at: new Date(res.data.created_at)
+        }
     }
 
     async postMessage(id: string, message: string): Promise<ChatMessage> {
