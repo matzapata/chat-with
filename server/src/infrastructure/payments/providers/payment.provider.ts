@@ -61,8 +61,6 @@ export interface WebhookEventData {
   variant_id: string;
   order_id: string;
   status: SubscriptionStatus;
-  card_brand: string;
-  card_last_four: string;
   pause_mode: 'void' | 'free' | null;
   pause_resumes_at: Date;
   cancelled: boolean;
@@ -73,6 +71,7 @@ export interface WebhookEventData {
   created_at: Date;
   updated_at: Date;
   test_mode: boolean;
+  invoice_url: string | null;
 }
 
 export enum PaymentProviders {

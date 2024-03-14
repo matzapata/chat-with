@@ -1,3 +1,5 @@
+"use client";
+
 import { Bars4Icon } from "@heroicons/react/24/solid";
 import Logo from "../brand/logo";
 import { Button } from "../ui/button";
@@ -7,7 +9,7 @@ import {
   LoginLink,
 } from "@kinde-oss/kinde-auth-nextjs/components";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 
 const navbarItems = [
   { title: "Home", href: "/" },
@@ -16,9 +18,8 @@ const navbarItems = [
   { title: "Pricing", href: "/pricing" },
 ];
 
-export default async function Navbar() {
-  const { getUser } = getKindeServerSession();
-  const user = await getUser();
+export default function Navbar() {
+  const { user } = useKindeBrowserClient();
 
   return (
     <div>
@@ -42,7 +43,7 @@ export default async function Navbar() {
           {/* login / signup / dashboard buttons */}
           <div className="hidden md:flex items-center space-x-4">
             {user ? (
-              <Link href={"/app/chat/documents"}>
+              <Link href={"/app/chat"}>
                 <Button variant={"secondary-gray"} size="sm">
                   Dashboard
                 </Button>
@@ -91,7 +92,7 @@ export default async function Navbar() {
                   </div>
                   <div className="py-6 px-4 flex flex-col space-y-3">
                     {user ? (
-                      <Link href={"/app/chat/documents"}>
+                      <Link href={"/app/chat"}>
                         <Button variant={"secondary-gray"} size="sm">
                           Dashboard
                         </Button>

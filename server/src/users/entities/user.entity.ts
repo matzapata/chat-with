@@ -1,5 +1,5 @@
 import { Chat } from 'src/chat/entities/chat.entity';
-import { SubscriptionUser } from 'src/payments/entities/subscription-user.entity';
+import { UserSubscription } from 'src/payments/entities/user-subscription';
 import {
   Entity,
   Column,
@@ -20,9 +20,9 @@ export class User {
   @Column({ nullable: true })
   name?: string;
 
-  @OneToOne(() => SubscriptionUser, (subscription) => subscription.user)
+  @OneToOne(() => UserSubscription, (subscription) => subscription.user)
   @JoinColumn()
-  subscription: SubscriptionUser;
+  subscription: UserSubscription;
 
   @OneToMany(() => Chat, (c) => c.owner)
   @JoinColumn()

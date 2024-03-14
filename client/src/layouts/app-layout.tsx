@@ -24,7 +24,7 @@ export default function AppLayout({
               {
                 title: "Home",
                 icon: <IconHome className="h-5 w-5 text-gray-500" />,
-                link: "/app/chat/documents",
+                link: "/app/chat",
               },
             ]
           }

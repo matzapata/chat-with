@@ -1,6 +1,7 @@
+"use client";
+
 import { Bars4Icon } from "@heroicons/react/24/solid";
 import Logo from "../brand/logo";
-import { Avatar } from "../replace-avatar";
 import Link from "next/link";
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import {
@@ -13,6 +14,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { IconLifeBuoy, IconLogOut, IconSettings } from "../ui/icons";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 
 export interface NavbarItem {
   title: string;
@@ -21,6 +24,8 @@ export interface NavbarItem {
 }
 
 export default function Navbar({ items }: { items: NavbarItem[] }) {
+  const { user } = useKindeBrowserClient();
+
   return (
     <div className="border-b h-16 border-b-gray-200 flex justify-center">
       <div className="px-8 w-full flex justify-between py-3 items-center">
@@ -49,13 +54,28 @@ export default function Navbar({ items }: { items: NavbarItem[] }) {
 
           <DropdownMenu>
             <DropdownMenuTrigger className="focus:outline-none">
-              <Avatar />
+              <Avatar>
+                <AvatarImage src={user?.picture ?? undefined} />
+                <AvatarFallback>
+                  {Array.from(user?.email ?? "c")[0].toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuLabel>
+                <div className="space-y-1">
+                  <p>My Account</p>
+                  <p className="font-normal pr-4">{user?.email}</p>
+                </div>
+              </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
-                <LogoutLink postLogoutRedirectURL="/">Logout</LogoutLink>
+                <LogoutLink postLogoutRedirectURL="/">
+                  <div className="flex space-x-2 items-center">
+                    <IconLogOut className="h-4 w-4 text-gray-900" />
+                    <span className="ml-2">Logout</span>
+                  </div>
+                </LogoutLink>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -98,12 +118,17 @@ export default function Navbar({ items }: { items: NavbarItem[] }) {
                 <div className="flex items-center justify-between py-6 px-2">
                   <div className="flex ml-2">
                     {/* Avatar */}
-                    <Avatar />
+                    <Avatar>
+                      <AvatarImage src={user?.picture ?? undefined} />
+                      <AvatarFallback>
+                        {Array.from(user?.email ?? "c")[0].toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
 
                     {/* Name and email */}
                     <div className="ml-3">
                       <p className="text-sm font-semibold">Olivia Rhye</p>
-                      <p className="text-sm">olivia@untitledui.com</p>
+                      <p className="text-sm">{user?.email}</p>
                     </div>
                   </div>
 

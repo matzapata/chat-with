@@ -1,14 +1,28 @@
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import {
+  LoginLink,
+  getKindeServerSession,
+} from "@kinde-oss/kinde-auth-nextjs/server";
 import { CheckIcon } from "@heroicons/react/20/solid";
-
-const includedFeatures = [
-  "Private forum access",
-  "Member resources",
-  "Entry to annual conference",
-  "Official member t-shirt",
-];
+import { Button } from "@/components/ui/button";
+import { paymentsService } from "@/lib/services/payments-service";
+import Link from "next/link";
+import { subscriptionConfig } from "@/config/subscription";
+import { apiService } from "@/lib/services/api-service";
 
 export default async function PricingPage() {
+  const { getAccessTokenRaw } = getKindeServerSession();
+  const accessTokenRaw = await getAccessTokenRaw()
+  apiService.setAccessToken(accessTokenRaw);
+
+  // Create the checkout session
+  let checkoutUrl: string | undefined;
+  if (accessTokenRaw) {
+    try {
+      // check if the user has an active subscription
+      checkoutUrl = await paymentsService.createCheckout(subscriptionConfig.proPlan.id);
+    } catch (e) {}
+  }
+
   return (
     <div className="bg-white py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -41,7 +55,7 @@ export default async function PricingPage() {
               role="list"
               className="mt-8 grid grid-cols-1 gap-4 text-sm leading-6 text-gray-600 sm:grid-cols-2 sm:gap-6"
             >
-              {includedFeatures.map((feature) => (
+              {subscriptionConfig.proPlan.features.map((feature) => (
                 <li key={feature} className="flex gap-x-3">
                   <CheckIcon
                     className="h-6 w-5 flex-none text-brand-600"
@@ -60,18 +74,27 @@ export default async function PricingPage() {
                 </p>
                 <p className="mt-6 flex items-baseline justify-center gap-x-2">
                   <span className="text-5xl font-bold tracking-tight text-gray-900">
-                    $349
+                    ${subscriptionConfig.proPlan.price}
                   </span>
                   <span className="text-sm font-semibold leading-6 tracking-wide text-gray-600">
                     USD
                   </span>
                 </p>
-                <a
-                  href="#"
-                  className="mt-10 block w-full rounded-md bg-brand-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-brand-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
-                >
-                  Get access
-                </a>
+
+                {accessTokenRaw ? (
+                  <Link href={checkoutUrl ?? "/app/settings/billing"}>
+                    <Button className="mt-10 block w-full rounded-md bg-brand-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-brand-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600">
+                      {checkoutUrl ? "Get access" : "Manage subscription"}
+                    </Button>
+                  </Link>
+                ) : (
+                  <LoginLink postLoginRedirectURL="/pricing">
+                    <Button className="mt-10 block w-full rounded-md bg-brand-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-brand-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600">
+                      Get access
+                    </Button>
+                  </LoginLink>
+                )}
+
                 <p className="mt-6 text-xs leading-5 text-gray-600">
                   Invoices and receipts available for easy company reimbursement
                 </p>

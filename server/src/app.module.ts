@@ -6,8 +6,7 @@ import { APP_PIPE } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './users/entities/user.entity';
 import { PaymentsModule } from './payments/payments.module';
-import { SubscriptionPlan } from './payments/entities/subscription-plan.entity';
-import { SubscriptionUser } from './payments/entities/subscription-user.entity';
+import { UserSubscription } from './payments/entities/user-subscription';
 import { WebhookEvent } from './payments/entities/webhook-event.entity';
 import { ChatModule } from './chat/chat.module';
 import { Chat } from './chat/entities/chat.entity';
@@ -49,14 +48,7 @@ import { ChatMessage } from './chat/entities/messages.entity';
       password: 'postgres',
       database: 'chatwith',
       synchronize: true,
-      entities: [
-        User,
-        SubscriptionPlan,
-        SubscriptionUser,
-        WebhookEvent,
-        Chat,
-        ChatMessage,
-      ],
+      entities: [User, UserSubscription, WebhookEvent, Chat, ChatMessage],
     }),
     UsersModule,
     PaymentsModule,

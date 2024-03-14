@@ -230,7 +230,22 @@ export class LemonSqueezyPaymentProvider implements PaymentProvider {
   }
 
   async findPlanById(variant_id: string): Promise<SubscriptionPlan> {
-    throw new Error('Method not implemented.');
+    const res = await this.client.get(
+      `/variants/${variant_id}?include=product`,
+    );
+    const attributes = res.data.data.attributes;
+
+    return {
+      name: attributes.name,
+      product_id: attributes.product_id,
+      product_name: res.data.included[0].attributes.name,
+      variant_id: res.data.data.id,
+      variant_name: attributes.name,
+      description: attributes.description.replace(/<[^>]*>?/gm, ''),
+      price: Number(attributes.price),
+      interval: attributes.interval,
+      interval_count: attributes.interval_count,
+    };
   }
 
   async findSubscriptionById(
@@ -292,19 +307,17 @@ export class LemonSqueezyPaymentProvider implements PaymentProvider {
 
     switch (body.meta.event_name) {
       case 'subscription_created':
+      case 'subscription_updated': {
         const subscription = body.data as SubscriptionObject;
         event = WebhookEventName.subscription_created;
         data = {
           id: body.data.id,
-          subscription_id:
-            body.data.attributes.first_subscription_item.subscription_id,
+          subscription_id: body.data.id,
           provider: this.name,
           user_id: body.meta.custom_data.user_id,
           variant_id: String(subscription.attributes.variant_id),
           order_id: String(subscription.attributes.order_id),
           status: subscription.attributes.status,
-          card_brand: subscription.attributes.card_brand,
-          card_last_four: subscription.attributes.card_last_four,
           pause_mode: subscription.attributes.pause?.mode ?? null,
           pause_resumes_at: subscription.attributes.pause?.resumes_at
             ? new Date(subscription.attributes.pause.resumes_at)
@@ -317,19 +330,22 @@ export class LemonSqueezyPaymentProvider implements PaymentProvider {
           created_at: new Date(subscription.attributes.created_at),
           updated_at: new Date(subscription.attributes.updated_at),
           test_mode: subscription.attributes.test_mode,
+          invoice_url: null,
         };
         break;
-      case 'subscription_updated':
-        event = WebhookEventName.subscription_updated;
-        break;
-      case 'subscription_payment_failed':
+      }
+      case 'subscription_payment_failed': {
         event = WebhookEventName.subscription_payment_failed;
         break;
-      case 'subscription_payment_success':
+      }
+      case 'subscription_payment_success': {
         event = WebhookEventName.subscription_payment_success;
+        // Contains invoice url
         break;
-      default:
+      }
+      default: {
         throw new Error('Unhandled event');
+      }
     }
 
     return {

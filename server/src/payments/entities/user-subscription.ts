@@ -1,30 +1,29 @@
-import {
-  Column,
-  Entity,
-  ManyToOne,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
-import { User } from 'src/users/entities/user.entity';
-import { SubscriptionPlan } from './subscription-plan.entity';
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import {
   PaymentProviders,
   SubscriptionStatus,
 } from '../../infrastructure/payments/providers/payment.provider';
+import { User } from 'src/users/entities/user.entity';
 
 @Entity()
-export class SubscriptionUser {
+export class UserSubscription {
   @PrimaryGeneratedColumn('increment')
   id: number;
+
+  @OneToOne(() => User, (user) => user.subscription)
+  user: User;
 
   @Column()
   subscription_id: string; // from provider
 
   @Column()
-  provider: PaymentProviders;
+  variant_id: string;
 
   @Column()
   order_id: string;
+
+  @Column()
+  provider: PaymentProviders;
 
   @Column()
   status: SubscriptionStatus;
@@ -58,10 +57,4 @@ export class SubscriptionUser {
 
   @Column()
   test_mode: boolean;
-
-  @OneToOne(() => User, (user) => user.subscription)
-  user: User;
-
-  @ManyToOne(() => SubscriptionPlan)
-  plan: SubscriptionPlan;
 }

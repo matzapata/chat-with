@@ -2,7 +2,7 @@
 # Manual testing http requests with extension REST Client
 
 ### GET /users/whoami
-GET http://{{host}}/api/users/whoami
+GET http://{{host}}/api/users
 Authorization: Bearer {{token}}
 
 

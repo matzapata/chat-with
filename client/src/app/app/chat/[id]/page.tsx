@@ -43,16 +43,9 @@ export default async function ChatPage({ params }: ChatPageProps) {
 
   return (
     <div className="relative">
-      <div className="h-10 bg-white border-b sticky top-16 z-50 left-0 w-screen px-2 md:px-8 flex">
-          <button className="px-3 py-2 hover:bg-gray-50 text-sm font-semibold text-gray-700 rounded">
-            Documents
-          </button>
-          <button className="px-3 py-2 text-sm hover:bg-gray-50 font-semibold text-gray-700 rounded flex space-x-2 items-center">
-            <span>{filename}</span>
-          </button>
+      <div className="h-10 bg-white border-b sticky top-16 z-50 left-0 w-screen px-2 md:px-8 flex items-center">
+        <span className="text-sm font-medium text-gray-600">{filename}</span>
       </div>
-
-
       <Chat id={params.id} initialMessages={initialMessages} />;
     </div>
   );
