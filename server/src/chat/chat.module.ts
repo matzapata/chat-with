@@ -6,14 +6,17 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Chat } from './entities/chat.entity';
 import { ChatMessage } from './entities/messages.entity';
 import { StorageService } from 'src/infrastructure/storage/storage.service';
+import { PaymentsModule } from 'src/payments/payments.module';
+import { PlanCheckerService } from 'src/payments/services/plan-checker.service';
 
 @Module({
   controllers: [ChatController],
-  imports: [TypeOrmModule.forFeature([Chat, ChatMessage])],
+  imports: [TypeOrmModule.forFeature([Chat, ChatMessage]), PaymentsModule],
   providers: [
     RetrievalAugmentedGenerationService,
     ChatsService,
     StorageService,
+    PlanCheckerService,
   ],
 })
 export class ChatModule {}

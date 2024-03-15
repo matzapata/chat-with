@@ -1,25 +1,28 @@
 import {
   LoginLink,
+  RegisterLink,
   getKindeServerSession,
 } from "@kinde-oss/kinde-auth-nextjs/server";
 import { CheckIcon } from "@heroicons/react/20/solid";
 import { Button } from "@/components/ui/button";
 import { paymentsService } from "@/lib/services/payments-service";
 import Link from "next/link";
-import { subscriptionConfig } from "@/config/subscription";
 import { apiService } from "@/lib/services/api-service";
+import { ArrowRightIcon } from "@heroicons/react/24/solid";
 
 export default async function PricingPage() {
   const { getAccessTokenRaw } = getKindeServerSession();
-  const accessTokenRaw = await getAccessTokenRaw()
+  const accessTokenRaw = await getAccessTokenRaw();
   apiService.setAccessToken(accessTokenRaw);
 
+  const plans = await paymentsService.getPlans();
+  
   // Create the checkout session
   let checkoutUrl: string | undefined;
   if (accessTokenRaw) {
     try {
       // check if the user has an active subscription
-      checkoutUrl = await paymentsService.createCheckout(subscriptionConfig.proPlan.id);
+      checkoutUrl = await paymentsService.createCheckout(plans.pro.variant_id as string);
     } catch (e) {}
   }
 
@@ -35,7 +38,9 @@ export default async function PricingPage() {
             quasi iusto modi velit ut non voluptas in. Explicabo id ut laborum.
           </p>
         </div>
-        <div className="mx-auto mt-16 max-w-2xl rounded-3xl ring-1 ring-gray-200 sm:mt-20 lg:mx-0 lg:flex lg:max-w-none">
+
+        {/* PRO pricing card */}
+        <div className="mx-auto mt-16 max-w-2xl rounded-3xl ring-1 ring-gray-200 sm:mt-20 lg:mx -0 lg:flex lg:max-w-none">
           <div className="p-8 sm:p-10 lg:flex-auto">
             <h3 className="text-2xl font-bold tracking-tight text-gray-900">
               Lifetime membership
@@ -55,7 +60,7 @@ export default async function PricingPage() {
               role="list"
               className="mt-8 grid grid-cols-1 gap-4 text-sm leading-6 text-gray-600 sm:grid-cols-2 sm:gap-6"
             >
-              {subscriptionConfig.proPlan.features.map((feature) => (
+              {plans.pro.features.map((feature) => (
                 <li key={feature} className="flex gap-x-3">
                   <CheckIcon
                     className="h-6 w-5 flex-none text-brand-600"
@@ -74,7 +79,7 @@ export default async function PricingPage() {
                 </p>
                 <p className="mt-6 flex items-baseline justify-center gap-x-2">
                   <span className="text-5xl font-bold tracking-tight text-gray-900">
-                    ${subscriptionConfig.proPlan.price}
+                    ${plans.pro.price}
                   </span>
                   <span className="text-sm font-semibold leading-6 tracking-wide text-gray-600">
                     USD
@@ -100,6 +105,29 @@ export default async function PricingPage() {
                 </p>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Still access for free */}
+        <div className="mx-auto mt-16 p-6 max-w-2xl rounded-3xl ring-1 ring-gray-200 sm:mt-20 lg:mx- 0 lg:max-w-3xl space-y-4">
+          <h1 className="text-brand-600 font-medium text-lg">
+            Get started for free, no credit card required
+          </h1>
+          <div className="space-y-4">
+            <p className="text-gray-600">
+              Dolor dolores repudiandae doloribus. Rerum sunt aut eum. Odit
+              omnis non voluptatem sunt eos nostrum.
+            </p>
+            <RegisterLink postLoginRedirectURL="/app/chat">
+              <Button
+                variant={"secondary-color"}
+                size={"sm"}
+                className="space-x-2 mt-4"
+              >
+                <span>Register</span>
+                <ArrowRightIcon className="h-5 w-5" />
+              </Button>
+            </RegisterLink>
           </div>
         </div>
       </div>

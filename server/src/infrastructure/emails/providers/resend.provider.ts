@@ -1,25 +1,16 @@
 import { ConfigService } from '@nestjs/config';
 import { EmailProvider } from './email.provider';
-import * as nodemailer from 'nodemailer';
 import { Injectable } from '@nestjs/common';
+import { Resend } from 'resend';
 
 @Injectable()
-export class NodeMailerEmailProvider extends EmailProvider {
-  private readonly transporter: nodemailer.Transporter;
+export class ResendEmailProvider extends EmailProvider {
+  private readonly client: Resend;
 
   constructor(private readonly configService: ConfigService) {
     super();
 
-    this.transporter = nodemailer.createTransport({
-      service: 'gmail',
-      host: 'smtp.gmail.com',
-      port: 587,
-      secure: false,
-      auth: {
-        user: this.configService.get('NODEMAILER_EMAIL_USER'),
-        pass: this.configService.get('NODEMAILER_EMAIL_PASSWORD'),
-      },
-    });
+    this.client = new Resend(this.configService.get('RESEND_API_KEY'));
   }
 
   async sendEmail(props: {
@@ -35,9 +26,12 @@ export class NodeMailerEmailProvider extends EmailProvider {
       throw new Error('Invalid from email');
     }
 
-    await this.transporter.sendMail({
-      ...props,
-      from: props.from || this.configService.get('NODEMAILER_EMAIL_USER'),
+    await this.client.emails.send({
+      from: this.configService.get('RESEND_FROM_EMAIL'),
+      to: props.to,
+      subject: props.subject,
+      text: props.text,
+      html: props.html,
     });
   }
 }

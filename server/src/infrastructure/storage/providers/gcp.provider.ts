@@ -13,7 +13,10 @@ export class GcpStorageProvider implements StorageProvider {
       projectId: this.configService.get('GCP_PROJECT_ID'),
       credentials: {
         client_email: this.configService.get('GCP_CLIENT_EMAIL'),
-        private_key: this.configService.get('GCP_PRIVATE_KEY'),
+        private_key: this.configService
+          .get('GCP_PRIVATE_KEY')
+          .split(String.raw`\n`)
+          .join('\n'), // https://stackoverflow.com/questions/74131595/error-error1e08010cdecoder-routinesunsupported-with-google-auth-library
       },
     });
     this.bucket = this.storage.bucket(
@@ -22,7 +25,11 @@ export class GcpStorageProvider implements StorageProvider {
   }
 
   async uploadFile(path: string, file: Buffer): Promise<void> {
-    await this.bucket.file(path).save(file);
+    try {
+      await this.bucket.file(path).save(file);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   async downloadFile(path: string): Promise<Buffer> {

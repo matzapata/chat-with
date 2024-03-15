@@ -1,14 +1,5 @@
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-  Table,
-} from "@/components/ui/table";
-import { subscriptionConfig } from "@/config/subscription";
 import { apiService } from "@/lib/services/api-service";
 import { paymentsService } from "@/lib/services/payments-service";
 import { Square3Stack3DIcon } from "@heroicons/react/24/outline";
@@ -19,9 +10,12 @@ export default async function Billing() {
   const { getAccessTokenRaw } = getKindeServerSession();
   apiService.setAccessToken(await getAccessTokenRaw());
 
+  // Get all plans
+  const plans = await paymentsService.getPlans();
+
   // Get the user's subscription
   const userPlan = await paymentsService.getSubscription();
-  const userPlanId = userPlan?.id ?? null;
+  const userPlanId = userPlan?.variant_id ?? null;
 
   // If no plan create checkout for user. Else get the management portal link
   let checkoutUrl: string | undefined;
@@ -29,7 +23,7 @@ export default async function Billing() {
   if (userPlanId) {
     try {
       // check if the user has an active subscription
-      checkoutUrl = await paymentsService.createCheckout(subscriptionConfig.proPlan.id);
+      checkoutUrl = await paymentsService.createCheckout(plans.pro.variant_id as string);
     } catch (e) {}
   } else {
     try {
@@ -37,9 +31,6 @@ export default async function Billing() {
       portalUrl = await paymentsService.createPortal();
     } catch (e) {}
   }
-
-  // Get the plans
-  const plans = Object.values(subscriptionConfig);
 
   return (
     <div className="py-8 md:py-12 space-y-8 max-w-6xl mx-auto">
@@ -67,14 +58,14 @@ export default async function Billing() {
 
         <div className="space-y-4 col-span-2 md:pt-5">
           {/* Plans cards */}
-          {plans.map((plan) => (
+          {Object.values(plans).map((plan) => (
             <PlanCard
-              key={plan.id}
+              key={plan.variant_id}
               description={plan.description}
               interval={plan.interval}
               name={plan.name}
               price={plan.price}
-              selected={userPlanId === plan.id}
+              selected={userPlanId === plan.variant_id}
             />
           ))}
 
@@ -98,9 +89,6 @@ export default async function Billing() {
           )}
         </div>
       </div>
-
-      {/* Billing history */}
-      {/* <BillingAndInvoicing /> */}
     </div>
   );
 }
@@ -156,65 +144,6 @@ function PlanCard(props: {
           <span className="text-gray-600 ml-1">per {props.interval}</span>
         </div>
         <p className="text-gray-600">{props.description}</p>
-      </div>
-    </div>
-  );
-}
-
-// TODO: bring back or remove
-function BillingAndInvoicing() {
-  return (
-    <div className="md:px-8 md:space-y-6">
-      <div className="px-4 md:px-0 space-y-1 md:pb-5 md:border-b">
-        <h2 className="text-lg font-semibold text-gray-900">
-          Billing and invoicing
-        </h2>
-        <p className="text-gray-600">
-          Pick an account plan that fits your workflow.
-        </p>
-      </div>
-
-      <div className="space-y-6 md:space-y-0 md:grid md:grid-cols-3">
-        <div className="px-4 md:px-0 hidden md:block">
-          <h1 className="text-lg md:text-sm text-gray-900 font-semibold">
-            Billing history
-          </h1>
-          <p className="text-gray-600 text-sm">
-            Please reach out to our friendly team via billing@untitled.com with
-            questions.
-          </p>
-        </div>
-
-        {/* Invoices table */}
-        <div className="md:col-span-2 border-t md:border md:rounded-xl ">
-          <Table className="">
-            <TableHeader>
-              <TableRow className="">
-                <TableHead className="bg-gray-50 md:rounded-tl-xl text-gray-600 px-6 text-sm font-medium ">
-                  Invoice
-                </TableHead>
-                <TableHead className="bg-gray-50 md:rounded-tr-xl text-gray-600 px-6 text-sm font-medium text-right">
-                  Amount
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody className="divide-y">
-              <TableRow>
-                <TableCell className="p-6 font-medium">
-                  Basic plan - Dec
-                </TableCell>
-                <TableCell className="p-6 text-right">$250.00</TableCell>
-              </TableRow>
-
-              <TableRow>
-                <TableCell className="p-6 font-medium">
-                  Basic plan - Nov
-                </TableCell>
-                <TableCell className="p-6 text-right">$250.00</TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </div>
       </div>
     </div>
   );

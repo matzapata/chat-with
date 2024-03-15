@@ -10,6 +10,7 @@ import { UserSubscriptionService } from './services/user-subscription.service';
 import { WebhookEventsService } from './services/webhook-events-service';
 import { User } from 'src/users/entities/user.entity';
 import { EmailService } from 'src/infrastructure/emails/email.service';
+import { PlanCheckerService } from './services/plan-checker.service';
 
 @Module({
   providers: [
@@ -19,8 +20,10 @@ import { EmailService } from 'src/infrastructure/emails/email.service';
     UserSubscriptionService,
     WebhookEventsService,
     EmailService,
+    PlanCheckerService,
   ],
   imports: [TypeOrmModule.forFeature([UserSubscription, WebhookEvent, User])],
   controllers: [PaymentsController],
+  exports: [PlanCheckerService, UserSubscriptionService],
 })
 export class PaymentsModule {}

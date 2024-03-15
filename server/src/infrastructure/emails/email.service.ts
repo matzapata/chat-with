@@ -1,2 +1,2 @@
 // Select a provider from the providers folder
-export { NodeMailerEmailProvider as EmailService } from './providers/nodemailer.provider';
+export { ResendEmailProvider as EmailService } from './providers/resend.provider';

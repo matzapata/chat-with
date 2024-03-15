@@ -1,5 +1,5 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Between, Repository } from 'typeorm';
 import { Chat } from '../entities/chat.entity';
 import { User } from 'src/users/entities/user.entity';
 import { ChatMessage } from '../entities/messages.entity';
@@ -76,5 +76,19 @@ export class ChatsService {
       }),
     );
     return this.messagesRepository.save(chatMessages);
+  }
+
+  async countMessagesByOwner(
+    owner: User,
+    from: Date,
+    to: Date,
+  ): Promise<number> {
+    return this.messagesRepository.count({
+      where: { created_at: Between(from, to), chat: { owner: owner } },
+    });
+  }
+
+  async countDocumentsByOwner(owner: User): Promise<number> {
+    return this.chatRepository.count({ where: { owner } });
   }
 }

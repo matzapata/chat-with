@@ -27,11 +27,9 @@ export interface ChatMessage {
     role: MessageRole;
 }
 
-
 export interface ChatDto extends ChatMetadataDto {
     messages: ChatMessage[];
 }
-
 
 export class ChatService {
 

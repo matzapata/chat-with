@@ -1,0 +1,10 @@
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Vary: Origin
+Content-Type: application/json; charset=utf-8
+Content-Length: 695
+ETag: W/"2b7-rl0xzMPsubdgNxnblZdmDkUiofc"
+Date: Fri, 15 Mar 2024 16:35:29 GMT
+Connection: close
+
+{"userMessage":{"message":"Who is juan?","agent":"USER","chat":{"id":"130b771c-3eab-42cd-9f62-954b48316a3d","filename":"CV - Zapata Matias - EN.pdf","filesize":113928,"mimetype":"application/pdf","created_at":"2024-03-14T10:25:45.345Z","embeddings_ids":["33"]},"id":25,"created_at":"2024-03-15T13:35:29.658Z"},"aiMessage":{"message":"AI: I'm sorry, but there is no information or context provided about Juan in the given text.","agent":"AI","chat":{"id":"130b771c-3eab-42cd-9f62-954b48316a3d","filename":"CV - Zapata Matias - EN.pdf","filesize":113928,"mimetype":"application/pdf","created_at":"2024-03-14T10:25:45.345Z","embeddings_ids":["33"]},"id":26,"created_at":"2024-03-15T13:35:29.663Z"}}

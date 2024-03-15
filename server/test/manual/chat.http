@@ -17,7 +17,6 @@ Content-Type: text/plain
 < ./data/example.txt
 ------boundary--
 
-
 ### GET /api/chats/:id Get the chat with the messages available
 GET http://{{host}}/api/chats/95ce48c4-912e-4360-8d3d-a02134a4b050
 Authorization: Bearer {{token}}
@@ -28,7 +27,7 @@ Authorization: Bearer {{token}}
 
 
 ### PUT /api/chats/:id add a message to the chat
-PUT http://{{host}}/api/chats/95ce48c4-912e-4360-8d3d-a02134a4b050
+PUT http://{{host}}/api/chats/130b771c-3eab-42cd-9f62-954b48316a3d
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

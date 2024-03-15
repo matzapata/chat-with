@@ -30,6 +30,7 @@ import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { ChatMetadataDto } from './dtos/chat-metadata.dto';
 import { ChatDto } from './dtos/chat.dto';
 import { StorageService } from 'src/infrastructure/storage/storage.service';
+import { PlanCheckerService } from 'src/payments/services/plan-checker.service';
 
 // One chat conversation per file. so files and chats are associated
 
@@ -40,6 +41,7 @@ export class ChatController {
     private readonly ragService: RetrievalAugmentedGenerationService,
     private readonly chatsService: ChatsService,
     private readonly storageService: StorageService,
+    private readonly planCheckerService: PlanCheckerService,
   ) {}
 
   @Get('/')
@@ -66,6 +68,10 @@ export class ChatController {
     file: Express.Multer.File,
     @CurrentUser() user: User,
   ) {
+    // Check user's plan
+    const documentsCount = await this.chatsService.countDocumentsByOwner(user);
+    await this.planCheckerService.canUploadDocument(user, documentsCount);
+
     // Check if there's already a chat for the file
     const existingChat = await this.chatsService.findFileForOwner(
       user,
@@ -91,11 +97,8 @@ export class ChatController {
       embeddingsIds,
     );
 
-    // TODO: store file in storage
-    // await this.storageService.uploadFile(
-    //   `${user.id}/${chat.id}-${file.originalname}`,
-    //   file.buffer,
-    // );
+    // store file in storage
+    await this.storageService.uploadFile(`${user.id}/aaa`, file.buffer);
 
     return chat;
   }
@@ -124,6 +127,15 @@ export class ChatController {
     @CurrentUser() user: User,
     @Param('id') id: string,
   ) {
+    // Check user's plan
+    const startOfToday = new Date(new Date().setHours(0, 0, 0, 0));
+    const messageCount = await this.chatsService.countMessagesByOwner(
+      user,
+      startOfToday,
+      new Date(),
+    );
+    await this.planCheckerService.canSendMessage(user, messageCount);
+
     // Check user has permissions
     const chat = await this.chatsService.findById(id);
     if (!chat) {

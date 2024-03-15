@@ -1,6 +1,10 @@
 
 # Manual testing http requests with extension REST Client
 
+### GET /api/payments/plans gets the plans details
+GET http://{{host}}/api/payments/plans
+
+
 ### POST /api/payments/subscription creates a subscription link for the user
 POST http://{{host}}/api/payments/subscription
 Content-Type: application/json

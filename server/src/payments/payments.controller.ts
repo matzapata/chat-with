@@ -6,7 +6,6 @@ import {
   HttpCode,
   NotFoundException,
   Post,
-  Res,
   UseGuards,
 } from '@nestjs/common';
 import { CurrentUser } from 'src/users/decorators/current-user.decorator';
@@ -22,7 +21,7 @@ import {
   SubscriptionStatus,
   WebhookEventName,
 } from 'src/infrastructure/payments/providers/payment.provider';
-import { Response } from 'express';
+import { plans } from './config/plans';
 
 @Controller('api/payments')
 export class PaymentsController {
@@ -34,11 +33,18 @@ export class PaymentsController {
     private readonly emailService: EmailService,
   ) {}
 
+  @Get('/plans')
+  async getPlans() {
+    return plans;
+  }
+
   @Get('/subscription')
   @UseGuards(AuthGuard)
   async getSubscription(@CurrentUser() user: User) {
     const subs = await this.userSubscriptionService.findByUserId(user.id);
-    return { subscription: subs };
+    const planId = subs?.variant_id ?? null;
+    const plan = Object.values(plans).find((p) => p.variant_id === planId);
+    return { subscription: subs, plan };
   }
 
   @Post('/subscription')

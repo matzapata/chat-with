@@ -13,7 +13,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { toast } from "@/components/ui/use-toast";
-import { ChatMetadataDto, MimeType, chatService } from "@/lib/services/chat-service";
+import {
+  ChatMetadataDto,
+  MimeType,
+  chatService,
+} from "@/lib/services/chat-service";
 import { EllipsisVerticalIcon } from "@heroicons/react/24/solid";
 import { PlusIcon } from "@heroicons/react/16/solid";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
@@ -26,7 +30,6 @@ import { IconUploadCloud } from "@/components/ui/icons";
 export default function ChatsPanel(props: { initialChats: ChatMetadataDto[] }) {
   const router = useRouter();
   const [search, setSearch] = useState("");
-  // const { accessTokenRaw } = useKindeBrowserClient();
   const [chats, setChats] = useState<ChatMetadataDto[]>(props.initialChats);
   const [uploadingFile, setUploadingFile] = useState<{
     filename: string;
@@ -34,7 +37,6 @@ export default function ChatsPanel(props: { initialChats: ChatMetadataDto[] }) {
     type: MimeType;
     percentage: number;
   } | null>(null);
-
 
   const uploadFile = async (files: any[]) => {
     const file = files[0];
@@ -67,12 +69,12 @@ export default function ChatsPanel(props: { initialChats: ChatMetadataDto[] }) {
         setUploadingFile((prev: any) => ({ ...prev, percentage: progress }));
       });
       setChats((c) => [...c, newChat]);
-
-      // queryClient.invalidateQueries({ queryKey: ["chats"] });
-    } catch (error) {
+    } catch (error: any) {
       return toast({
         variant: "destructive",
-        description: "Something went wrong. Please try again.",
+        description:
+          "Something went wrong. Please try again. " +
+          error?.response.data.message,
       });
     } finally {
       setUploadingFile(null);
@@ -84,9 +86,7 @@ export default function ChatsPanel(props: { initialChats: ChatMetadataDto[] }) {
       <div className="pt-12 pb-24 max-w-6xl mx-auto space-y-6">
         {/* Heading */}
         <div className="px-4 md:px-8 space-y-8 ">
-          <h1 className="font-semibold text-2xl md:3xl text-gray-900">
-            Chats
-          </h1>
+          <h1 className="font-semibold text-2xl md:3xl text-gray-900">Chats</h1>
 
           <div className=" space-y-1 pb-5 border-b">
             <h2 className="text-lg font-semibold text-gray-900">
@@ -155,7 +155,8 @@ export default function ChatsPanel(props: { initialChats: ChatMetadataDto[] }) {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {chats.filter((c) => {
+                  {chats
+                    .filter((c) => {
                       if (search === "") return true;
                       return c.filename
                         .toLowerCase()
