@@ -99,7 +99,7 @@ export default function Navbar(props: NavbarProps) {
         {/* Mobile burger and menu */}
         <div className="md:hidden flex space-x-4 items-center">
           <div>
-            {true ? (
+            {props.user.isPro ? (
               <div className="bg-brand-200 text-xs px-2 py-0.5 rounded-full text-brand-600 font-medium border border-brand-600">
                 PRO
               </div>
