@@ -24,14 +24,14 @@ export interface NavbarItem {
 }
 
 export default function Navbar({ items }: { items: NavbarItem[] }) {
-  const { user } = useKindeBrowserClient();
+  const { user, accessTokenRaw } = useKindeBrowserClient();
 
   return (
     <div className="border-b h-16 border-b-gray-200 flex justify-center">
-      <div className="px-8 w-full flex justify-between py-3 items-center">
+      <div className="px-4 md:px-8 w-full flex justify-between py-3 items-center">
         <div className="flex items-center">
           <Logo />
-          <div className="flex items-center space-x-2 ml-4">
+          <div className="hidden md:flex items-center space-x-2 ml-4">
             {items.map((item, i) => (
               <Link
                 key={i}

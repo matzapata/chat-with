@@ -48,4 +48,15 @@ export class UserSubscriptionService {
       return this.create(user, subscription);
     }
   }
+
+  async delete(user_id: string): Promise<void> {
+    const sub = await this.subscriptionUserRepo.findOneBy({
+      user: { id: user_id },
+    });
+    if (sub) {
+      await this.subscriptionUserRepo.remove(sub).catch((e) => {
+        console.log(e);
+      });
+    }
+  }
 }

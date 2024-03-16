@@ -20,11 +20,14 @@ export class User {
   @Column({ nullable: true })
   name?: string;
 
-  @OneToOne(() => UserSubscription, (subscription) => subscription.user)
+  @OneToOne(() => UserSubscription, (subscription) => subscription.user, {
+    nullable: true,
+    onDelete: 'SET NULL',
+  })
   @JoinColumn()
   subscription: UserSubscription;
 
-  @OneToMany(() => Chat, (c) => c.owner)
+  @OneToMany(() => Chat, (c) => c.owner, { onDelete: 'CASCADE' })
   @JoinColumn()
   chats: Chat[];
 }

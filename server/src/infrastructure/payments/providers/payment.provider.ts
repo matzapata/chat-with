@@ -104,5 +104,5 @@ export abstract class PaymentProvider {
   abstract parseWebhookEvent(
     body: { [key: string]: any },
     headers: { [h: string]: any },
-  ): Promise<{ event: WebhookEventName; data: WebhookEventData }>;
+  ): Promise<{ event: WebhookEventName; data?: WebhookEventData }>;
 }

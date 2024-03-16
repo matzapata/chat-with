@@ -111,9 +111,9 @@ export class ChatController {
     await this.ragService.deleteDocuments(chat.embeddings_ids);
 
     // delete file from storage
-    await this.storageService.deleteFile(
-      `${chat.owner.id}/${chat.id}-${chat.filename}`,
-    );
+    await this.storageService
+      .deleteFile(`${chat.owner.id}/${chat.id}-${chat.filename}`)
+      .catch(() => null); // ignore not found errors
 
     // delete file from files db
     await this.chatsService.delete(id);

@@ -11,6 +11,7 @@ export default function MarketingLayout({
     <div>
       <Navbar />
       {children}
+      
       <Faq />
       <Footer />
     </div>

@@ -1,7 +1,7 @@
 "use client";
 
-import FileCard from "@/components/chats-panel/file-card";
-import FileIcon from "@/components/chats-panel/file-icon";
+import FileCard from "@/components/chat-panel/file-card";
+import FileIcon from "@/components/chat-panel/file-icon";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {

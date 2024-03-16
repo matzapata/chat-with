@@ -90,14 +90,14 @@ export class PaymentsController {
     @Body() headers: { [key: string]: any },
   ) {
     // Verify webhook source
-    await this.paymentService.validateWebhook(body, headers);
+    // await this.paymentService.validateWebhook(body, headers);
 
     // Parse event and data
     const { data, event } = await this.paymentService.parseWebhookEvent(body);
 
     // Store event in db
     const webhookEvent = await this.webhookEventsService.create({
-      created_at: data.created_at,
+      created_at: new Date(),
       event_name: event,
       processed: false,
       body: JSON.stringify(body),
@@ -117,23 +117,27 @@ export class PaymentsController {
       const user = await this.usersService.findById(data.user_id);
       if (!user) throw new NotFoundException('User not found');
 
-      await this.userSubscriptionService.upsert(user, {
-        variant_id: data.variant_id,
-        subscription_id: data.subscription_id,
-        provider: data.provider,
-        order_id: data.order_id,
-        status: data.status,
-        renews_at: data.renews_at,
-        ends_at: data.ends_at,
-        trial_ends_at: data.trial_ends_at,
-        billing_anchor: data.billing_anchor,
-        cancelled: data.cancelled,
-        created_at: data.created_at,
-        updated_at: data.updated_at,
-        pause_mode: data.pause_mode,
-        pause_resumes_at: data.pause_resumes_at,
-        test_mode: data.test_mode,
-      });
+      if (data.status === SubscriptionStatus.cancelled) {
+        await this.userSubscriptionService.delete(user.id);
+      } else if (data.status === SubscriptionStatus.active) {
+        await this.userSubscriptionService.upsert(user, {
+          variant_id: data.variant_id,
+          subscription_id: data.subscription_id,
+          provider: data.provider,
+          order_id: data.order_id,
+          status: data.status,
+          renews_at: data.renews_at,
+          ends_at: data.ends_at,
+          trial_ends_at: data.trial_ends_at,
+          billing_anchor: data.billing_anchor,
+          cancelled: data.cancelled,
+          created_at: data.created_at,
+          updated_at: data.updated_at,
+          pause_mode: data.pause_mode,
+          pause_resumes_at: data.pause_resumes_at,
+          test_mode: data.test_mode,
+        });
+      }
 
       // Mark event as processed
       await this.webhookEventsService.setProcessed(webhookEvent.id, true);

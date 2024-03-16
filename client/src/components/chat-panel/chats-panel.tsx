@@ -1,7 +1,7 @@
 "use client";
 
-import FileCard from "@/components/chats-panel/file-card";
-import FileIcon from "@/components/chats-panel/file-icon";
+import FileCard from "@/components/chat-panel/file-card";
+import FileIcon from "@/components/chat-panel/file-icon";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -19,13 +19,17 @@ import {
   chatService,
 } from "@/lib/services/chat-service";
 import { EllipsisVerticalIcon } from "@heroicons/react/24/solid";
-import { PlusIcon } from "@heroicons/react/16/solid";
-import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Dropzone from "react-dropzone";
 import { IconUploadCloud } from "@/components/ui/icons";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 
 export default function ChatsPanel(props: { initialChats: ChatMetadataDto[] }) {
   const router = useRouter();
@@ -80,6 +84,20 @@ export default function ChatsPanel(props: { initialChats: ChatMetadataDto[] }) {
       setUploadingFile(null);
     }
   };
+
+  const deleteFile = async (id: string) => {
+    try {
+      await chatService.deleteChat(id);
+      setChats((c) => c.filter((chat) => chat.id !== id));
+    } catch (error: any) {
+      return toast({
+        variant: "destructive",
+        description:
+          "Something went wrong. Please try again. " +
+          error?.response.data.message,
+      });
+    }
+  }
 
   return (
     <main>
@@ -187,9 +205,29 @@ export default function ChatsPanel(props: { initialChats: ChatMetadataDto[] }) {
                           {chat.created_at.toDateString()}
                         </TableCell>
                         <TableCell className="text-right">
-                          <button>
-                            <EllipsisVerticalIcon className="h-5 w-5" />
-                          </button>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger>
+                              <EllipsisVerticalIcon className="h-5 w-5" />
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent>
+                              <DropdownMenuItem
+                                className="cursor-pointer"
+                                onClick={() => alert("Download")}
+                              >
+                                Download
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                className="cursor-pointer"
+                                onClick={() => {
+                                  if (window.confirm("Are you sure you want to delete this chat?")) {
+                                    deleteFile(chat.id);
+                                  }
+                                }}
+                              >
+                                Delete
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
                         </TableCell>
                       </TableRow>
                     ))}

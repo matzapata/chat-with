@@ -301,9 +301,9 @@ export class LemonSqueezyPaymentProvider implements PaymentProvider {
 
   async parseWebhookEvent(body: {
     [key: string]: any;
-  }): Promise<{ event: WebhookEventName; data: WebhookEventData }> {
+  }): Promise<{ event: WebhookEventName; data?: WebhookEventData }> {
     let event: WebhookEventName;
-    let data: WebhookEventData;
+    let data: WebhookEventData | undefined;
 
     switch (body.meta.event_name) {
       case 'subscription_created':

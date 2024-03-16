@@ -72,6 +72,10 @@ export class ChatService {
         }
     }
 
+    async deleteChat(id: string): Promise<void> {
+        await this.client.delete(`/api/chats/${id}`)
+    }
+
 
 }
 

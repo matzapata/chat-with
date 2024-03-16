@@ -1,10 +1,11 @@
-import { buttonVariants } from "@/components/ui/button";
+import GoProButton from "@/components/billing/go-pro-button";
+import PortalButton from "@/components/billing/portal-button";
 import { Checkbox } from "@/components/ui/checkbox";
+import SettingsLayout from "@/layouts/settings-layout";
 import { apiService } from "@/lib/services/api-service";
 import { paymentsService } from "@/lib/services/payments-service";
 import { Square3Stack3DIcon } from "@heroicons/react/24/outline";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import Link from "next/link";
 
 export default async function Billing() {
   const { getAccessTokenRaw } = getKindeServerSession();
@@ -20,10 +21,12 @@ export default async function Billing() {
   // If no plan create checkout for user. Else get the management portal link
   let checkoutUrl: string | undefined;
   let portalUrl: string | undefined;
-  if (userPlanId) {
+  if (!userPlanId) {
     try {
       // check if the user has an active subscription
-      checkoutUrl = await paymentsService.createCheckout(plans.pro.variant_id as string);
+      checkoutUrl = await paymentsService.createCheckout(
+        plans.pro.variant_id as string
+      );
     } catch (e) {}
   } else {
     try {
@@ -33,63 +36,58 @@ export default async function Billing() {
   }
 
   return (
-    <div className="py-8 md:py-12 space-y-8 max-w-6xl mx-auto">
-      {/* Heading */}
-      <div className="px-4 md:px-8 space-y-8 ">
-        <h1 className="font-semibold text-2xl md:3xl text-gray-900">Billing</h1>
+    <SettingsLayout>
+      <div className="py-8 md:py-12 space-y-8 max-w-6xl mx-auto">
+        {/* Heading */}
+        <div className="px-4 md:px-8 space-y-8 ">
+          <h1 className="font-semibold text-2xl md:3xl text-gray-900">
+            Billing
+          </h1>
 
-        <div className=" space-y-1 pb-5 border-b">
-          <h2 className="text-lg font-semibold text-gray-900">Account plans</h2>
-          <p className="text-gray-600">
-            Pick an account plan that fits your workflow.
-          </p>
+          <div className=" space-y-1 pb-5 border-b">
+            <h2 className="text-lg font-semibold text-gray-900">
+              Account plans
+            </h2>
+            <p className="text-gray-600">
+              Pick an account plan that fits your workflow.
+            </p>
+          </div>
+        </div>
+
+        {/* Plans */}
+        <div className="px-4 md:px-8 grid grid-cols-1 gap-4 md:grid-cols-3">
+          <div className="">
+            <h2 className=" text-sm font-semibold text-gray-900">
+              Current plan
+            </h2>
+            <p className=" text-sm text-gray-600">
+              We’ll credit your account if you need to downgrade during the
+              billing cycle.
+            </p>
+          </div>
+
+          <div className="space-y-4 col-span-2 md:pt-5">
+            {/* Plans cards */}
+            {Object.values(plans).map((plan) => (
+              <PlanCard
+                key={plan.variant_id}
+                description={plan.description}
+                interval={plan.interval}
+                name={plan.name}
+                price={plan.price}
+                selected={userPlanId === plan.variant_id}
+              />
+            ))}
+
+            {userPlan === null ? (
+              <GoProButton checkoutUrl={checkoutUrl} />
+            ) : (
+              <PortalButton portalUrl={portalUrl} />
+            )}
+          </div>
         </div>
       </div>
-
-      {/* Plans */}
-      <div className="px-4 md:px-8 grid grid-cols-1 gap-4 md:grid-cols-3">
-        <div className="">
-          <h2 className=" text-sm font-semibold text-gray-900">Current plan</h2>
-          <p className=" text-sm text-gray-600">
-            We’ll credit your account if you need to downgrade during the
-            billing cycle.
-          </p>
-        </div>
-
-        <div className="space-y-4 col-span-2 md:pt-5">
-          {/* Plans cards */}
-          {Object.values(plans).map((plan) => (
-            <PlanCard
-              key={plan.variant_id}
-              description={plan.description}
-              interval={plan.interval}
-              name={plan.name}
-              price={plan.price}
-              selected={userPlanId === plan.variant_id}
-            />
-          ))}
-
-          {userPlan === null ? (
-            <Link
-              href={checkoutUrl ?? ""}
-              className={buttonVariants({ variant: "primary", size: "sm" })}
-            >
-              Go PRO!
-            </Link>
-          ) : (
-            <Link
-              href={portalUrl ?? ""}
-              className={buttonVariants({
-                variant: "secondary-gray",
-                size: "sm",
-              })}
-            >
-              Manage
-            </Link>
-          )}
-        </div>
-      </div>
-    </div>
+    </SettingsLayout>
   );
 }
 

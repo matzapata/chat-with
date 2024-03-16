@@ -4,7 +4,7 @@ import Navbar, { NavbarItem } from "@/components/navbar/app";
 import { IconHome } from "@/components/ui/icons";
 import Link from "next/link";
 
-export default function AppLayout({
+export default function SettingsLayout({
   children,
   items,
   nestedItems,
@@ -15,20 +15,28 @@ export default function AppLayout({
   items?: NavbarItem[];
   nestedItems?: NavbarItem[];
 }) {
+  items = items ?? [
+    {
+      title: "Chats",
+      icon: <IconHome className="h-5 w-5 text-gray-500" />,
+      link: "/app/chat",
+    },
+  ];
+  nestedItems = nestedItems ?? [
+    {
+      link: "/app/settings",
+      title: "General",
+    },
+    {
+      link: "/app/settings/billing",
+      title: "Billing",
+    },
+  ];
+
   return (
     <>
       <nav className={className ?? ""}>
-        <Navbar
-          items={
-            items ?? [
-              {
-                title: "Chats",
-                icon: <IconHome className="h-5 w-5 text-gray-500" />,
-                link: "/app/chat",
-              },
-            ]
-          }
-        />
+        <Navbar items={items} />
 
         {/* Submenu */}
         {nestedItems && (
@@ -38,7 +46,9 @@ export default function AppLayout({
                 <Link
                   key={i}
                   href={item.link}
-                  className={"px-3 py-2 text-sm font-semibold text-gray-700 rounded hover:bg-gray-50"}
+                  className={
+                    "px-3 py-2 text-sm font-semibold text-gray-700 rounded hover:bg-gray-50"
+                  }
                 >
                   {item.title}
                 </Link>
@@ -47,6 +57,7 @@ export default function AppLayout({
           </div>
         )}
       </nav>
+
       <main>{children}</main>
     </>
   );
