@@ -7,12 +7,8 @@ GET http://{{host}}/api/payments/plans
 
 ### POST /api/payments/subscription creates a subscription link for the user
 POST http://{{host}}/api/payments/subscription
-Content-Type: application/json
 Authorization: Bearer {{token}}
 
-{
-  "variant_id": "99201"
-}
 
 ### GET /api/payments/subscription gets the subscription for the logged in user
 GET http://{{host}}/api/payments/subscription

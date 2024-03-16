@@ -1,9 +1,14 @@
 import { apiService } from "@/lib/services/api-service"
 import { AxiosInstance } from "axios"
+import { SubscriptionPlan } from "./payments-service";
 
 interface UserDto {
+    id: string;
     email: string;
     name?: string;
+    is_pro: boolean;
+    plan: SubscriptionPlan;
+    subscription: {} | null; // TODO: define subscription type
 }
 
 export class UserService {

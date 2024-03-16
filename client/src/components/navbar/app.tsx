@@ -15,16 +15,20 @@ import {
 import { IconLifeBuoy, IconLogOut, IconSettings } from "../ui/icons";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
+import GoProButton from "../billing/go-pro-button";
 
+export interface NavbarProps {
+  items?: NavbarItem[];
+  user: { email?: string; isPro?: boolean; picture?: string };
+}
 export interface NavbarItem {
   title: string;
   link: string;
   icon?: React.ReactNode;
 }
 
-export default function Navbar({ items }: { items: NavbarItem[] }) {
-  const { user, accessTokenRaw } = useKindeBrowserClient();
+export default function Navbar(props: NavbarProps) {
+  const items = props.items ?? [];
 
   return (
     <div className="border-b h-16 border-b-gray-200 flex justify-center">
@@ -45,6 +49,16 @@ export default function Navbar({ items }: { items: NavbarItem[] }) {
         </div>
 
         <div className="hidden md:flex items-center space-x-4">
+          <div>
+            {props.user.isPro ? (
+              <div className="bg-brand-200 text-xs px-2 py-0.5 rounded-full text-brand-600 font-medium border border-brand-600">
+                PRO
+              </div>
+            ) : (
+              <GoProButton />
+            )}
+          </div>
+
           <Link
             href={"/app/settings"}
             className="rounded-md py-2 px-[10px] hover:bg-gray-50 "
@@ -56,9 +70,9 @@ export default function Navbar({ items }: { items: NavbarItem[] }) {
             <DropdownMenuTrigger className="focus:outline-none">
               <Avatar>
                 {/* TODO: add image */}
-                <AvatarImage src={undefined} /> 
+                <AvatarImage src={undefined} />
                 <AvatarFallback>
-                  {Array.from(user?.email ?? "c")[0].toUpperCase()}
+                  {Array.from(props.user?.email ?? "c")[0].toUpperCase()}
                 </AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
@@ -66,7 +80,7 @@ export default function Navbar({ items }: { items: NavbarItem[] }) {
               <DropdownMenuLabel>
                 <div className="space-y-1">
                   <p>My Account</p>
-                  <p className="font-normal pr-4">{user?.email}</p>
+                  <p className="font-normal pr-4">{props.user?.email}</p>
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
@@ -83,7 +97,17 @@ export default function Navbar({ items }: { items: NavbarItem[] }) {
         </div>
 
         {/* Mobile burger and menu */}
-        <div className="md:hidden">
+        <div className="md:hidden flex space-x-4 items-center">
+          <div>
+            {true ? (
+              <div className="bg-brand-200 text-xs px-2 py-0.5 rounded-full text-brand-600 font-medium border border-brand-600">
+                PRO
+              </div>
+            ) : (
+              <GoProButton />
+            )}
+          </div>
+
           <Sheet>
             <SheetTrigger asChild>
               <button className="items-center h-9 w-9 p-0 flex justify-center">
@@ -98,7 +122,7 @@ export default function Navbar({ items }: { items: NavbarItem[] }) {
                 <Logo />
               </div>
 
-              <div className="mt-5 space-y-2 px-2 flex-1">
+              <div className="space-y-2 px-2 flex-1">
                 {items.map((item, i) => (
                   <SidebarNavItem key={i} title={item.title} icon={item.icon} />
                 ))}
@@ -121,16 +145,15 @@ export default function Navbar({ items }: { items: NavbarItem[] }) {
                     {/* Avatar */}
                     <Avatar>
                       {/* TODO: add image */}
-                      <AvatarImage src={user?.picture ?? undefined} />
+                      <AvatarImage src={props.user?.picture ?? undefined} />
                       <AvatarFallback>
-                        {Array.from(user?.email ?? "c")[0].toUpperCase()}
+                        {Array.from(props.user?.email ?? "c")[0].toUpperCase()}
                       </AvatarFallback>
                     </Avatar>
 
                     {/* Name and email */}
-                    <div className="ml-3">
-                      <p className="text-sm font-semibold">Olivia Rhye</p>
-                      <p className="text-sm">{user?.email}</p>
+                    <div className="ml-3 items-center flex">
+                      <p className="text-sm">{props.user?.email}</p>
                     </div>
                   </div>
 

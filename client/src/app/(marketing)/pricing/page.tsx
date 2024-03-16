@@ -22,7 +22,7 @@ export default async function PricingPage() {
   if (accessTokenRaw) {
     try {
       // check if the user has an active subscription
-      checkoutUrl = await paymentsService.createCheckout(plans.pro.variant_id as string);
+      checkoutUrl = await paymentsService.createCheckout();
     } catch (e) {}
   }
 

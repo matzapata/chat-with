@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserSubscription } from '../entities/user-subscription';
 import { User } from 'src/users/entities/user.entity';
+import { SubscriptionPlan, plans } from '../config/plans';
 
 @Injectable()
 export class UserSubscriptionService {
@@ -11,12 +12,16 @@ export class UserSubscriptionService {
     private readonly subscriptionUserRepo: Repository<UserSubscription>,
   ) {}
 
-  async findByUserId(user_id: string): Promise<UserSubscription | null> {
-    return this.subscriptionUserRepo.findOneBy({ user: { id: user_id } });
-  }
-
-  async findAll() {
-    return this.subscriptionUserRepo.find();
+  async find(
+    user: User,
+  ): Promise<{ sub: UserSubscription | null; plan: SubscriptionPlan }> {
+    const sub = await this.subscriptionUserRepo.findOneBy({ user });
+    return {
+      sub,
+      plan: Object.values(plans).find(
+        (p) => p.variant_id === (sub?.variant_id || null),
+      ),
+    };
   }
 
   async create(

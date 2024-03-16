@@ -4,6 +4,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import SettingsLayout from "@/layouts/settings-layout";
 import { apiService } from "@/lib/services/api-service";
 import { paymentsService } from "@/lib/services/payments-service";
+import { userService } from "@/lib/services/user-service";
 import { Square3Stack3DIcon } from "@heroicons/react/24/outline";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
@@ -11,32 +12,14 @@ export default async function Billing() {
   const { getAccessTokenRaw } = getKindeServerSession();
   apiService.setAccessToken(await getAccessTokenRaw());
 
-  // Get all plans
-  const plans = await paymentsService.getPlans();
-
-  // Get the user's subscription
-  const userPlan = await paymentsService.getSubscription();
-  const userPlanId = userPlan?.variant_id ?? null;
-
-  // If no plan create checkout for user. Else get the management portal link
-  let checkoutUrl: string | undefined;
-  let portalUrl: string | undefined;
-  if (!userPlanId) {
-    try {
-      // check if the user has an active subscription
-      checkoutUrl = await paymentsService.createCheckout(
-        plans.pro.variant_id as string
-      );
-    } catch (e) {}
-  } else {
-    try {
-      // Create management portal link
-      portalUrl = await paymentsService.createPortal();
-    } catch (e) {}
-  }
+  // Get all plans and user data
+  const [plans, user] = await Promise.all([
+    paymentsService.getPlans(),
+    userService.get(),
+  ]);
 
   return (
-    <SettingsLayout>
+    <SettingsLayout user={{ email: user.email, isPro: user.is_pro }}>
       <div className="py-8 md:py-12 space-y-8 max-w-6xl mx-auto">
         {/* Heading */}
         <div className="px-4 md:px-8 space-y-8 ">
@@ -75,14 +58,14 @@ export default async function Billing() {
                 interval={plan.interval}
                 name={plan.name}
                 price={plan.price}
-                selected={userPlanId === plan.variant_id}
+                selected={user.plan.variant_id === plan.variant_id}
               />
             ))}
 
-            {userPlan === null ? (
-              <GoProButton checkoutUrl={checkoutUrl} />
+            {user.is_pro ? (
+              <PortalButton />
             ) : (
-              <PortalButton portalUrl={portalUrl} />
+              <GoProButton />
             )}
           </div>
         </div>

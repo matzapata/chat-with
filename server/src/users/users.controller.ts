@@ -1,16 +1,20 @@
 import { Body, Controller, Get, Put, UseGuards } from '@nestjs/common';
-import { UserDto } from './dto/user-dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { CurrentUser } from 'src/users/decorators/current-user.decorator';
 import { AuthGuard } from 'src/users/guards/auth.guard';
 import { User } from './entities/user.entity';
 import { UsersService } from './services/users.service';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
+import { UserSubscriptionService } from 'src/payments/services/user-subscription.service';
+import { UserDto } from './dto/user-dto';
 
 @Controller('api/users')
 @UseGuards(AuthGuard)
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly userSubscriptionService: UserSubscriptionService,
+  ) {}
 
   @Put('/')
   @Serialize(UserDto)
@@ -20,8 +24,17 @@ export class UsersController {
   }
 
   @Get('/')
-  @Serialize(UserDto)
   async get(@CurrentUser() user: User) {
-    return user;
+    const userSubscription = await this.userSubscriptionService.find(user);
+    console.log('userSubscription', userSubscription);
+
+    return {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      is_pro: userSubscription.plan.variant_id !== null,
+      plan: userSubscription.plan,
+      subscription: userSubscription.sub,
+    };
   }
 }

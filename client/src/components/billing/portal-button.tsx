@@ -1,17 +1,34 @@
 "use client";
 
+import { paymentsService } from "@/lib/services/payments-service";
 import { Button } from "../ui/button";
 import { toast } from "../ui/use-toast";
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 
-export default function PortalButton(props: { portalUrl?: string }) {
+export default function PortalButton() {
+  const { accessTokenRaw } = useKindeBrowserClient();
+
   return (
     <Button
       onClick={() => {
-        if (props.portalUrl) window.location.assign(props.portalUrl);
-        else
+        if (!accessTokenRaw) {
           toast({
             variant: "destructive",
-            description: "Something went wrong. Please refresh and try again.",
+            description:
+              "You need to be logged in to manage your subscription.",
+          });
+          return;
+        }
+
+        paymentsService
+          .createPortal()
+          .then((url) => window.location.assign(url))
+          .catch(() => {
+            toast({
+              variant: "destructive",
+              description:
+                "Something went wrong. Please refresh and try again.",
+            });
           });
       }}
       variant="secondary-gray"

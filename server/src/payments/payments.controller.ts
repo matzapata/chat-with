@@ -41,25 +41,20 @@ export class PaymentsController {
   @Get('/subscription')
   @UseGuards(AuthGuard)
   async getSubscription(@CurrentUser() user: User) {
-    const subs = await this.userSubscriptionService.findByUserId(user.id);
-    const planId = subs?.variant_id ?? null;
-    const plan = Object.values(plans).find((p) => p.variant_id === planId);
-    return { subscription: subs, plan };
+    const { sub, plan } = await this.userSubscriptionService.find(user);
+    return { subscription: sub, plan };
   }
 
   @Post('/subscription')
   @UseGuards(AuthGuard)
-  async createSubscriptionCheckout(
-    @CurrentUser() user: User,
-    @Body() body: CreateSubscriptionDto,
-  ) {
-    const subs = await this.userSubscriptionService.findByUserId(user.id);
-    if (subs && subs.status === SubscriptionStatus.active) {
+  async createSubscriptionCheckout(@CurrentUser() user: User) {
+    const { sub } = await this.userSubscriptionService.find(user);
+    if (sub && sub.status === SubscriptionStatus.active) {
       throw new BadRequestException('User already has an active subscription');
     }
 
     const url = await this.paymentService.createSubscriptionCheckout(
-      body.variant_id,
+      plans.pro.variant_id,
       user.email,
       user.id,
     );
@@ -70,15 +65,13 @@ export class PaymentsController {
   @Get('/subscription/portal')
   @UseGuards(AuthGuard)
   async getSubscriptionPortal(@CurrentUser() user: User) {
-    const userSubscription = await this.userSubscriptionService.findByUserId(
-      user.id,
-    );
+    const userSubscription = await this.userSubscriptionService.find(user);
     if (!userSubscription) {
       throw new NotFoundException('User has no subscription');
     }
 
     const url = await this.paymentService.createSubscriptionPortal(
-      userSubscription.subscription_id,
+      userSubscription.sub.subscription_id,
     );
     return { url };
   }
@@ -89,6 +82,7 @@ export class PaymentsController {
     @Body() body: { [key: string]: any },
     @Body() headers: { [key: string]: any },
   ) {
+    // TODO: enable in prod
     // Verify webhook source
     // await this.paymentService.validateWebhook(body, headers);
 

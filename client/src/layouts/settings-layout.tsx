@@ -1,28 +1,25 @@
 "use client";
 
-import Navbar, { NavbarItem } from "@/components/navbar/app";
+import Navbar, { NavbarItem, NavbarProps } from "@/components/navbar/app";
 import { IconHome } from "@/components/ui/icons";
 import Link from "next/link";
 
-export default function SettingsLayout({
-  children,
-  items,
-  nestedItems,
-  className,
-}: {
+interface SettingsLayoutProps extends NavbarProps {
   className?: string;
   children: React.ReactNode;
-  items?: NavbarItem[];
+  navbarItems?: NavbarItem[];
   nestedItems?: NavbarItem[];
-}) {
-  items = items ?? [
+}
+
+export default function SettingsLayout(props: SettingsLayoutProps) {
+  const navbarItems = props.navbarItems ?? [
     {
       title: "Chats",
       icon: <IconHome className="h-5 w-5 text-gray-500" />,
       link: "/app/chat",
     },
   ];
-  nestedItems = nestedItems ?? [
+  const nestedItems = props.nestedItems ?? [
     {
       link: "/app/settings",
       title: "General",
@@ -35,8 +32,8 @@ export default function SettingsLayout({
 
   return (
     <>
-      <nav className={className ?? ""}>
-        <Navbar items={items} />
+      <nav className={props.className ?? ""}>
+        <Navbar items={navbarItems} user={props.user} />
 
         {/* Submenu */}
         {nestedItems && (
@@ -58,7 +55,7 @@ export default function SettingsLayout({
         )}
       </nav>
 
-      <main>{children}</main>
+      <main>{props.children}</main>
     </>
   );
 }

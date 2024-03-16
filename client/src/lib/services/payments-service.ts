@@ -29,8 +29,8 @@ export class PaymentsService {
         return res.data
     }
 
-    async createCheckout(variant_id: string): Promise<string> {
-        const res = await this.client.post('/api/payments/subscription', { variant_id })
+    async createCheckout(): Promise<string> {
+        const res = await this.client.post('/api/payments/subscription')
         return res.data.url
     }
 

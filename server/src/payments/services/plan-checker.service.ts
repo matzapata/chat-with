@@ -12,7 +12,8 @@ export class PlanCheckerService {
   ) {}
 
   async canUploadDocument(user: User, documentsCount: number): Promise<void> {
-    const uploadLimit = (await this.checkPlan(user)).limits.max_documents;
+    const { plan } = await this.userSubscriptionService.find(user);
+    const uploadLimit = plan.limits.max_documents;
 
     if (uploadLimit === 0) {
       throw new BadRequestException('You have reached your document limit');
@@ -25,7 +26,8 @@ export class PlanCheckerService {
   }
 
   async canSendMessage(user: User, messageCount): Promise<void> {
-    const messageLimit = (await this.checkPlan(user)).limits.max_messages;
+    const { plan } = await this.userSubscriptionService.find(user);
+    const messageLimit = plan.limits.max_messages;
 
     if (messageLimit === 0) {
       throw new BadRequestException('You have reached your message limit');
@@ -34,16 +36,5 @@ export class PlanCheckerService {
     if (messageCount >= messageLimit) {
       throw new BadRequestException('You have reached your message limit');
     }
-  }
-
-  private async checkPlan(user: User): Promise<SubscriptionPlan> {
-    const userSubscription = await this.userSubscriptionService.findByUserId(
-      user.id,
-    );
-    if (userSubscription?.status === 'active') {
-      return Object.values(plans).find(
-        (p) => p.variant_id === userSubscription.variant_id,
-      );
-    } else return Object.values(plans).find((p) => p.variant_id === null);
   }
 }

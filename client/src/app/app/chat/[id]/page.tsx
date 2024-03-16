@@ -2,6 +2,7 @@ import { Chat } from "@/components/chat/chat";
 import ChatLayout from "@/layouts/chat-layout";
 import { apiService } from "@/lib/services/api-service";
 import { chatService } from "@/lib/services/chat-service";
+import { userService } from "@/lib/services/user-service";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
 interface ChatPageProps {
@@ -12,13 +13,12 @@ interface ChatPageProps {
 
 export default async function ChatPage({ params }: ChatPageProps) {
   const { getAccessTokenRaw } = getKindeServerSession();
-  const accessTokenRaw = await getAccessTokenRaw();
-  apiService.setAccessToken(accessTokenRaw);
+  apiService.setAccessToken(await getAccessTokenRaw());
 
-  const chat = await chatService.getChat(params.id);
+  const [user, chat] = await Promise.all([userService.get(), chatService.getChat(params.id)]);
 
   return (
-    <ChatLayout>
+    <ChatLayout user={{ email: user.email, isPro: user.is_pro }}>
       <div className="relative">
         <div className="h-10 bg-white border-b sticky top-16 z-50 left-0 w-screen px-4 md:px-8 flex items-center">
           <span className="text-sm font-medium text-gray-600">

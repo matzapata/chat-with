@@ -12,7 +12,7 @@ export default async function Profile() {
   const user = await userService.get();
 
   return (
-    <SettingsLayout>
+    <SettingsLayout user={{ email: user.email, isPro: user.is_pro }}>
       <div className="py-8 md:py-12 space-y-8 max-w-6xl mx-auto">
         {/* Heading */}
         <div className="px-4 md:px-8">
