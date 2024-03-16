@@ -26,7 +26,6 @@ export class UsersController {
   @Get('/')
   async get(@CurrentUser() user: User) {
     const userSubscription = await this.userSubscriptionService.find(user);
-    console.log('userSubscription', userSubscription);
 
     return {
       id: user.id,

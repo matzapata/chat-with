@@ -16,6 +16,6 @@ export class ChatMessage {
   @Column()
   agent: MessageAgent;
 
-  @ManyToOne(() => Chat, (chat) => chat.messages, { cascade: true })
+  @ManyToOne(() => Chat, (chat) => chat.messages, { onDelete: 'CASCADE' })
   chat: Chat;
 }

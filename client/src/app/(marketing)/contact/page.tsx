@@ -11,37 +11,57 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { toast } from "@/components/ui/use-toast";
+import { apiService } from "@/lib/services/api-service";
+import { contactService } from "@/lib/services/contact-service";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { LoginLink, useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const FormSchema = z.object({
-  firstname: z.string().min(2, {
-    message: "Name is required.",
-  }),
-  lastname: z.string().min(2, {
-    message: "Lastname is required",
-  }),
-  email: z.string().email({}),
   message: z
     .string()
-    .min(10, { message: "Message is required" })
-    .max(1000, { message: "Message is too long" }),
+    .min(100, { message: "Message is too short minimum 100 characters" })
+    .max(300, { message: "Message is too long maximum 300 characters" }),
+  subject: z
+    .string()
+    .min(5, { message: "Subject is too short minimum 5 characters" })
+    .max(50, { message: "Subject is too long maximum 50 characters" }),
 });
 
 export default function Contact() {
+  const { user, accessTokenRaw} = useKindeBrowserClient();
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      firstname: "",
-      lastname: "",
+      subject: "",
       message: "",
-      email: "",
     },
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data);
+    if (!accessTokenRaw) {
+      return toast({
+        variant: "destructive",
+        description: "You need to be logged in to send a message.",
+      });
+    }
+    apiService.setAccessToken(accessTokenRaw);
+
+    contactService
+      .createContact(data.message, data.subject)
+      .then(() => {
+        toast({ description: "Message sent" });
+        form.reset();
+      })
+      .catch(() => {
+        toast({
+          variant: "destructive",
+          description: "Failed to send message, please try again",
+        });
+      });
   }
 
   return (
@@ -60,46 +80,33 @@ export default function Contact() {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div className="space-y-5">
-              <FormField
-                control={form.control}
-                name="firstname"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>First name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="First name" type="text" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+              <div className="space-y-2">
+                <p className="font-medium text-sm text-gray-600">From</p>
+
+                {user ? (
+                  <p className="text-gray-900">{user.email}</p>
+                ) : (
+                  <p className="text-gray-900">
+                    Please{" "}
+                    <LoginLink
+                      postLoginRedirectURL="/contact"
+                      className="text-brand-600 font-medium"
+                    >
+                      login
+                    </LoginLink>{" "}
+                    to reach out.
+                  </p>
                 )}
-              />
+              </div>
 
               <FormField
                 control={form.control}
-                name="lastname"
+                name="subject"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Last name</FormLabel>
+                    <FormLabel>Subject</FormLabel>
                     <FormControl>
-                      <Input placeholder="Last name" type="text" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Enter your email"
-                        type="email"
-                        {...field}
-                      />
+                      <Input placeholder="Subject" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -131,6 +138,7 @@ export default function Contact() {
                 className="w-full"
                 size="lg"
                 variant="primary"
+                disabled={!user}
               >
                 Send message
               </Button>

@@ -88,7 +88,11 @@ export class ChatsService {
     });
   }
 
-  async countDocumentsByOwner(owner: User): Promise<number> {
+  countDocumentsByOwner(owner: User): Promise<number> {
     return this.chatRepository.count({ where: { owner } });
+  }
+
+  deleteMessages(id: string) {
+    return this.messagesRepository.delete({ chat: { id } });
   }
 }

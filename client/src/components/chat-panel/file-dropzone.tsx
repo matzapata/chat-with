@@ -1,24 +1,9 @@
 "use client";
 
 import FileCard from "@/components/chat-panel/file-card";
-import FileIcon from "@/components/chat-panel/file-icon";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { toast } from "@/components/ui/use-toast";
 import { MimeType, chatService } from "@/lib/services/chat-service";
-import { EllipsisVerticalIcon } from "@heroicons/react/24/solid";
-import { PlusIcon } from "@heroicons/react/16/solid";
-import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Dropzone from "react-dropzone";
 import { IconUploadCloud } from "@/components/ui/icons";

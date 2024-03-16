@@ -11,6 +11,7 @@ import { WebhookEvent } from './payments/entities/webhook-event.entity';
 import { ChatModule } from './chat/chat.module';
 import { Chat } from './chat/entities/chat.entity';
 import { ChatMessage } from './chat/entities/messages.entity';
+import { ContactModule } from './contact/contact.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { ChatMessage } from './chat/entities/messages.entity';
         AUTH_JWKS_URI: Joi.string().required(),
         RESEND_FROM_EMAIL: Joi.string().required(),
         RESEND_API_KEY: Joi.string().required(),
+        CONTACT_EMAIL: Joi.string().required(),
       }),
     }),
     TypeOrmModule.forRoot({
@@ -55,6 +57,7 @@ import { ChatMessage } from './chat/entities/messages.entity';
     UsersModule,
     PaymentsModule,
     ChatModule,
+    ContactModule,
   ],
   providers: [
     {

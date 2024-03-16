@@ -121,6 +121,20 @@ export class ChatController {
     return chat;
   }
 
+  @Delete('/:id/messages')
+  @Serialize(ChatMetadataDto)
+  async deleteMessages(@Param('id') id: string) {
+    const chat = await this.chatsService.findById(id);
+    if (!chat) {
+      throw new NotFoundException('Chat not found');
+    }
+
+    // delete messages from db
+    await this.chatsService.deleteMessages(id);
+
+    return chat;
+  }
+
   @Put('/:id')
   async postMessage(
     @Body() body: PostMessageDto,

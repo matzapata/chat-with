@@ -72,6 +72,10 @@ export class ChatService {
         }
     }
 
+    clearMessages(id: string): Promise<void> {
+        return this.client.delete(`/api/chats/${id}/messages`)
+    }
+
     async deleteChat(id: string): Promise<void> {
         await this.client.delete(`/api/chats/${id}`)
     }
