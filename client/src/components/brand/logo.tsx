@@ -1,6 +1,6 @@
 import Image from "next/image";
-import images from "@/assets/images";
+import { brandConfig } from "@/config/brand";
 
 export default function Logo() {
-    return <Image  src={images.Logo} alt="brand"  height={32} width={142}/>
+  return <Image src={brandConfig.logo} alt="brand" height={32} width={142} />;
 }
