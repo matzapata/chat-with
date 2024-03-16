@@ -6,7 +6,6 @@ import {
 } from "@/lib/services/chat-service";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import { apiService } from "../services/api-service";
-import { toast } from "@/components/ui/use-toast";
 
 export default function useChat(
   chatId: string,
@@ -46,28 +45,5 @@ export default function useChat(
     }
   };
 
-  const clearMessages = async () => {
-    if (window.confirm("Are you sure you want to clear all messages?") === false) {
-      return;
-    }
-
-    try {
-      setIsLoading(true);
-      console.log("deleting...")
-      await chatService.clearMessages(chatId);
-
-      setMessages([]);
-    } catch (error) {
-        console.log("error", error)
-      toast({
-        variant: "destructive",
-        description: "Failed to clear messages",
-      });
-    } finally {
-        console.log("finally")
-      setIsLoading(false);
-    }
-  };
-
-  return { messages, setMessages, isLoading, input, setInput, append, clearMessages };
+  return { messages, setMessages, isLoading, input, setInput, append };
 }
