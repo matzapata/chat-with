@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Logo from "./brand/logo";
+import { brandConfig } from "@/config/brand";
 
 const items = [
   { title: "Home", href: "/" },
@@ -25,7 +26,7 @@ export default function Footer() {
 
       <div className="px-4">
         <p className="text-gray-500">
-          © 2077 Untitled UI. All rights reserved.
+          © {brandConfig.name.toLowerCase()}
         </p>
       </div>
     </footer>
