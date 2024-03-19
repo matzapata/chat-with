@@ -4,7 +4,7 @@ import { brandConfig } from "@/config/brand";
 
 const items = [
   { title: "Home", href: "/" },
-  { title: "Pricing", href: "/pricing" },
+  { title: "Pricing", href: "/#pricing" },
   { title: "FAQ", href: "/#faq" },
   { title: "Features", href: "/#features" },
 ];

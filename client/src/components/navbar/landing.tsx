@@ -15,108 +15,106 @@ const navbarItems = [
   { title: "Home", href: "/" },
   { title: "Features", href: "/#features" },
   { title: "FAQ", href: "/#faq" },
-  { title: "Pricing", href: "/pricing" },
+  { title: "Pricing", href: "/#pricing" },
 ];
 
 export default function Navbar() {
   const { user } = useKindeBrowserClient();
 
   return (
-    <div>
-      <div className="flex justify-center">
-        <div className="px-4 md:px-16 max-w-6xl w-full flex justify-between py-4 items-center">
-          <div className="flex items-center">
-            <Logo />
-            <div className="hidden md:flex items-center space-x-2 ml-4">
-              {navbarItems.map((item, i) => (
-                <Link
-                  key={i}
-                  href={item.href}
-                  className="px-3 py-1 text-md font-semibold text-gray-700"
-                >
-                  {item.title}
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          {/* login / signup / dashboard buttons */}
-          <div className="hidden md:flex items-center space-x-4">
-            {user ? (
-              <Link href={"/app/chat"}>
-                <Button variant={"secondary-gray"} size="sm">
-                  Dashboard
-                </Button>
-              </Link>
-            ) : (
-              <>
-                <LoginLink postLoginRedirectURL="/app/chat">
-                  <Button className="bg-transparent" variant="tertiary-gray">
-                    Log in
-                  </Button>
-                </LoginLink>
-
-                <RegisterLink postLoginRedirectURL="/app/chat">
-                  <Button variant="primary">Sign up</Button>
-                </RegisterLink>
-              </>
-            )}
-          </div>
-
-          {/* Mobile burger and menu */}
-          <div className="md:hidden">
-            <Sheet>
-              <SheetTrigger asChild>
-                <button className="items-center h-9 w-9 p-0 flex justify-center">
-                  <Bars4Icon className="h-6 w-6" />
-                </button>
-              </SheetTrigger>
-              <SheetContent
-                side="left"
-                className="inset-y-0 flex h-auto w-[300px] flex-col p-0"
+    <div className="flex justify-center w-full">
+      <div className="px-4 md:px-16 max-w-6xl w-full flex justify-between py-4 items-center">
+        <div className="flex items-center">
+          <Logo />
+          <div className="hidden md:flex items-center space-x-2 ml-4">
+            {navbarItems.map((item, i) => (
+              <Link
+                key={i}
+                href={item.href}
+                className="px-3 py-1 text-md font-semibold text-gray-700"
               >
-                <div>
-                  <div className="p-4 border-b">
-                    <Logo />
-                  </div>
-                  <div className="space-y-2 py-4 border-b">
-                    {navbarItems.map((item, i) => (
-                      <Link
-                        href={item.href}
-                        key={i}
-                        className="px-4 py-3 font-semibold block text-gray-800"
-                      >
-                        {item.title}
-                      </Link>
-                    ))}
-                  </div>
-                  <div className="py-6 px-4 flex flex-col space-y-3">
-                    {user ? (
-                      <Link href={"/app/chat"}>
-                        <Button variant={"secondary-gray"} size="sm">
-                          Dashboard
-                        </Button>
-                      </Link>
-                    ) : (
-                      <>
-                        <RegisterLink postLoginRedirectURL="/app/chat">
-                          <Button variant="primary" className="w-full">
-                            Sign up
-                          </Button>
-                        </RegisterLink>
-
-                        <LoginLink postLoginRedirectURL="/app/chat">
-                          <Button variant="secondary-gray" className="w-full">
-                            Log in
-                          </Button>
-                        </LoginLink>
-                      </>
-                    )}
-                  </div>
-                </div>
-              </SheetContent>
-            </Sheet>
+                {item.title}
+              </Link>
+            ))}
           </div>
+        </div>
+
+        {/* login / signup / dashboard buttons */}
+        <div className="hidden md:flex items-center space-x-4">
+          {user ? (
+            <Link href={"/app/chat"}>
+              <Button variant={"secondary-gray"} size="sm">
+                Dashboard
+              </Button>
+            </Link>
+          ) : (
+            <>
+              <LoginLink postLoginRedirectURL="/app/chat">
+                <Button className="bg-transparent" variant="tertiary-gray">
+                  Log in
+                </Button>
+              </LoginLink>
+
+              <RegisterLink postLoginRedirectURL="/app/chat">
+                <Button variant="primary">Sign up</Button>
+              </RegisterLink>
+            </>
+          )}
+        </div>
+
+        {/* Mobile burger and menu */}
+        <div className="md:hidden">
+          <Sheet>
+            <SheetTrigger asChild>
+              <button className="items-center h-9 w-9 p-0 flex justify-center">
+                <Bars4Icon className="h-6 w-6" />
+              </button>
+            </SheetTrigger>
+            <SheetContent
+              side="left"
+              className="inset-y-0 flex h-auto w-[300px] flex-col p-0"
+            >
+              <div>
+                <div className="p-4 border-b">
+                  <Logo />
+                </div>
+                <div className="space-y-2 py-4 border-b">
+                  {navbarItems.map((item, i) => (
+                    <Link
+                      href={item.href}
+                      key={i}
+                      className="px-4 py-3 font-semibold block text-gray-800"
+                    >
+                      {item.title}
+                    </Link>
+                  ))}
+                </div>
+                <div className="py-6 px-4 flex flex-col space-y-3">
+                  {user ? (
+                    <Link href={"/app/chat"}>
+                      <Button variant={"secondary-gray"} size="sm">
+                        Dashboard
+                      </Button>
+                    </Link>
+                  ) : (
+                    <>
+                      <RegisterLink postLoginRedirectURL="/app/chat">
+                        <Button variant="primary" className="w-full">
+                          Sign up
+                        </Button>
+                      </RegisterLink>
+
+                      <LoginLink postLoginRedirectURL="/app/chat">
+                        <Button variant="secondary-gray" className="w-full">
+                          Log in
+                        </Button>
+                      </LoginLink>
+                    </>
+                  )}
+                </div>
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
     </div>

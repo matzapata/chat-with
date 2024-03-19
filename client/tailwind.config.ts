@@ -46,6 +46,6 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [require('tailwindcss-bg-patterns')],
 };
 export default config;

@@ -1,4 +1,4 @@
-import Faq from "@/components/faq";
+import FaqSection from "@/components/sections/faq-section";
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar/landing";
 
@@ -11,8 +11,8 @@ export default function MarketingLayout({
     <div>
       <Navbar />
       {children}
-      
-      <Faq />
+
+      <FaqSection />
       <Footer />
     </div>
   );

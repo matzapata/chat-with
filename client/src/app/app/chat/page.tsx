@@ -13,11 +13,11 @@ export default async function Chats() {
   // Get initial chats
   const [user, chats] = await Promise.all([
     userService.get(),
-   chatService.getAllChats(),
+    chatService.getAllChats(),
   ]);
 
   return (
-    <ChatLayout user={{ email: user.email, isPro: user.is_pro }} >
+    <ChatLayout user={{ email: user.email, isPro: user.is_pro }}>
       <ChatsPanel initialChats={chats} />;
     </ChatLayout>
   );
