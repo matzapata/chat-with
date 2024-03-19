@@ -102,7 +102,7 @@ function PlanCard(props: {
             <h2 className="font-semibold md:font-medium md:text-sm text-gray-700">
               {props.name} plan{" "}
               <span className="text-gray-600 hidden md:inline-block">
-                ${props.price} per {props.interval}
+                ${props.price} / {props.interval}
               </span>
             </h2>
             <p className="text-gray-600 md:text-sm hidden md:block">

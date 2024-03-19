@@ -1,14 +1,13 @@
 import {
-  LoginLink,
   RegisterLink,
   getKindeServerSession,
 } from "@kinde-oss/kinde-auth-nextjs/server";
 import { CheckIcon } from "@heroicons/react/20/solid";
 import { Button } from "@/components/ui/button";
 import { paymentsService } from "@/lib/services/payments-service";
-import Link from "next/link";
 import { apiService } from "@/lib/services/api-service";
 import { ArrowRightIcon } from "@heroicons/react/24/solid";
+import GoProButton from "../billing/go-pro-button";
 
 export default async function PricingSection() {
   const { getAccessTokenRaw } = getKindeServerSession();
@@ -16,15 +15,6 @@ export default async function PricingSection() {
   apiService.setAccessToken(accessTokenRaw);
 
   const plans = await paymentsService.getPlans();
-
-  // Create the checkout session
-  let checkoutUrl: string | undefined;
-  if (accessTokenRaw) {
-    try {
-      // check if the user has an active subscription
-      checkoutUrl = await paymentsService.createCheckout();
-    } catch (e) {}
-  }
 
   return (
     <div className="py-24 sm:py-32">
@@ -101,7 +91,7 @@ export default async function PricingSection() {
                     USD
                   </span>
                 </p>
-
+{/* 
                 {accessTokenRaw ? (
                   <Link href={checkoutUrl ?? "/app/settings/billing"}>
                     <Button className="mt-10 block w-full rounded-md bg-brand-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-brand-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600">
@@ -114,7 +104,10 @@ export default async function PricingSection() {
                       Get access
                     </Button>
                   </LoginLink>
-                )}
+                )} */}
+                <GoProButton className="mt-10 block w-full rounded-md bg-brand-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-brand-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600">
+                  Get access
+                </GoProButton>
 
                 <p className="mt-6 text-xs leading-5 text-gray-600">
                   Invoices and receipts available for easy company reimbursement
