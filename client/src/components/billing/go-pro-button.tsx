@@ -21,7 +21,7 @@ export default function GoProButton({children, ...props}: ButtonProps) {
 
         setIsLoading(true);
         paymentsService
-          .createCheckout()
+          .createCheckout(accessTokenRaw)
           .then((url) => window.location.assign(url))
           .catch(() => {
             toast({

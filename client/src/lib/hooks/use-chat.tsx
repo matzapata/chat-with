@@ -29,10 +29,8 @@ export default function useChat(
         throw new Error("No access token");
       }
 
-      apiService.setAccessToken(accessTokenRaw);
-
       // append the message
-      const response = await chatService.postMessage(chatId, message);
+      const response = await chatService.postMessage(accessTokenRaw, chatId, message);
       setMessages((prev) => [
         ...prev,
         { content: response.content, role: MessageRole.ai },

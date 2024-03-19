@@ -35,17 +35,17 @@ export class ChatService {
 
     constructor(private readonly client: AxiosInstance) { }
 
-    async getAllChats(): Promise<ChatMetadataDto[]> {
-        const res = await this.client.get("/api/chats")
+    async getAllChats(accessToken: string): Promise<ChatMetadataDto[]> {
+        const res = await this.client.get("/api/chats", { headers: { Authorization: `Bearer ${accessToken}` } })
         return res.data.map((c: any) => ({ ...c, created_at: new Date(c.created_at) }))
     }
 
-    async createChat(file: File, onUploadProgress?: (progress: number) => void): Promise<ChatMetadataDto> {
+    async createChat(accessToken: string, file: File, onUploadProgress?: (progress: number) => void): Promise<ChatMetadataDto> {
         const formData = new FormData()
         formData.append("file", file)
 
         const res = await this.client.post("/api/chats", formData, {
-            headers: { "Content-Type": "multipart/form-data" },
+            headers: { "Content-Type": "multipart/form-data", Authorization: `Bearer ${accessToken}` },
             onUploadProgress: (progressEvent: AxiosProgressEvent) => {
                 const percentCompleted = Math.round((progressEvent.loaded * 100) / (progressEvent?.total ?? 1))
                 onUploadProgress?.(percentCompleted)
@@ -54,8 +54,8 @@ export class ChatService {
         return { ...res.data, created_at: new Date(res.data.created_at) }
     }
 
-    async getChat(id: string): Promise<ChatDto> {
-        const res = await this.client.get(`/api/chats/${id}`)
+    async getChat(accessToken: string, id: string): Promise<ChatDto> {
+        const res = await this.client.get(`/api/chats/${id}`, { headers: { Authorization: `Bearer ${accessToken}` } })
         return {
             ...res.data, messages: res.data.messages.map((m: { id: string, message: string, created_at: string, agent: "USER" | "AI" }) => ({
                 content: m.message,
@@ -64,20 +64,20 @@ export class ChatService {
         }
     }
 
-    async postMessage(id: string, message: string): Promise<ChatMessage> {
-        const res = await this.client.put(`/api/chats/${id}`, { message })
+    async postMessage(accessToken: string,  id: string, message: string): Promise<ChatMessage> {
+        const res = await this.client.put(`/api/chats/${id}`, { message }, { headers: { Authorization: `Bearer ${accessToken}` } })
         return {
             content: res.data.aiMessage.message,
             role: MessageRole.ai,
         }
     }
 
-    clearMessages(id: string): Promise<void> {
-        return this.client.delete(`/api/chats/${id}/messages`)
+    clearMessages(accessToken: string, id: string): Promise<void> {
+        return this.client.delete(`/api/chats/${id}/messages`, { headers: { Authorization: `Bearer ${accessToken}` } })
     }
 
-    async deleteChat(id: string): Promise<void> {
-        await this.client.delete(`/api/chats/${id}`)
+    deleteChat(accessToken: string, id: string): Promise<void> {
+        return this.client.delete(`/api/chats/${id}`, { headers: { Authorization: `Bearer ${accessToken}` } })
     }
 
 

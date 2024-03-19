@@ -10,12 +10,12 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
 export default async function Billing() {
   const { getAccessTokenRaw } = getKindeServerSession();
-  apiService.setAccessToken(await getAccessTokenRaw());
+  const accessTokenRaw = await getAccessTokenRaw();
 
   // Get all plans and user data
   const [plans, user] = await Promise.all([
     paymentsService.getPlans(),
-    userService.get(),
+    userService.get(accessTokenRaw),
   ]);
 
   return (

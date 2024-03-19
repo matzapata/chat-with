@@ -7,8 +7,8 @@ export class ContactService {
 
     constructor(private readonly client: AxiosInstance) { }
 
-    async createContact(message: string, subject: string): Promise<"OK"> {
-        const res = await this.client.post('/api/contact', { message, subject })
+    async createContact(accessToken: string, message: string, subject: string): Promise<"OK"> {
+        const res = await this.client.post('/api/contact', { message, subject }, { headers: { Authorization: `Bearer ${accessToken}` } })
         return res.data
     }
 }

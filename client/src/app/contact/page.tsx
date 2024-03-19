@@ -51,10 +51,9 @@ export default function Contact() {
         description: "You need to be logged in to send a message.",
       });
     }
-    apiService.setAccessToken(accessTokenRaw);
 
     contactService
-      .createContact(data.message, data.subject)
+      .createContact(accessTokenRaw, data.message, data.subject)
       .then(() => {
         toast({ description: "Message sent" });
         form.reset();

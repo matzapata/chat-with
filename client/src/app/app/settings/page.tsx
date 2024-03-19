@@ -1,15 +1,12 @@
 import EmailForm from "@/components/settings/email-form";
 import NameForm from "@/components/settings/name-form";
 import SettingsLayout from "@/layouts/settings-layout";
-import { apiService } from "@/lib/services/api-service";
 import { userService } from "@/lib/services/user-service";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
 export default async function Profile() {
   const { getAccessTokenRaw } = getKindeServerSession();
-  apiService.setAccessToken(await getAccessTokenRaw());
-
-  const user = await userService.get();
+  const user = await userService.get(await getAccessTokenRaw());
 
   return (
     <SettingsLayout user={{ email: user.email, isPro: user.is_pro }}>

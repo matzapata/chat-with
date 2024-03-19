@@ -21,7 +21,7 @@ export default function PortalButton() {
         }
 
         paymentsService
-          .createPortal()
+          .createPortal(accessTokenRaw)
           .then((url) => window.location.assign(url))
           .catch(() => {
             toast({

@@ -9,11 +9,10 @@ Chat with any file. Leverage langchain and lemonsqueezy to create a saas with au
 
 # Server
 
-TODO: - Manually add token to service requests instead of assuming it's there
-TODO: - deployments. (docker, cloud run? + vercel and serverless services? do kubernettes and etc to keep it local and potenrtially later depoy that way but much more expensive) server with gcp initially for cost efficient but keep the door open for kubernetes
-TODO: - tests
+TODO: - Logo with poppings text uppercase CHATWITH.
+TODO: - deployments. (docker, cloud run + vercel, for dbs supabase)
+TODO: - docker compose, docker, kubernettes
 TODO: - Update texts landing
-TODO: - ensure easy way to switch theme for other company. Create logo with ai
 
 # Infra
 

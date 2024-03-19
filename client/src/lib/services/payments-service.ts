@@ -29,18 +29,18 @@ export class PaymentsService {
         return res.data
     }
 
-    async createCheckout(): Promise<string> {
-        const res = await this.client.post('/api/payments/subscription')
+    async createCheckout(accessToken: string): Promise<string> {
+        const res = await this.client.post('/api/payments/subscription', {}, { headers: { Authorization: `Bearer ${accessToken}` } })
         return res.data.url
     }
 
-    async getSubscription(): Promise<any> {
-        const res = await this.client.get('/api/payments/subscription')
+    async getSubscription(accessToken: string): Promise<any> {
+        const res = await this.client.get('/api/payments/subscription', { headers: { Authorization: `Bearer ${accessToken}` } })
         return res.data.subscription
     }
 
-    async createPortal(): Promise<string> {
-        const res = await this.client.get('/api/payments/subscription/portal')
+    async createPortal(accessToken: string): Promise<string> {
+        const res = await this.client.get('/api/payments/subscription/portal', { headers: { Authorization: `Bearer ${accessToken}` } })
         return res.data.url
     }
 }

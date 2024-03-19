@@ -15,13 +15,13 @@ export class UserService {
 
     constructor(private readonly client: AxiosInstance) { }
 
-    async get(): Promise<UserDto> {
-        const res = await this.client.get('/api/users')
+    async get(accessToken: string): Promise<UserDto> {
+        const res = await this.client.get('/api/users', { headers: { Authorization: `Bearer ${accessToken}` } })
         return res.data
     }
 
-    async updateName(name: string, surname: string): Promise<UserDto> {
-        const res = await this.client.put('/api/users', { name: name + ' ' + surname })
+    async updateName(accessToken: string, name: string, surname: string): Promise<UserDto> {
+        const res = await this.client.put('/api/users', { name: name + ' ' + surname }, { headers: { Authorization: `Bearer ${accessToken}` } })
         return res.data
     }
 }

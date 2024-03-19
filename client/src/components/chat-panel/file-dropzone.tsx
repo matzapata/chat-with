@@ -7,8 +7,10 @@ import { MimeType, chatService } from "@/lib/services/chat-service";
 import { useState } from "react";
 import Dropzone from "react-dropzone";
 import { IconUploadCloud } from "@/components/ui/icons";
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 
 export default function FileDropZone() {
+  const { accessTokenRaw } = useKindeBrowserClient();
     const [uploadingFile, setUploadingFile] = useState<{
         filename: string;
         size: string;
@@ -43,7 +45,9 @@ export default function FileDropZone() {
         });
     
         try {
-          await chatService.createChat(file, (progress: number) => {
+          if (!accessTokenRaw) throw new Error("No access token");
+          
+          await chatService.createChat(accessTokenRaw, file, (progress: number) => {
             setUploadingFile((prev: any) => ({ ...prev, percentage: progress }));
           });
         //   queryClient.invalidateQueries({ queryKey: ["chats"] });

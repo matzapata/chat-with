@@ -1,16 +1,17 @@
-import axios from "axios"
+import axios, { AxiosInstance } from "axios"
 
-const client = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_API_BASE_URL
-})
+export class ApiService {
+    private readonly _client: AxiosInstance;
 
-const setAccessToken = (accessToken: string) => {
-    console.log("access token", accessToken)
-    client.defaults.headers.common.Authorization = `Bearer ${accessToken}`
+    constructor() {
+        this._client = axios.create({
+            baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
+        });
+    }
+
+    public get client() {
+        return this._client;
+    }
 }
 
-export const apiService = {
-    client,
-    setAccessToken
-}
-
+export const apiService = new ApiService()

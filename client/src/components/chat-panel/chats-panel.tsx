@@ -29,8 +29,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 
 export default function ChatsPanel(props: { initialChats: ChatMetadataDto[] }) {
+  const { accessTokenRaw } = useKindeBrowserClient();
   const router = useRouter();
   const [search, setSearch] = useState("");
   const [chats, setChats] = useState<ChatMetadataDto[]>(props.initialChats);
@@ -68,7 +70,9 @@ export default function ChatsPanel(props: { initialChats: ChatMetadataDto[] }) {
     });
 
     try {
-      const newChat = await chatService.createChat(file, (progress: number) => {
+      if (!accessTokenRaw) throw new Error("No access token");
+      
+      const newChat = await chatService.createChat(accessTokenRaw, file, (progress: number) => {
         setUploadingFile((prev: any) => ({ ...prev, percentage: progress }));
       });
       setChats((c) => [...c, newChat]);
@@ -86,7 +90,9 @@ export default function ChatsPanel(props: { initialChats: ChatMetadataDto[] }) {
 
   const deleteFile = async (id: string) => {
     try {
-      await chatService.deleteChat(id);
+      if (!accessTokenRaw) throw new Error("No access token");
+      
+      await chatService.deleteChat(accessTokenRaw, id);
       setChats((c) => c.filter((chat) => chat.id !== id));
     } catch (error: any) {
       return toast({

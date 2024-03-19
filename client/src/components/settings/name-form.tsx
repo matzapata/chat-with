@@ -26,6 +26,7 @@ import { useMutation } from "@tanstack/react-query";
 import { userService } from "@/lib/services/user-service";
 import { useState } from "react";
 import { toast } from "../ui/use-toast";
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -37,6 +38,7 @@ const formSchema = z.object({
 });
 
 export default function NameForm(props: { name?: string }) {
+  const { accessTokenRaw } = useKindeBrowserClient();
   const [open, setOpen] = useState<boolean>(false);
   const [name, setName] = useState<string | undefined>(props.name);
   const form = useForm<z.infer<typeof formSchema>>({
@@ -49,7 +51,8 @@ export default function NameForm(props: { name?: string }) {
 
   const setNameMutation = useMutation({
     mutationFn: (props: { name: string; surname: string }) => {
-      return userService.updateName(props.name, props.surname);
+      if (!accessTokenRaw) throw new Error("No access token");
+      return userService.updateName(accessTokenRaw, props.name, props.surname);
     },
     onSuccess: (data) => {
       setName(data.name);
@@ -120,7 +123,9 @@ export default function NameForm(props: { name?: string }) {
                 />
 
                 <DialogFooter>
-                  <Button type="submit" isLoading={setNameMutation.isPending}>Save changes</Button>
+                  <Button type="submit" isLoading={setNameMutation.isPending}>
+                    Save changes
+                  </Button>
                 </DialogFooter>
               </form>
             </Form>

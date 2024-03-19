@@ -14,9 +14,12 @@ interface ChatPageProps {
 
 export default async function ChatPage({ params }: ChatPageProps) {
   const { getAccessTokenRaw } = getKindeServerSession();
-  apiService.setAccessToken(await getAccessTokenRaw());
+  const accessTokenRaw = await getAccessTokenRaw();
 
-  const [user, chat] = await Promise.all([userService.get(), chatService.getChat(params.id)]);
+  const [user, chat] = await Promise.all([
+    userService.get(accessTokenRaw),
+    chatService.getChat(accessTokenRaw, params.id),
+  ]);
 
   return (
     <ChatLayout user={{ email: user.email, isPro: user.is_pro }}>
