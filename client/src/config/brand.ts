@@ -3,7 +3,6 @@ import images from "../assets/images";
 export const brandConfig = {
   name: "Chatwith",
   description: "Chat with your files with ai",
-  logo: images.Logo,
   faq: [
     {
       question: "Is there a free trial available?",

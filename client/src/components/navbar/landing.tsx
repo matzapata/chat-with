@@ -26,7 +26,9 @@ export default function Navbar() {
       <div className="px-4 md:px-16 max-w-6xl w-full flex justify-between py-4 items-center">
         <div className="flex items-center">
           <Logo />
-          <div className="hidden md:flex items-center space-x-2 ml-4">
+        </div>
+
+        <div className="hidden md:flex items-center space-x-2">
             {navbarItems.map((item, i) => (
               <Link
                 key={i}
@@ -37,7 +39,6 @@ export default function Navbar() {
               </Link>
             ))}
           </div>
-        </div>
 
         {/* login / signup / dashboard buttons */}
         <div className="hidden md:flex items-center space-x-4">

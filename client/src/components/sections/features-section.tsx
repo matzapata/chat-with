@@ -6,7 +6,7 @@ export default function FeaturesSection() {
       id="features"
       className="py-16 mt-20 md:py-24 space-y-12 md:space-y-16"
     >
-      <div className="mx-auto max-w-2xl flex flex-col justify-center items-center sm:text-center">
+      <div className="mx-auto max-w-2xl flex flex-col justify-center items-center">
         <h1 className="text-2xl text-center font-semibold sm:text-3xl xl:text-[40px] relative">
           Explore key <span className="text-brand-600">features.</span>
           <svg
@@ -27,7 +27,7 @@ export default function FeaturesSection() {
             ></path>
           </svg>
         </h1>
-        <p className="mt-6 text-lg text-gray-600">
+        <p className="mt-6 text-lg text-center text-gray-600">
           Powerful, self-serve product and growth analytics to help you convert,
           engage, and retain more users. Trusted by over 4,000 startups.
         </p>

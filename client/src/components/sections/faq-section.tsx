@@ -36,7 +36,7 @@ export default function FaqSection() {
             ></path>
           </svg>
         </h1>
-        <p className="mt-6 text-lg text-gray-600">
+        <p className="mt-6 text-lg text-gray-600 text-center">
           Everything you need to know about the product and billing.
         </p>
       </div>

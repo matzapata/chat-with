@@ -7,7 +7,7 @@ import images from "@/assets/images";
 export default function HeroSection() {
   return (
     <div id="hero" className="px-4 mt-16 md:mt-24">
-      <h1 className="md:text-6xl text-3xl font-semibold text-center text-gray-900">
+      <h1 className="md:text-6xl text-4xl font-semibold text-center text-gray-900">
         Manage your business <br />{" "}
         <span className="text-brand-600">expenses with ease</span>
       </h1>
@@ -16,7 +16,7 @@ export default function HeroSection() {
         engage, and retain more users. Trusted by over 4,000 startups.
       </h2>
 
-      <div className="mt-8 space-y-3 md:space-y-0 md:flex md:flex-row-reverse md:justify-center md:space-x-3">
+      <div className="mt-8 md:space-y-0 flex justify-center space-x-3">
         <RegisterLink>
           <Button variant={"primary"} className="w-full md:w-auto md:ml-4">
             Sign up
@@ -25,7 +25,7 @@ export default function HeroSection() {
 
         <Button
           variant={"secondary-gray"}
-          className="w-full md:w-auto items-center space-x-2"
+          className="w-auto items-center space-x-2"
         >
           <IconPlayCircle className="h-5 w-5 text-gray-700 inline-block" />
           <span className="text-gray-700">Demo</span>

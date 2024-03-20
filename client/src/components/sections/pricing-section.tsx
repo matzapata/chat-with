@@ -32,7 +32,7 @@ export default async function PricingSection() {
               ></path>
             </svg>
           </h1>
-          <p className="mt-6 text-lg text-gray-600">
+          <p className="mt-6 text-lg text-gray-600 text-center">
             No hidden fees. No credit card required. <br /> Cancel anytime.
           </p>
         </div>

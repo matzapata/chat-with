@@ -1,5 +1,5 @@
 import Navbar from "@/components/navbar/landing";
-import Footer from "@/components/footer";
+import FooterSection from "@/components/sections/footer-section";
 import FaqSection from "@/components/sections/faq-section";
 import PricingSection from "@/components/sections/pricing-section";
 import FeaturesSection from "@/components/sections/features-section";
@@ -25,7 +25,7 @@ export default function Home() {
         <FaqSection />
       </section>
 
-      <Footer />
+      <FooterSection />
     </main>
   );
 }

@@ -9,12 +9,18 @@ Chat with any file. Leverage langchain and lemonsqueezy to create a saas with au
 
 # Server
 
-TODO: - Logo with poppings text uppercase CHATWITH.
-TODO: - deployments. (docker, cloud run + vercel, for dbs supabase)
+TODO: - deployments. (docker, cloud run, for dbs supabase) (use github actions) https://www.tomray.dev/deploy-nestjs-cloud-run
 TODO: - docker compose, docker, kubernettes
 TODO: - Update texts landing
+TODO: - Logging https://www.tomray.dev/nestjs-logging
+TODO: - Move away from supabase with generic https://js.langchain.com/docs/integrations/vectorstores/typeorm/
+
 
 # Infra
 
 
+
+# Domains ideas
+
+get-chatwith.com
 
