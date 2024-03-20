@@ -3,7 +3,8 @@ import { Between, Repository } from 'typeorm';
 import { Chat } from '../entities/chat.entity';
 import { User } from 'src/users/entities/user.entity';
 import { ChatMessage } from '../entities/messages.entity';
-import { MessageAgent, MimeType } from 'src/infrastructure/rag/rag.service';
+import { MessageAgent } from 'src/chat/services/rag.service';
+import { MimeType } from 'src/infrastructure/vectorstore/vectorstore.service';
 
 export class ChatsService {
   constructor(

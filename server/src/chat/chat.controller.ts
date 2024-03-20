@@ -17,8 +17,7 @@ import {
 import {
   RetrievalAugmentedGenerationService,
   MessageAgent,
-  MimeType,
-} from '../infrastructure/rag/rag.service';
+} from './services/rag.service';
 import { PostMessageDto } from './dtos/post-message.dto';
 import { Express } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -31,6 +30,7 @@ import { ChatMetadataDto } from './dtos/chat-metadata.dto';
 import { ChatDto } from './dtos/chat.dto';
 import { StorageService } from 'src/infrastructure/storage/storage.service';
 import { PlanCheckerService } from 'src/payments/services/plan-checker.service';
+import { MimeType } from 'src/infrastructure/vectorstore/vectorstore.service';
 
 // One chat conversation per file. so files and chats are associated
 

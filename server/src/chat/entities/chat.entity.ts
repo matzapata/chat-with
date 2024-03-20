@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { ChatMessage } from './messages.entity';
-import { MimeType } from 'src/infrastructure/rag/rag.service';
+import { MimeType } from 'src/infrastructure/vectorstore/vectorstore.service';
 
 @Entity()
 export class Chat {

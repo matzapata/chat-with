@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Chat } from './chat.entity';
-import { MessageAgent } from 'src/infrastructure/rag/rag.service';
+import { MessageAgent } from 'src/chat/services/rag.service';
 
 @Entity()
 export class ChatMessage {
