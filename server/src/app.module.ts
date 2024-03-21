@@ -47,6 +47,7 @@ import { ContactModule } from './contact/contact.module';
         DB_USERNAME: Joi.string().required(),
         DB_PASSWORD: Joi.string().required(),
         DB_NAME: Joi.string().required(),
+        CLIENT_URL: Joi.string().required(),
       }),
     }),
     TypeOrmModule.forRootAsync({

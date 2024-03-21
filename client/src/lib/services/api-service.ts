@@ -4,8 +4,10 @@ export class ApiService {
     private readonly _client: AxiosInstance;
 
     constructor() {
+
         this._client = axios.create({
-            baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
+            // On server side we're using the nginx container as a proxy to the api
+            baseURL: typeof window === "undefined" ? process.env.NEXT_PUBLIC_API_SERVER_BASE_URL : process.env.NEXT_PUBLIC_API_CLIENT_BASE_URL,
         });
     }
 
