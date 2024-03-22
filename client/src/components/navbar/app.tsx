@@ -124,18 +124,25 @@ export default function Navbar(props: NavbarProps) {
 
               <div className="space-y-2 px-2 flex-1">
                 {items.map((item, i) => (
-                  <SidebarNavItem key={i} title={item.title} icon={item.icon} />
+                  <SidebarNavItem
+                    key={i}
+                    href={item.link}
+                    title={item.title}
+                    icon={item.icon}
+                  />
                 ))}
               </div>
 
               <div className="divide-y">
                 <div className="mb-6 space-y-2">
                   <SidebarNavItem
+                    href="/contact"
                     title="Support"
                     icon={<IconLifeBuoy className="h-5 w-5 text-gray-500" />}
                   />
                   <SidebarNavItem
                     title="Settings"
+                    href="/app/settings"
                     icon={<IconSettings className="h-5 w-5 text-gray-500" />}
                   />
                 </div>
@@ -144,7 +151,6 @@ export default function Navbar(props: NavbarProps) {
                   <div className="flex ml-2">
                     {/* Avatar */}
                     <Avatar>
-                      {/* TODO: add image */}
                       <AvatarImage src={props.user?.picture ?? undefined} />
                       <AvatarFallback>
                         {Array.from(props.user?.email ?? "c")[0].toUpperCase()}
@@ -172,25 +178,24 @@ export default function Navbar(props: NavbarProps) {
   );
 }
 
-function SidebarNavItem({
-  active,
-  icon,
-  title,
-}: {
+function SidebarNavItem(props: {
   active?: boolean;
   title: string;
   icon: React.ReactNode;
+  href: string;
 }) {
   return (
-    <div
-      className={`px-3 flex space-x-3 py-2 items-center rounded-md ${
-        active ? "bg-gray-50" : ""
-      }`}
-    >
-      {icon}
-      <a href="#" className="text-gray-700 font-semibold">
-        {title}
-      </a>
-    </div>
+    <Link href={props.href}>
+      <div
+        className={`px-3 flex space-x-3 py-2 items-center rounded-md ${
+          props.active ? "bg-gray-50" : ""
+        }`}
+      >
+        {props.icon}
+        <a href="#" className="text-gray-700 font-semibold">
+          {props.title}
+        </a>
+      </div>
+    </Link>
   );
 }
