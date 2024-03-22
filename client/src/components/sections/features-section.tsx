@@ -28,25 +28,23 @@ export default function FeaturesSection() {
           </svg>
         </h1>
         <p className="mt-6 text-lg text-center text-gray-600">
-          Powerful, self-serve product and growth analytics to help you convert,
-          engage, and retain more users. Trusted by over 4,000 startups.
+          Elevate Your Document Experience with Chatwith. Explore the features we have to offer.
         </p>
       </div>
 
       <div className="px-4 md:px-8 mx-auto place-items-center grid grid-col-1 md:grid-cols-3 gap-10 md:gap-x-4 md:gap-y-4">
         {brandConfig.features.map((f, i) => (
-          <div className="border bg-white rounded-md p-5 max-w-96" key={i}>
+          <div className="border bg-white rounded-md p-5 max-w-96 h-full" key={i}>
             {/* Icon */}
             <div className="mb-4 bg-brand-400 h-8 w-8 rounded-full"></div>
 
             {/* Text */}
             <div className="space-y-2">
               <h2 className="text-xl font-semibold text-gray-900">
-                Share team inboxes
+                {f.title}
               </h2>
               <p className="text-gray-600 text-sm">
-                Whether you have a team of 2 or 200, our shared team inboxes
-                keep everyone on the same page and in the loop.
+                {f.description}
               </p>
             </div>
           </div>

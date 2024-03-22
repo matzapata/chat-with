@@ -45,7 +45,7 @@ export default function FaqSection() {
       <div className="px-4 max-w-3xl mx-auto w-full">
         <div className="divide-y border-y">
           {brandConfig.faq.map((f, i) => (
-            <div key={i} className="flex py-8 flex-1 space-y-2">
+            <div key={i} className="flex py-8 flex-1 space-x-1">
               <div className="flex-grow">
                 <h2 className="text-lg h-7 font-medium text-gray-700">
                   {f.question}

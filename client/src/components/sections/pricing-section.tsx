@@ -6,7 +6,37 @@ import { ArrowRightIcon } from "@heroicons/react/24/solid";
 import GoProButton from "../billing/go-pro-button";
 
 export default async function PricingSection() {
-  const plans = await paymentsService.getPlans();
+  let plans = {
+    free: {
+      name: 'Free',
+      interval: 'lifetime',
+      variant_id: null,
+      price: 0,
+      description: 'Free plan',
+      features: ['1 documents', '100 messages per day'],
+      limits: {
+        max_documents: 1,
+        max_messages: 100,
+      },
+    },
+    pro: {
+      name: 'PRO',
+      interval: 'month',
+      variant_id: '99201',
+      price: 9.99,
+      description: 'Access more documents, send more messages and keep boosting your productivity',
+      features: ['10 documents per month', '1000 messages per day'],
+      limits: {
+        max_documents: 10,
+        max_messages: 1000,
+      },
+    },
+  }
+  try {
+    plans = await paymentsService.getPlans() as any;
+  } catch (error) {
+    console.log(error)
+  }
 
   return (
     <div className="py-24 sm:py-32">
@@ -41,12 +71,10 @@ export default async function PricingSection() {
         <div className="bg-white mx-auto mt-16 max-w-2xl rounded-3xl ring-1 ring-gray-200 sm:mt-20 lg:mx -0 lg:flex lg:max-w-none">
           <div className="p-8 sm:p-10 lg:flex-auto">
             <h3 className="text-2xl font-bold tracking-tight text-gray-900">
-              Lifetime membership
+              {plans.pro.name}
             </h3>
             <p className="mt-6 text-base leading-7 text-gray-600">
-              Lorem ipsum dolor sit amet consect etur adipisicing elit. Itaque
-              amet indis perferendis blanditiis repellendus etur quidem
-              assumenda.
+              {plans.pro.description}
             </p>
             <div className="mt-10 flex items-center gap-x-4">
               <h4 className="flex-none text-sm font-semibold leading-6 text-brand-600">
@@ -73,7 +101,7 @@ export default async function PricingSection() {
             <div className="rounded-2xl bg-gray-50 py-10 text-center ring-1 ring-inset ring-gray-900/5 lg:flex lg:flex-col lg:justify-center lg:py-16">
               <div className="mx-auto max-w-xs px-8">
                 <p className="text-base font-semibold text-gray-600">
-                  Pay once, own it forever
+                  Become a pro user
                 </p>
                 <p className="mt-6 flex items-baseline justify-center gap-x-2">
                   <span className="text-5xl font-bold tracking-tight text-gray-900">

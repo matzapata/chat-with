@@ -6,8 +6,7 @@ export const brandConfig = {
   faq: [
     {
       question: "Is there a free trial available?",
-      answer:
-        "Yes, you can try us for free for 30 days. If you want, we’ll provide you with a free, personalized 30-minute onboarding call to get you up and running as soon as possible.",
+      answer: "Yes! You can create a free account and start getting knowledge from your files. No credit card required.",
     },
     {
       question: "Can I change my plan later?",
@@ -15,57 +14,32 @@ export const brandConfig = {
         "Yes, you can change your plan at any time. You can also cancel your plan at any time.",
     },
     {
-      question: "Can other info be added to an invoice?",
-      answer:
-        "Yes, you can add a note to an invoice. You can also add a note to a customer.",
-    },
-    {
-      question: "Do you offer discounts for yearly payment?",
-      answer:
-        "Yes, we offer a 20% discount on yearly payments. You can change your billing period at any time.",
+      question: "Can I interact with ChatWith in languages other than english?",
+      answer: "Yes, ChatWith understands most languages. You can ask questions in all the languages.        ",
     },
     {
       question: "Can I cancel my subscription?",
-      answer:
-        "Yes, you can cancel your subscription at any time. You can also pause your subscription for up to 3 months.",
+      answer: "Yes, you can cancel your subscription at any time. You can also pause your subscription for up to 3 months.",
     },
   ],
   features: [
     {
-      title: "Share team inboxes",
+      title: "AI-Powered",
       description:
-        "Whether you have a team of 2 or 200, our shared team inboxes keep everyone on the same page and in the loop.",
+        "ChatWith is powered by advanced AI technology, allowing it to understand the context of your PDF and provide accurate, relevant answers.",
       icon: null,
     },
     {
-      title: "Share team inboxes",
+      title: "Interactive",
       description:
-        "Whether you have a team of 2 or 200, our shared team inboxes keep everyone on the same page and in the loop.",
+        "ChatWith allows two-way communication with your PDF instead of simply extracting text. You can ask questions, get answers, and even follow up on those answers. It's like having a conversation with the author of your PDF document.",
       icon: null,
     },
     {
-      title: "Share team inboxes",
+      title: "User-Friendly",
       description:
-        "Whether you have a team of 2 or 200, our shared team inboxes keep everyone on the same page and in the loop.",
+        "With its intuitive interface, anyone can quickly start using ChatWithPDF. You don't need any special skills or knowledge to use ChatWithPDF. If you can chat with a friend, you can chat with a PDF.",
       icon: null,
-    },
-    {
-      title: "Share team inboxes",
-      description:
-        "Whether you have a team of 2 or 200, our shared team inboxes keep everyone on the same page and in the loop.",
-      icon: null,
-    },
-    {
-      title: "Share team inboxes",
-      description:
-        "Whether you have a team of 2 or 200, our shared team inboxes keep everyone on the same page and in the loop.",
-      icon: null,
-    },
-    {
-      title: "Share team inboxes",
-      description:
-        "Whether you have a team of 2 or 200, our shared team inboxes keep everyone on the same page and in the loop.",
-      icon: null,
-    },
+    }
   ]
 }
