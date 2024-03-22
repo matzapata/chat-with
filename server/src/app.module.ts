@@ -12,6 +12,7 @@ import { ChatModule } from './chat/chat.module';
 import { Chat } from './chat/entities/chat.entity';
 import { ChatMessage } from './chat/entities/messages.entity';
 import { ContactModule } from './contact/contact.module';
+import { LoggerModule } from 'nestjs-pino';
 
 @Module({
   imports: [
@@ -63,6 +64,13 @@ import { ContactModule } from './contact/contact.module';
         entities: [User, UserSubscription, WebhookEvent, Chat, ChatMessage],
         synchronize: configService.get('NODE_ENV') === 'development',
       }),
+    }),
+    LoggerModule.forRoot({
+      pinoHttp: {
+        transport: {
+          target: 'pino-pretty',
+        },
+      },
     }),
     UsersModule,
     PaymentsModule,
