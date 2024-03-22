@@ -1,0 +1,22 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  annotations:
+  name: chat-with
+spec:
+  template:
+    spec:
+    metadata:
+      annotations:
+        run.googleapis.com/container-dependencies: '{"docker.io/matzapata/chatwith-nginx:latest":["docker.io/matzapata/chatwith-server:latest", "docker.io/matzapata/chatwith-client:latest"]}'
+        autoscaling.knative.dev/maxScale: 2
+      containers:
+      - image: docker.io/matzapata/chatwith-nginx:latest
+        ports:
+          - containerPort: 80
+      - image: docker.io/matzapata/chatwith-server:latest
+        ports:
+          - containerPort: 4000
+      - image: docker.io/matzapata/chatwith-client:latest
+        ports:
+          - containerPort: 3000

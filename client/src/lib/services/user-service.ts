@@ -8,7 +8,7 @@ interface UserDto {
     name?: string;
     is_pro: boolean;
     plan: SubscriptionPlan;
-    subscription: {} | null; // TODO: define subscription type
+    subscription: object | null;
 }
 
 export class UserService {

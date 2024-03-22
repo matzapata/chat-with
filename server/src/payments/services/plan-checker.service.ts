@@ -1,6 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { User } from 'src/users/entities/user.entity';
-import { SubscriptionPlan, plans } from '../config/plans';
 import { UserSubscriptionService } from './user-subscription.service';
 
 // TODO: We can improve this by using redis

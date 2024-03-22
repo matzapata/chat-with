@@ -82,9 +82,8 @@ export class PaymentsController {
     @Body() body: { [key: string]: any },
     @Body() headers: { [key: string]: any },
   ) {
-    // TODO: enable in prod
     // Verify webhook source
-    // await this.paymentService.validateWebhook(body, headers);
+    await this.paymentService.validateWebhook(body, headers);
 
     // Parse event and data
     const { data, event } = await this.paymentService.parseWebhookEvent(body);
