@@ -4,13 +4,13 @@ import * as Joi from 'joi';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_PIPE } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './users/entities/user.entity';
+import { User } from './entities/users/user.entity';
 import { PaymentsModule } from './payments/payments.module';
-import { UserSubscription } from './payments/entities/user-subscription';
-import { WebhookEvent } from './payments/entities/webhook-event.entity';
+import { UserSubscription } from './entities/payments/user-subscription';
+import { WebhookEvent } from './entities/payments/webhook-event.entity';
 import { ChatModule } from './chat/chat.module';
-import { Chat } from './chat/entities/chat.entity';
-import { ChatMessage } from './chat/entities/messages.entity';
+import { Chat } from './entities/chat/chat.entity';
+import { ChatMessage } from './entities/chat/messages.entity';
 import { ContactModule } from './contact/contact.module';
 import { LoggerModule } from 'nestjs-pino';
 

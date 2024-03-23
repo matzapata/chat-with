@@ -24,7 +24,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { ChatsService } from './services/chat.service';
 import { AuthGuard } from 'src/users/guards/auth.guard';
 import { CurrentUser } from 'src/users/decorators/current-user.decorator';
-import { User } from 'src/users/entities/user.entity';
+import { User } from 'src/entities/users/user.entity';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { ChatMetadataDto } from './dtos/chat-metadata.dto';
 import { ChatDto } from './dtos/chat.dto';
@@ -177,11 +177,11 @@ export class ChatController {
     // Add ai message to chat
     const aiMessage = await this.chatsService.addMessage(
       id,
-      res,
+      res.result,
       MessageAgent.ai,
     );
 
-    return { userMessage, aiMessage };
+    return { userMessage, aiMessage, context: res.context };
   }
 
   @Get('/:id')

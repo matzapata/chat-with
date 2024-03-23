@@ -6,37 +6,8 @@ import { ArrowRightIcon } from "@heroicons/react/24/solid";
 import GoProButton from "../billing/go-pro-button";
 
 export default async function PricingSection() {
-  let plans = {
-    free: {
-      name: 'Free',
-      interval: 'lifetime',
-      variant_id: null,
-      price: 0,
-      description: 'Free plan',
-      features: ['1 documents', '100 messages per day'],
-      limits: {
-        max_documents: 1,
-        max_messages: 100,
-      },
-    },
-    pro: {
-      name: 'PRO',
-      interval: 'month',
-      variant_id: '99201',
-      price: 9.99,
-      description: 'Access more documents, send more messages and keep boosting your productivity',
-      features: ['10 documents per month', '1000 messages per day'],
-      limits: {
-        max_documents: 10,
-        max_messages: 1000,
-      },
-    },
-  }
-  try {
-    plans = await paymentsService.getPlans() as any;
-  } catch (error) {
-    console.log(error)
-  }
+  const  plans = await paymentsService.getPlans()
+  
 
   return (
     <div className="py-24 sm:py-32">

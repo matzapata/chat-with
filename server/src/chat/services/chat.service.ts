@@ -1,8 +1,8 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { Between, Repository } from 'typeorm';
-import { Chat } from '../entities/chat.entity';
-import { User } from 'src/users/entities/user.entity';
-import { ChatMessage } from '../entities/messages.entity';
+import { Chat } from '../../entities/chat/chat.entity';
+import { User } from 'src/entities/users/user.entity';
+import { ChatMessage } from '../../entities/chat/messages.entity';
 import { MessageAgent } from 'src/chat/services/rag.service';
 import { MimeType } from 'src/infrastructure/vectorstore/vectorstore.service';
 

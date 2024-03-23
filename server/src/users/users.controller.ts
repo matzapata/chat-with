@@ -2,7 +2,7 @@ import { Body, Controller, Get, Put, UseGuards } from '@nestjs/common';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { CurrentUser } from 'src/users/decorators/current-user.decorator';
 import { AuthGuard } from 'src/users/guards/auth.guard';
-import { User } from './entities/user.entity';
+import { User } from '../entities/users/user.entity';
 import { UsersService } from './services/users.service';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { UserSubscriptionService } from 'src/payments/services/user-subscription.service';

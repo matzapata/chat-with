@@ -15,6 +15,7 @@ services:
       context: ./server
       dockerfile: Dockerfile.dev
     environment:
+      - PORT=4000
       - NODE_ENV=development
     env_file:
       - ./server/.env.development

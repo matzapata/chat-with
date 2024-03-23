@@ -3,7 +3,7 @@ import {
   PaymentProviders,
   SubscriptionStatus,
 } from '../../infrastructure/payments/providers/payment.provider';
-import { User } from 'src/users/entities/user.entity';
+import { User } from 'src/entities/users/user.entity';
 
 @Entity()
 export class UserSubscription {

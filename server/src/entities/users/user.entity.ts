@@ -1,5 +1,5 @@
-import { Chat } from 'src/chat/entities/chat.entity';
-import { UserSubscription } from 'src/payments/entities/user-subscription';
+import { Chat } from 'src/entities/chat/chat.entity';
+import { UserSubscription } from 'src/entities/payments/user-subscription';
 import {
   Entity,
   Column,

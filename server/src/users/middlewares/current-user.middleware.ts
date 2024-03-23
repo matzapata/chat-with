@@ -1,7 +1,7 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import { UsersService } from '../services/users.service';
-import { User } from '../entities/user.entity';
+import { User } from '../../entities/users/user.entity';
 import { AuthService } from '../../infrastructure/auth/auth.service';
 
 declare module 'express' {

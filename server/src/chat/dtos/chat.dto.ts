@@ -1,5 +1,5 @@
 import { Expose, Transform } from 'class-transformer';
-import { ChatMessage } from '../entities/messages.entity';
+import { ChatMessage } from '../../entities/chat/messages.entity';
 import { MimeType } from 'src/infrastructure/vectorstore/vectorstore.service';
 
 export class ChatDto {

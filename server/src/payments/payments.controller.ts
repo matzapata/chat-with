@@ -16,7 +16,7 @@ import { UserSubscriptionService } from './services/user-subscription.service';
 import { WebhookEventsService } from './services/webhook-events-service';
 import { PaymentsService } from '../infrastructure/payments/payments.service';
 import { EmailService } from 'src/infrastructure/emails/email.service';
-import { User } from 'src/users/entities/user.entity';
+import { User } from 'src/entities/users/user.entity';
 import {
   SubscriptionStatus,
   WebhookEventName,

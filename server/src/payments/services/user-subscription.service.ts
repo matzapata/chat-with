@@ -1,8 +1,8 @@
 import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserSubscription } from '../entities/user-subscription';
-import { User } from 'src/users/entities/user.entity';
+import { UserSubscription } from '../../entities/payments/user-subscription';
+import { User } from 'src/entities/users/user.entity';
 import { SubscriptionPlan, plans } from '../config/plans';
 
 @Injectable()

@@ -3,7 +3,7 @@ import { UsersController } from './users.controller';
 import { UsersService } from './services/users.service';
 import { AuthService } from '../infrastructure/auth/auth.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './entities/user.entity';
+import { User } from '../entities/users/user.entity';
 import { CurrentUserMiddleware } from './middlewares/current-user.middleware';
 import { PaymentsModule } from 'src/payments/payments.module';
 

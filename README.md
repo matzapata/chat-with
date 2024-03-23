@@ -7,7 +7,7 @@ Chat with any file. Leverage langchain and lemonsqueezy to create a saas with au
 
 # Server
 
-TODO: - include references in response
+TODO: - include references in response, frontend 
 TODO: - deployments. (docker, cloud run, for dbs supabase) (use github actions) https://www.tomray.dev/deploy-nestjs-cloud-run (blocked - card issue)
 
 

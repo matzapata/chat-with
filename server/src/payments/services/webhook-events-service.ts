@@ -1,7 +1,7 @@
 import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { WebhookEvent } from '../entities/webhook-event.entity';
+import { WebhookEvent } from '../../entities/payments/webhook-event.entity';
 
 @Injectable()
 export class WebhookEventsService {
