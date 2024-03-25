@@ -6,6 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
+    "deploy": "npm run build && vercel deploy --prod",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "cross-env NODE_ENV=development nest start",
@@ -44,6 +45,7 @@
     "nodemailer": "^6.9.9",
     "pdf-parse": "^1.1.1",
     "pg": "^8.11.3",
+    "pino-http": "^9.0.0",
     "pino-pretty": "^11.0.0",
     "reflect-metadata": "^0.1.13",
     "resend": "^3.2.0",

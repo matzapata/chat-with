@@ -1,11 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { ChatPromptTemplate, MessagesPlaceholder } from 'langchain/prompts';
-import { StringOutputParser } from 'langchain/schema/output_parser';
+import {
+  ChatPromptTemplate,
+  MessagesPlaceholder,
+} from '@langchain/core/prompts';
+import { StringOutputParser } from '@langchain/core/output_parsers';
 import {
   RunnableMap,
   RunnablePassthrough,
   RunnableSequence,
-} from 'langchain/runnables';
+} from '@langchain/core/runnables';
 import { formatDocumentsAsString } from 'langchain/util/document';
 import { AIMessage, HumanMessage } from 'langchain/schema';
 import { VectorStoreService } from '../../infrastructure/vectorstore/vectorstore.service';
@@ -42,7 +45,7 @@ export class RetrievalAugmentedGenerationService {
     chat_history: { agent: MessageAgent; message: string }[],
     k: number,
     filter: any,
-  ): Promise<{ question: string; result: string; context: Document[] }> {
+  ): Promise<{ question: string; answer: string; context: Document[] }> {
     // Contextualize the question with the chat history
     const contextualizedQuestion = await this.contextualizeQuestion(
       question,

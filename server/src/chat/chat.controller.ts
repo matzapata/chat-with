@@ -168,20 +168,16 @@ export class ChatController {
     );
 
     // Add user and ai message to chat
-    const userMessage = await this.chatsService.addMessage(
-      id,
-      body.message,
-      MessageAgent.user,
-    );
+    await this.chatsService.addMessage(id, body.message, MessageAgent.user);
 
     // Add ai message to chat
-    const aiMessage = await this.chatsService.addMessage(
-      id,
-      res.result,
-      MessageAgent.ai,
-    );
+    await this.chatsService.addMessage(id, res.answer, MessageAgent.ai);
 
-    return { userMessage, aiMessage, context: res.context };
+    return {
+      question: body.message,
+      answer: res.answer,
+      context: res.context,
+    };
   }
 
   @Get('/:id')

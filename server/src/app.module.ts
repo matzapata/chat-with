@@ -24,7 +24,6 @@ import { LoggerModule } from 'nestjs-pino';
           .valid('development', 'production', 'test')
           .default('production'),
         PORT: Joi.number().default(3000),
-        JWT_SECRET: Joi.string().required(),
         LEMONSQUEEZY_STORE_ID: Joi.string().required(),
         LEMONSQUEEZY_API_KEY: Joi.string().required(),
         LEMONSQUEEZY_WEBHOOK_SECRET: Joi.string().required(),
@@ -48,7 +47,6 @@ import { LoggerModule } from 'nestjs-pino';
         DB_USERNAME: Joi.string().required(),
         DB_PASSWORD: Joi.string().required(),
         DB_NAME: Joi.string().required(),
-        CLIENT_URL: Joi.string().required(),
       }),
     }),
     TypeOrmModule.forRootAsync({
@@ -65,13 +63,7 @@ import { LoggerModule } from 'nestjs-pino';
         synchronize: configService.get('NODE_ENV') === 'development',
       }),
     }),
-    LoggerModule.forRoot({
-      pinoHttp: {
-        transport: {
-          target: 'pino-pretty',
-        },
-      },
-    }),
+    LoggerModule.forRoot({}),
     UsersModule,
     PaymentsModule,
     ChatModule,

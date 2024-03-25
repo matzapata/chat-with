@@ -1,4 +1,26 @@
-import { brandConfig } from "@/config/brand";
+import { ChatBubbleLeftRightIcon, UsersIcon } from "@heroicons/react/24/solid";
+import { IconOpenAI } from "../ui/icons";
+
+const features =    [
+  {
+    title: 'AI-Powered',
+    description:
+      'ChatWith is powered by advanced AI technology, allowing it to understand the context of your PDF and provide accurate, relevant answers.',
+    icon: <IconOpenAI className="h-5 w-5" />,
+  },
+  {
+    title: 'Interactive',
+    description:
+      "ChatWith allows two-way communication with your PDF instead of simply extracting text. You can ask questions, get answers, and even follow up on those answers. It's like having a conversation with the author of your PDF document.",
+    icon: <ChatBubbleLeftRightIcon className="h-5 w-5" />,
+  },
+  {
+    title: 'User-Friendly',
+    description:
+      "With its intuitive interface, anyone can quickly start using ChatWithPDF. You don't need any special skills or knowledge to use ChatWithPDF. If you can chat with a friend, you can chat with a PDF.",
+    icon: <UsersIcon  className="h-5 w-5" />,
+  },
+]
 
 export default function FeaturesSection() {
   return (
@@ -33,10 +55,12 @@ export default function FeaturesSection() {
       </div>
 
       <div className="px-4 md:px-8 mx-auto place-items-center grid grid-col-1 md:grid-cols-3 gap-10 md:gap-x-4 md:gap-y-4">
-        {brandConfig.features.map((f, i) => (
+        {features.map((f, i) => (
           <div className="border bg-white rounded-md p-5 max-w-96 h-full" key={i}>
             {/* Icon */}
-            <div className="mb-4 bg-brand-400 h-8 w-8 rounded-full"></div>
+            <div className="mb-4 bg-brand-400 h-8 w-8 rounded-full flex items-center justify-center text-white">
+              {f.icon}
+            </div>
 
             {/* Text */}
             <div className="space-y-2">

@@ -25,6 +25,7 @@ export enum MessageRole {
 export interface ChatMessage {
     content: string;
     role: MessageRole;
+    context: { pageContent: string, metadata: any }[];
 }
 
 export interface ChatDto extends ChatMetadataDto {
@@ -59,7 +60,8 @@ export class ChatService {
         return {
             ...res.data, messages: res.data.messages.map((m: { id: string, message: string, created_at: string, agent: "USER" | "AI" }) => ({
                 content: m.message,
-                role: m.agent === 'USER' ? MessageRole.user : MessageRole.ai
+                role: m.agent === 'USER' ? MessageRole.user : MessageRole.ai,
+                context: []
             })), created_at: new Date(res.data.created_at)
         }
     }
@@ -67,8 +69,9 @@ export class ChatService {
     async postMessage(accessToken: string,  id: string, message: string): Promise<ChatMessage> {
         const res = await this.client.put(`/api/chats/${id}`, { message }, { headers: { Authorization: `Bearer ${accessToken}` } })
         return {
-            content: res.data.aiMessage.message,
+            content: res.data.answer,
             role: MessageRole.ai,
+            context: res.data.context
         }
     }
 

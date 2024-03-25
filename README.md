@@ -7,17 +7,23 @@ Chat with any file. Leverage langchain and lemonsqueezy to create a saas with au
 
 # Server
 
-TODO: - include references in response, frontend 
-TODO: - deployments. (docker, cloud run, for dbs supabase) (use github actions) https://www.tomray.dev/deploy-nestjs-cloud-run (blocked - card issue)
-
+TODO: - Update pricing
+TODO: - Set domain, mailbox and resender
+TODO: - env checking in client
+TODO: - fix local development with docker-compose
+TODO: - add summarization feature
+TODO: - Add example questions
+TODO: - Streaming
+TODO: - lemonsquezzy live (enable coupons) lower price to 5 bucks
 
 # Deployment
 
-1. `cd server && docker build -t matzapata/chatwith-server .`
-2. `cd nginx && docker build -t matzapata/chatwith-nginx .`
-3. `cd client && docker build -t matzapata/chatwith-client .`
-4. 
+1. `cd client && npm run deploy`
+2. `cd server && npm run deploy`
 
+Setup pgvector extension in postgress db
+1. Connect with psql
+2. `CREATE EXTENSION IF NOT EXISTS vector;`
 
 # Domains ideas
 

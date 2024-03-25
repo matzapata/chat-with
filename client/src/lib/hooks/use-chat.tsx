@@ -19,7 +19,7 @@ export default function useChat(
   const append = async (message: string) => {
     setMessages((prev) => [
       ...prev,
-      { content: message, role: MessageRole.user },
+      { content: message, role: MessageRole.user, context: [] },
     ]);
     setInput("");
     setIsLoading(true);
@@ -33,7 +33,7 @@ export default function useChat(
       const response = await chatService.postMessage(accessTokenRaw, chatId, message);
       setMessages((prev) => [
         ...prev,
-        { content: response.content, role: MessageRole.ai },
+        { content: response.content, role: MessageRole.ai, context: response.context },
       ]);
     } catch (error) {
       console.error(error);

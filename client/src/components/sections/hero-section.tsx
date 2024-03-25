@@ -7,7 +7,7 @@ import images from '@/assets/images';
 export default function HeroSection() {
   return (
     <div id="hero" className="px-4 mt-16 md:mt-24">
-      <h1 className="md:text-6xl text-4xl font-semibold text-center text-gray-900">
+      <h1 className="md:text-6xl max-w-5xl text-4xl font-semibold text-center text-gray-900">
         AI-Powered Conversations from your files <br />{' '}
         <span className="text-brand-600">Upload, Engage, Learn!</span>
       </h1>
