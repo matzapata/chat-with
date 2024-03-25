@@ -215,12 +215,12 @@ export default function ChatsPanel(props: { initialChats: ChatMetadataDto[] }) {
                               <EllipsisVerticalIcon className="h-5 w-5" />
                             </DropdownMenuTrigger>
                             <DropdownMenuContent>
-                              <DropdownMenuItem
+                              {/* <DropdownMenuItem
                                 className="cursor-pointer"
                                 onClick={() => alert("Download")}
                               >
                                 Download
-                              </DropdownMenuItem>
+                              </DropdownMenuItem> */}
                               <DropdownMenuItem
                                 className="cursor-pointer"
                                 onClick={() => {
