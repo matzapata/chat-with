@@ -67,7 +67,7 @@ export class ChatService {
     }
 
     async postMessage(accessToken: string,  id: string, message: string): Promise<ChatMessage> {
-        const res = await this.client.put(`/api/chats/${id}`, { message }, { headers: { Authorization: `Bearer ${accessToken}` } })
+        const res = await this.client.post(`/api/chats/${id}`, { message }, { headers: { Authorization: `Bearer ${accessToken}` } })
         return {
             content: res.data.answer,
             role: MessageRole.ai,

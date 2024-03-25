@@ -1,7 +1,9 @@
+import Link from 'next/link';
 
 export default function Logo() {
   return (
-    <div className="flex items-center space-x-1 pt-1">
+    <Link href="/">
+      <div className="flex items-center space-x-1 pt-1 cursor-pointer">
         <svg
           width="20"
           height="20"
@@ -39,17 +41,17 @@ export default function Logo() {
             strokeLinejoin="round"
           />
         </svg>
-      
 
-      <h1
-        className="text-gray-800 italic text-xl"
-        style={{
-          fontFamily: "Poppins,sans-serif",
-          fontWeight: 900,
-        }}
-      >
-        CHATWITH.
-      </h1>
-    </div>
+        <h1
+          className="text-gray-800 italic text-xl"
+          style={{
+            fontFamily: 'Poppins,sans-serif',
+            fontWeight: 900,
+          }}
+        >
+          CHATWITH.
+        </h1>
+      </div>
+    </Link>
   );
 }

@@ -135,7 +135,7 @@ export class ChatController {
     return chat;
   }
 
-  @Put('/:id')
+  @Post('/:id')
   async postMessage(
     @Body() body: PostMessageDto,
     @CurrentUser() user: User,

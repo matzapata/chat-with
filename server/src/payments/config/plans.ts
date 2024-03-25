@@ -28,7 +28,7 @@ export const plans: { [key: string]: SubscriptionPlan } = {
     name: 'PRO',
     interval: 'month',
     variant_id: '99201',
-    price: 9.99,
+    price: 4.99,
     description:
       'Access more documents, send more messages and keep boosting your productivity',
     features: ['10 documents per month', '1000 messages per day'],

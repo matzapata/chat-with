@@ -7,13 +7,8 @@ Chat with any file. Leverage langchain and lemonsqueezy to create a saas with au
 
 # Server
 
-TODO: - Update pricing
-TODO: - Set domain, mailbox and resender
-TODO: - env checking in client
-TODO: - fix local development with docker-compose
-TODO: - add summarization feature
+TODO: - add summarization feature (load this in hello page)
 TODO: - Add example questions
-TODO: - Streaming
 TODO: - lemonsquezzy live (enable coupons) lower price to 5 bucks
 
 # Deployment
