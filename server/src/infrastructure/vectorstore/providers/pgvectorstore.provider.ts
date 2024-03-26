@@ -29,11 +29,7 @@ export class PgVectorStoreProvider implements VectorStoreProvider {
     this.vectorStore = await PGVectorStore.initialize(this.embeddings, {
       postgresConnectionOptions: {
         type: 'postgres',
-        host: this.configService.get('POSTGRES_HOST'),
-        port: this.configService.get('POSTGRES_PORT'),
-        user: this.configService.get('POSTGRES_USER'),
-        password: this.configService.get('POSTGRES_PASSWORD'),
-        database: this.configService.get('POSTGRES_DATABASE'),
+        connectionString: this.configService.get('POSTGRES_URL'),
       } as PoolConfig,
       tableName: 'documents',
       columns: {
