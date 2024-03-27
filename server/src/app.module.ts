@@ -37,11 +37,7 @@ import { LoggerModule } from 'nestjs-pino';
         GCP_PRIVATE_KEY: Joi.string().required(),
         GCP_STORAGE_BUCKET: Joi.string().required(),
         AUTH_JWKS_URI: Joi.string().required(),
-        POSTGRES_HOST: Joi.string().required(),
-        POSTGRES_PORT: Joi.number().required(),
-        POSTGRES_USER: Joi.string().required(),
-        POSTGRES_PASSWORD: Joi.string().required(),
-        POSTGRES_DATABASE: Joi.string().required(),
+        DATABASE_URL: Joi.string().required(),
 
         // Select based on email provider
         // NODEMAILER_EMAIL_USER: Joi.string().required(),
