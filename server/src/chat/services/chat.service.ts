@@ -1,99 +1,85 @@
-import { InjectRepository } from '@nestjs/typeorm';
-import { Between, Repository } from 'typeorm';
-import { Chat } from '../../entities/chat/chat.entity';
-import { User } from 'src/entities/users/user.entity';
-import { ChatMessage } from '../../entities/chat/messages.entity';
-import { MessageAgent } from 'src/chat/services/rag.service';
 import { MimeType } from 'src/infrastructure/vectorstore/vectorstore.service';
+import { ChatRepository } from '../repositories/chat.repository';
+import { Chat, Message, MessageAgent, Prisma } from '@prisma/client';
+import { MessagesRepository } from '../repositories/messages.repository';
 
 export class ChatsService {
   constructor(
-    @InjectRepository(Chat)
-    private readonly chatRepository: Repository<Chat>,
-    @InjectRepository(ChatMessage)
-    private readonly messagesRepository: Repository<ChatMessage>,
+    private readonly chatRepository: ChatRepository,
+    private readonly messagesRepository: MessagesRepository,
   ) {}
 
   async create(
-    owner: User,
+    ownerId,
     filename: string,
     filesize: number,
     mimetype: MimeType,
-    embeddings_ids: string[],
+    embeddingsIds: string[],
   ): Promise<Chat> {
-    const chat = this.chatRepository.create({
-      owner: owner,
+    return this.chatRepository.create(ownerId, {
       filename: filename,
       filesize: filesize,
-      embeddings_ids: embeddings_ids,
+      embeddingsIds: embeddingsIds,
       mimetype,
     });
-    return this.chatRepository.save(chat);
   }
 
   async delete(id: string) {
     return this.chatRepository.delete(id);
   }
 
-  async findAllOwnedBy(owner: User): Promise<Chat[]> {
-    return this.chatRepository.find({ where: { owner } });
+  async findAllOwnedBy(ownerId: string): Promise<Chat[]> {
+    return this.chatRepository.findByOwnerId(ownerId);
   }
 
-  async findFileForOwner(owner: User, filename: string): Promise<Chat | null> {
-    return this.chatRepository.findOne({ where: { owner, filename } });
+  async findFileForOwner(
+    ownerId: string,
+    filename: string,
+  ): Promise<Chat | null> {
+    return this.chatRepository.findByFilename(ownerId, filename);
   }
 
-  async findById(id: string): Promise<Chat | null> {
-    return this.chatRepository.findOne({
-      where: { id },
-      relations: ['owner', 'messages'],
-    });
+  async findById(id: string, include?: Prisma.ChatInclude) {
+    return this.chatRepository.findById(id, include);
   }
 
   async addMessage(
     id: string,
     message: string,
     agent: MessageAgent,
-  ): Promise<ChatMessage> {
-    const chat = await this.chatRepository.findOne({ where: { id } });
-    const chatMessage = this.messagesRepository.create({
-      chat,
+  ): Promise<Message> {
+    return this.messagesRepository.create(id, {
       agent,
       message,
     });
-    return this.messagesRepository.save(chatMessage);
   }
 
   async addMessages(
     id: string,
     messages: { message: string; agent: MessageAgent }[],
-  ): Promise<ChatMessage[]> {
-    const chat = await this.chatRepository.findOne({ where: { id } });
+  ): Promise<Message[]> {
     const chatMessages = messages.map((m) =>
-      this.messagesRepository.create({
-        chat,
+      this.messagesRepository.create(id, {
         agent: m.agent,
         message: m.message,
       }),
     );
-    return this.messagesRepository.save(chatMessages);
+    return await Promise.all(chatMessages);
   }
 
   async countMessagesByOwner(
-    owner: User,
+    ownerId: string,
     from: Date,
     to: Date,
   ): Promise<number> {
-    return this.messagesRepository.count({
-      where: { created_at: Between(from, to), chat: { owner: owner } },
-    });
+    return this.messagesRepository.countByOwnerBetweenDates(ownerId, from, to);
   }
 
-  countDocumentsByOwner(owner: User): Promise<number> {
-    return this.chatRepository.count({ where: { owner } });
+  countDocumentsByOwner(ownerId: string): Promise<number> {
+    return this.chatRepository.countByOwner(ownerId);
   }
 
-  deleteMessages(id: string) {
-    return this.messagesRepository.delete({ chat: { id } });
+  deleteAllByChatId(id: string) {
+    return this.messagesRepository.deleteAllByChatId(id);
   }
 }

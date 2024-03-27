@@ -9,28 +9,24 @@ import {
   Param,
   ParseFilePipeBuilder,
   Post,
-  Put,
   UploadedFile,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import {
-  RetrievalAugmentedGenerationService,
-  MessageAgent,
-} from './services/rag.service';
+import { RetrievalAugmentedGenerationService } from './services/rag.service';
 import { PostMessageDto } from './dtos/post-message.dto';
 import { Express } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ChatsService } from './services/chat.service';
 import { AuthGuard } from 'src/users/guards/auth.guard';
 import { CurrentUser } from 'src/users/decorators/current-user.decorator';
-import { User } from 'src/entities/users/user.entity';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { ChatMetadataDto } from './dtos/chat-metadata.dto';
 import { ChatDto } from './dtos/chat.dto';
 import { StorageService } from 'src/infrastructure/storage/storage.service';
 import { PlanCheckerService } from 'src/payments/services/plan-checker.service';
 import { MimeType } from 'src/infrastructure/vectorstore/vectorstore.service';
+import { MessageAgent, User } from '@prisma/client';
 
 // One chat conversation per file. so files and chats are associated
 
@@ -47,7 +43,7 @@ export class ChatController {
   @Get('/')
   @Serialize(ChatMetadataDto)
   getChats(@CurrentUser() user: User) {
-    return this.chatsService.findAllOwnedBy(user);
+    return this.chatsService.findAllOwnedBy(user.id);
   }
 
   @Post('/')
@@ -69,12 +65,14 @@ export class ChatController {
     @CurrentUser() user: User,
   ) {
     // Check user's plan
-    const documentsCount = await this.chatsService.countDocumentsByOwner(user);
-    await this.planCheckerService.canUploadDocument(user, documentsCount);
+    const documentsCount = await this.chatsService.countDocumentsByOwner(
+      user.id,
+    );
+    await this.planCheckerService.canUploadDocument(user.id, documentsCount);
 
     // Check if there's already a chat for the file
     const existingChat = await this.chatsService.findFileForOwner(
-      user,
+      user.id,
       file.originalname,
     );
     if (existingChat) {
@@ -108,11 +106,11 @@ export class ChatController {
     const chat = await this.chatsService.findById(id);
 
     // delete file from vector store
-    await this.ragService.deleteDocuments(chat.embeddings_ids);
+    await this.ragService.deleteDocuments(chat.embeddingsIds);
 
     // delete file from storage
     await this.storageService
-      .deleteFile(`${chat.owner.id}/${chat.id}-${chat.filename}`)
+      .deleteFile(`${chat.ownerId}/${chat.id}-${chat.filename}`)
       .catch(() => null); // ignore not found errors
 
     // delete file from files db
@@ -130,7 +128,7 @@ export class ChatController {
     }
 
     // delete messages from db
-    await this.chatsService.deleteMessages(id);
+    await this.chatsService.deleteAllByChatId(id);
 
     return chat;
   }
@@ -144,18 +142,18 @@ export class ChatController {
     // Check user's plan
     const startOfToday = new Date(new Date().setHours(0, 0, 0, 0));
     const messageCount = await this.chatsService.countMessagesByOwner(
-      user,
+      user.id,
       startOfToday,
       new Date(),
     );
-    await this.planCheckerService.canSendMessage(user, messageCount);
+    await this.planCheckerService.canSendMessage(user.id, messageCount);
 
     // Check user has permissions
-    const chat = await this.chatsService.findById(id);
+    const chat = await this.chatsService.findById(id, { messages: true });
     if (!chat) {
       throw new NotFoundException('Chat not found');
     }
-    if (chat.owner.id !== user.id) {
+    if (chat.ownerId !== user.id) {
       throw new ForbiddenException('Not allowed');
     }
 
@@ -168,10 +166,10 @@ export class ChatController {
     );
 
     // Add user and ai message to chat
-    await this.chatsService.addMessage(id, body.message, MessageAgent.user);
+    await this.chatsService.addMessage(id, body.message, MessageAgent.USER);
 
     // Add ai message to chat
-    await this.chatsService.addMessage(id, res.answer, MessageAgent.ai);
+    await this.chatsService.addMessage(id, res.answer, MessageAgent.AI);
 
     return {
       question: body.message,

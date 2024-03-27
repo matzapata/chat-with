@@ -1,24 +1,26 @@
 import { Module, ValidationPipe } from '@nestjs/common';
 import { UsersModule } from './users/users.module';
 import * as Joi from 'joi';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { APP_PIPE } from '@nestjs/core';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './entities/users/user.entity';
 import { PaymentsModule } from './payments/payments.module';
-import { UserSubscription } from './entities/payments/user-subscription';
-import { WebhookEvent } from './entities/payments/webhook-event.entity';
 import { ChatModule } from './chat/chat.module';
-import { Chat } from './entities/chat/chat.entity';
-import { ChatMessage } from './entities/chat/messages.entity';
 import { ContactModule } from './contact/contact.module';
 import { LoggerModule } from 'nestjs-pino';
 
 @Module({
   imports: [
+    // main controller modules
+    UsersModule,
+    PaymentsModule,
+    ChatModule,
+    ContactModule,
+    // logger
+    LoggerModule.forRoot({}),
+    // dotenv
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: `.env.${process.env.NODE_ENV}`,
+      envFilePath: '.env',
       validationSchema: Joi.object({
         NODE_ENV: Joi.string()
           .valid('development', 'production', 'test')
@@ -49,21 +51,6 @@ import { LoggerModule } from 'nestjs-pino';
         CONTACT_EMAIL: Joi.string().required(),
       }),
     }),
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        url: configService.get('POSTGRES_URL'),
-        entities: [User, UserSubscription, WebhookEvent, Chat, ChatMessage],
-        synchronize: configService.get('NODE_ENV') === 'development',
-      }),
-    }),
-    LoggerModule.forRoot({}),
-    UsersModule,
-    PaymentsModule,
-    ChatModule,
-    ContactModule,
   ],
   providers: [
     {

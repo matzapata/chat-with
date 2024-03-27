@@ -1,5 +1,4 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { User } from 'src/entities/users/user.entity';
 import { UserSubscriptionService } from './user-subscription.service';
 
 // TODO: We can improve this by using redis
@@ -10,8 +9,11 @@ export class PlanCheckerService {
     private readonly userSubscriptionService: UserSubscriptionService,
   ) {}
 
-  async canUploadDocument(user: User, documentsCount: number): Promise<void> {
-    const { plan } = await this.userSubscriptionService.find(user);
+  async canUploadDocument(
+    userId: string,
+    documentsCount: number,
+  ): Promise<void> {
+    const { plan } = await this.userSubscriptionService.findByUserId(userId);
     const uploadLimit = plan.limits.max_documents;
 
     if (uploadLimit === 0) {
@@ -24,8 +26,8 @@ export class PlanCheckerService {
     }
   }
 
-  async canSendMessage(user: User, messageCount): Promise<void> {
-    const { plan } = await this.userSubscriptionService.find(user);
+  async canSendMessage(userId: string, messageCount): Promise<void> {
+    const { plan } = await this.userSubscriptionService.findByUserId(userId);
     const messageLimit = plan.limits.max_messages;
 
     if (messageLimit === 0) {

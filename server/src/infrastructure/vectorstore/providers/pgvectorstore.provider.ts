@@ -26,6 +26,7 @@ export class PgVectorStoreProvider implements VectorStoreProvider {
 
   // on module init create the connection
   async onModuleInit() {
+    // TODO: Refactor to use prisma service
     this.vectorStore = await PGVectorStore.initialize(this.embeddings, {
       postgresConnectionOptions: {
         type: 'postgres',

@@ -11,17 +11,16 @@ import {
 import { CurrentUser } from 'src/users/decorators/current-user.decorator';
 import { AuthGuard } from 'src/users/guards/auth.guard';
 import { UsersService } from 'src/users/services/users.service';
-import { CreateSubscriptionDto } from './dtos/create-subscription.dto';
 import { UserSubscriptionService } from './services/user-subscription.service';
-import { WebhookEventsService } from './services/webhook-events-service';
+import { WebhookEventsService } from './services/webhook-events.service';
 import { PaymentsService } from '../infrastructure/payments/payments.service';
 import { EmailService } from 'src/infrastructure/emails/email.service';
-import { User } from 'src/entities/users/user.entity';
 import {
   SubscriptionStatus,
   WebhookEventName,
 } from 'src/infrastructure/payments/providers/payment.provider';
 import { plans } from './config/plans';
+import { User } from '@prisma/client';
 
 @Controller('api/payments')
 export class PaymentsController {
@@ -41,14 +40,16 @@ export class PaymentsController {
   @Get('/subscription')
   @UseGuards(AuthGuard)
   async getSubscription(@CurrentUser() user: User) {
-    const { sub, plan } = await this.userSubscriptionService.find(user);
+    const { sub, plan } = await this.userSubscriptionService.findByUserId(
+      user.id,
+    );
     return { subscription: sub, plan };
   }
 
   @Post('/subscription')
   @UseGuards(AuthGuard)
   async createSubscriptionCheckout(@CurrentUser() user: User) {
-    const { sub } = await this.userSubscriptionService.find(user);
+    const { sub } = await this.userSubscriptionService.findByUserId(user.id);
     if (sub && sub.status === SubscriptionStatus.active) {
       throw new BadRequestException('User already has an active subscription');
     }
@@ -65,13 +66,15 @@ export class PaymentsController {
   @Get('/subscription/portal')
   @UseGuards(AuthGuard)
   async getSubscriptionPortal(@CurrentUser() user: User) {
-    const userSubscription = await this.userSubscriptionService.find(user);
+    const userSubscription = await this.userSubscriptionService.findByUserId(
+      user.id,
+    );
     if (!userSubscription) {
       throw new NotFoundException('User has no subscription');
     }
 
     const url = await this.paymentService.createSubscriptionPortal(
-      userSubscription.sub.subscription_id,
+      userSubscription.sub.subscriptionId,
     );
     return { url };
   }
@@ -90,8 +93,8 @@ export class PaymentsController {
 
     // Store event in db
     const webhookEvent = await this.webhookEventsService.create({
-      created_at: new Date(),
-      event_name: event,
+      createdAt: new Date(),
+      eventName: event,
       processed: false,
       body: JSON.stringify(body),
     });
@@ -111,24 +114,24 @@ export class PaymentsController {
       if (!user) throw new NotFoundException('User not found');
 
       if (data.status === SubscriptionStatus.cancelled) {
-        await this.userSubscriptionService.delete(user.id);
+        await this.userSubscriptionService.deleteByUserId(user.id);
       } else if (data.status === SubscriptionStatus.active) {
-        await this.userSubscriptionService.upsert(user, {
-          variant_id: data.variant_id,
-          subscription_id: data.subscription_id,
+        await this.userSubscriptionService.upsertByUserId(user.id, {
+          variantId: data.variant_id,
+          subscriptionId: data.subscription_id,
           provider: data.provider,
-          order_id: data.order_id,
+          orderId: data.order_id,
           status: data.status,
-          renews_at: data.renews_at,
-          ends_at: data.ends_at,
-          trial_ends_at: data.trial_ends_at,
-          billing_anchor: data.billing_anchor,
+          renewsAt: data.renews_at,
+          endsAt: data.ends_at,
+          trialEndsAt: data.trial_ends_at,
+          billingAnchor: data.billing_anchor,
           cancelled: data.cancelled,
-          created_at: data.created_at,
-          updated_at: data.updated_at,
-          pause_mode: data.pause_mode,
-          pause_resumes_at: data.pause_resumes_at,
-          test_mode: data.test_mode,
+          createdAt: data.created_at,
+          updatedAt: data.updated_at,
+          pauseMode: data.pause_mode,
+          pauseResumesAt: data.pause_resumes_at,
+          testMode: data.test_mode,
         });
       }
 

@@ -4,7 +4,7 @@ import { CreateContactDto } from './dtos/contact-dto';
 import { ConfigService } from '@nestjs/config';
 import { AuthGuard } from 'src/users/guards/auth.guard';
 import { CurrentUser } from 'src/users/decorators/current-user.decorator';
-import { User } from 'src/entities/users/user.entity';
+import { User } from '@prisma/client';
 
 @Controller('api/contact')
 @UseGuards(AuthGuard)

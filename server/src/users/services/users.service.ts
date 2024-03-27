@@ -1,31 +1,24 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { User } from '../../entities/users/user.entity';
-import { Repository } from 'typeorm';
+import { UsersRepository } from '../repositories/users.repository';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectRepository(User) private repo: Repository<User>) {}
+  constructor(private repo: UsersRepository) {}
 
   findByEmail(email: string): Promise<User | null> {
-    return this.repo.findOneBy({ email });
+    return this.repo.findUserByEmail(email);
   }
 
   findById(id: string): Promise<User | null> {
-    return this.repo.findOne({
-      where: { id },
-      relations: { subscription: true },
-    });
+    return this.repo.findUserById(id);
   }
 
   create(id: string, email: string): Promise<User> {
-    const user = this.repo.create({ id, email });
-    return this.repo.save(user);
+    return this.repo.createUser({ id, email });
   }
 
-  async update(user: User, name: string): Promise<User> {
-    user.name = name;
-
-    return this.repo.save(user);
+  update(id: string, name: string): Promise<User> {
+    return this.repo.updateUser(id, { name });
   }
 }

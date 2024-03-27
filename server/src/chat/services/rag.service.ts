@@ -15,11 +15,12 @@ import { VectorStoreService } from '../../infrastructure/vectorstore/vectorstore
 import { LlmService } from '../../infrastructure/llm/llm.service';
 import { MimeType } from 'src/infrastructure/vectorstore/vectorstore.service';
 import { pull } from 'langchain/hub';
+import { MessageAgent } from '@prisma/client';
 
-export enum MessageAgent {
-  user = 'USER',
-  ai = 'AI',
-}
+// export enum MessageAgent {
+//   user = 'USER',
+//   ai = 'AI',
+// }
 
 @Injectable()
 export class RetrievalAugmentedGenerationService {
@@ -50,7 +51,7 @@ export class RetrievalAugmentedGenerationService {
     const contextualizedQuestion = await this.contextualizeQuestion(
       question,
       chat_history.map((msg) => {
-        if (msg.agent === MessageAgent.user) {
+        if (msg.agent === MessageAgent.USER) {
           return new HumanMessage(msg.message);
         } else {
           return new AIMessage(msg.message);

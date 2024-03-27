@@ -1,5 +1,5 @@
+import { Message } from '@prisma/client';
 import { Expose, Transform } from 'class-transformer';
-import { ChatMessage } from '../../entities/chat/messages.entity';
 import { MimeType } from 'src/infrastructure/vectorstore/vectorstore.service';
 
 export class ChatDto {
@@ -22,8 +22,7 @@ export class ChatDto {
   @Transform(({ obj }) => obj.owner.id)
   owner: string;
 
-  // @Transform(({ obj }) => obj)
   @Expose()
   @Transform(({ obj }) => obj.messages)
-  messages: ChatMessage[];
+  messages: Message[];
 }
