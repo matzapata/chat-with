@@ -2,7 +2,9 @@ import { MimeType } from 'src/infrastructure/vectorstore/vectorstore.service';
 import { ChatRepository } from '../repositories/chat.repository';
 import { Chat, Message, MessageAgent, Prisma } from '@prisma/client';
 import { MessagesRepository } from '../repositories/messages.repository';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class ChatsService {
   constructor(
     private readonly chatRepository: ChatRepository,
@@ -10,7 +12,7 @@ export class ChatsService {
   ) {}
 
   async create(
-    ownerId,
+    ownerId: string,
     filename: string,
     filesize: number,
     mimetype: MimeType,

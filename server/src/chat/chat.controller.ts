@@ -28,8 +28,6 @@ import { PlanCheckerService } from 'src/payments/services/plan-checker.service';
 import { MimeType } from 'src/infrastructure/vectorstore/vectorstore.service';
 import { MessageAgent, User } from '@prisma/client';
 
-// One chat conversation per file. so files and chats are associated
-
 @Controller('api/chats')
 @UseGuards(AuthGuard)
 export class ChatController {
@@ -42,7 +40,7 @@ export class ChatController {
 
   @Get('/')
   @Serialize(ChatMetadataDto)
-  getChats(@CurrentUser() user: User) {
+  async getChats(@CurrentUser() user: User) {
     return this.chatsService.findAllOwnedBy(user.id);
   }
 
@@ -64,6 +62,8 @@ export class ChatController {
     file: Express.Multer.File,
     @CurrentUser() user: User,
   ) {
+    // One chat conversation per file. so files and chats are associated
+
     // Check user's plan
     const documentsCount = await this.chatsService.countDocumentsByOwner(
       user.id,
@@ -88,7 +88,7 @@ export class ChatController {
 
     // store file in db
     const chat = await this.chatsService.create(
-      user,
+      user.id,
       file.originalname,
       file.size,
       file.mimetype as MimeType,

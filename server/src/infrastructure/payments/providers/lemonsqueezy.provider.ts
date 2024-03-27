@@ -277,8 +277,8 @@ export class LemonSqueezyPaymentProvider implements PaymentProvider {
     };
   }
 
-  async createSubscriptionPortal(subscription_id: string): Promise<string> {
-    const res = await this.client.get(`/subscriptions/${subscription_id}`);
+  async createSubscriptionPortal(subscriptionId: string): Promise<string> {
+    const res = await this.client.get(`/subscriptions/${subscriptionId}`);
     return res.data.data.attributes.urls.customer_portal;
   }
 

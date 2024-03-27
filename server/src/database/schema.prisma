@@ -79,7 +79,7 @@ model Chat {
   // relations
   owner     User      @relation(fields: [ownerId], references: [id])
   ownerId   String
-  messages Message[]
+  messages Message[] 
 }
 
 model Message {
@@ -91,7 +91,7 @@ model Message {
   createdAt DateTime @default(now())
 
   // relations
-  chat   Chat   @relation(fields: [chatId], references: [id])
+  chat   Chat   @relation(fields: [chatId], references: [id], onDelete: Cascade)
   chatId String
 }
 

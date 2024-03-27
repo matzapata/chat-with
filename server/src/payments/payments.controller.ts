@@ -69,7 +69,7 @@ export class PaymentsController {
     const userSubscription = await this.userSubscriptionService.findByUserId(
       user.id,
     );
-    if (!userSubscription) {
+    if (!userSubscription.sub) {
       throw new NotFoundException('User has no subscription');
     }
 

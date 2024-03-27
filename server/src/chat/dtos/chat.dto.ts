@@ -19,7 +19,7 @@ export class ChatDto {
   created_at: Date;
 
   @Expose()
-  @Transform(({ obj }) => obj.owner.id)
+  @Transform(({ obj }) => obj.ownerId)
   owner: string;
 
   @Expose()
