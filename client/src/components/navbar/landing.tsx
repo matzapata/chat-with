@@ -33,7 +33,7 @@ export default function Navbar() {
               <Link
                 key={i}
                 href={item.href}
-                className="px-3 py-1 text-md font-semibold text-gray-700"
+                className="px-3 py-1 text-md font-semibold text-gray-700 dark:text-gray-200"
               >
                 {item.title}
               </Link>
@@ -67,24 +67,24 @@ export default function Navbar() {
         <div className="md:hidden">
           <Sheet>
             <SheetTrigger asChild>
-              <button className="items-center h-9 w-9 p-0 flex justify-center">
+              <button className="items-center h-9 w-9 p-0 flex justify-center text-gray-900 dark:text-white">
                 <Bars4Icon className="h-6 w-6" />
               </button>
             </SheetTrigger>
             <SheetContent
               side="left"
-              className="inset-y-0 flex h-auto w-[300px] flex-col p-0"
+              className="inset-y-0 flex h-auto w-[300px] flex-col p-0 dark:border-r-gray-800"
             >
               <div>
-                <div className="p-4 border-b">
+                <div className="p-4 border-b dark:border-b-gray-800">
                   <Logo />
                 </div>
-                <div className="space-y-2 py-4 border-b">
+                <div className="space-y-2 py-4 border-b dark:border-b-gray-800">
                   {navbarItems.map((item, i) => (
                     <Link
                       href={item.href}
                       key={i}
-                      className="px-4 py-3 font-semibold block text-gray-800"
+                      className="px-4 py-3 font-semibold block text-gray-700 dark:text-gray-200"
                     >
                       {item.title}
                     </Link>

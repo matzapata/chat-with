@@ -15,7 +15,7 @@ export class UserSubscriptionService {
     return {
       sub,
       plan: Object.values(plans).find(
-        (p) => p.variant_id === (sub?.variantId || null),
+        (p) => p.variantId === (sub?.variantId || null),
       ),
     };
   }

@@ -16,7 +16,7 @@ export class ChatDto {
   mimetype: MimeType;
 
   @Expose()
-  created_at: Date;
+  createdAt: Date;
 
   @Expose()
   @Transform(({ obj }) => obj.ownerId)

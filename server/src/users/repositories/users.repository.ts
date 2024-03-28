@@ -10,10 +10,10 @@ export class UsersRepository {
     return this.prisma.user.create({ data });
   }
 
-  async findUserById(id: string, includeSubscription = true) {
+  async findUserById(id: string, include?: Prisma.UserInclude) {
     return this.prisma.user.findUnique({
       where: { id },
-      include: { subscription: includeSubscription },
+      include,
     });
   }
 

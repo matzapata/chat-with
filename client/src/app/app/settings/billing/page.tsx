@@ -2,9 +2,7 @@ import GoProButton from "@/components/billing/go-pro-button";
 import PortalButton from "@/components/billing/portal-button";
 import { Checkbox } from "@/components/ui/checkbox";
 import SettingsLayout from "@/layouts/settings-layout";
-import { apiService } from "@/lib/services/api-service";
 import { paymentsService } from "@/lib/services/payments-service";
-import { userService } from "@/lib/services/user-service";
 import { Square3Stack3DIcon } from "@heroicons/react/24/outline";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
@@ -13,25 +11,25 @@ export default async function Billing() {
   const accessTokenRaw = await getAccessTokenRaw();
 
   // Get all plans and user data
-  const [plans, user] = await Promise.all([
+  const [plans, userSub] = await Promise.all([
     paymentsService.getPlans(),
-    userService.get(accessTokenRaw),
+    paymentsService.getSubscription(accessTokenRaw),
   ]);
 
   return (
-    <SettingsLayout user={{ email: user.email, isPro: user.is_pro }}>
+    <SettingsLayout user={{ email: userSub.email, isPro: userSub.isPro }}>
       <div className="py-8 md:py-12 space-y-8 max-w-6xl mx-auto">
         {/* Heading */}
         <div className="px-4 md:px-8 space-y-8 ">
-          <h1 className="font-semibold text-2xl md:3xl text-gray-900">
+          <h1 className="font-semibold text-2xl md:3xl text-gray-900 dark:text-white">
             Billing
           </h1>
 
-          <div className=" space-y-1 pb-5 border-b">
-            <h2 className="text-lg font-semibold text-gray-900">
+          <div className=" space-y-1 pb-5 border-b dark:border-b-gray-800">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
               Account plans
             </h2>
-            <p className="text-gray-600">
+            <p className="text-gray-600 dark:text-gray-300">
               Pick an account plan that fits your workflow.
             </p>
           </div>
@@ -40,10 +38,10 @@ export default async function Billing() {
         {/* Plans */}
         <div className="px-4 md:px-8 grid grid-cols-1 gap-4 md:grid-cols-3">
           <div className="">
-            <h2 className=" text-sm font-semibold text-gray-900">
+            <h2 className=" text-sm font-semibold text-gray-900 dark:text-gray-100">
               Current plan
             </h2>
-            <p className=" text-sm text-gray-600">
+            <p className=" text-sm text-gray-600 dark:text-gray-300">
               We’ll credit your account if you need to downgrade during the
               billing cycle.
             </p>
@@ -53,16 +51,16 @@ export default async function Billing() {
             {/* Plans cards */}
             {Object.values(plans).map((plan) => (
               <PlanCard
-                key={plan.variant_id}
+                key={plan.variantId}
                 description={plan.description}
                 interval={plan.interval}
                 name={plan.name}
                 price={plan.price}
-                selected={user.plan.variant_id === plan.variant_id}
+                selected={userSub.plan.variantId === plan.variantId}
               />
             ))}
 
-            {user.is_pro ? (
+            {userSub.isPro ? (
               <PortalButton />
             ) : (
               <GoProButton />
@@ -84,7 +82,7 @@ function PlanCard(props: {
   return (
     <div
       className={`${
-        props.selected ? "border-brand-600 border-[2px]" : "border"
+        props.selected ? "border-brand-600 border-[2px]" : "border dark:border-gray-800"
       } rounded-xl`}
     >
       <div
@@ -99,13 +97,13 @@ function PlanCard(props: {
             <Square3Stack3DIcon className="h-5 w-5 text-brand-600" />
           </div>
           <div className="">
-            <h2 className="font-semibold md:font-medium md:text-sm text-gray-700">
+            <h2 className="font-semibold md:font-medium md:text-sm text-gray-700 dark:text-gray-300">
               {props.name} plan{" "}
-              <span className="text-gray-600 hidden md:inline-block">
+              <span className="text-gray-600 dark:text-gray-300 hidden md:inline-block">
                 ${props.price} / {props.interval}
               </span>
             </h2>
-            <p className="text-gray-600 md:text-sm hidden md:block">
+            <p className="text-gray-600 dark:text-gray-300 md:text-sm hidden md:block">
               {props.description}
             </p>
           </div>
@@ -113,7 +111,7 @@ function PlanCard(props: {
         <Checkbox
           disabled={true}
           checked={props.selected}
-          className="text-brand-600 border-gray-200 rounded"
+          className="text-brand-600 border-gray-200 dark:border-gray-800 rounded"
         />
       </div>
 

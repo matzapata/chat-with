@@ -40,10 +40,18 @@ export class PaymentsController {
   @Get('/subscription')
   @UseGuards(AuthGuard)
   async getSubscription(@CurrentUser() user: User) {
-    const { sub, plan } = await this.userSubscriptionService.findByUserId(
+    const userSubscription = await this.userSubscriptionService.findByUserId(
       user.id,
     );
-    return { subscription: sub, plan };
+
+    return {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      isPro: userSubscription.plan.variantId !== null,
+      plan: userSubscription.plan,
+      subscription: userSubscription.sub,
+    };
   }
 
   @Post('/subscription')
@@ -55,7 +63,7 @@ export class PaymentsController {
     }
 
     const url = await this.paymentService.createSubscriptionCheckout(
-      plans.pro.variant_id,
+      plans.pro.variantId,
       user.email,
       user.id,
     );

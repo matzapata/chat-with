@@ -18,16 +18,16 @@ Content-Type: text/plain
 ------boundary--
 
 ### GET /api/chats/:id Get the chat with the messages available
-GET http://{{host}}/api/chats/95ce48c4-912e-4360-8d3d-a02134a4b050
+GET http://{{host}}/api/chats/5b6c4768-ec28-4426-96e2-15e1692feba5
 Authorization: Bearer {{token}}
 
 ### DELETE /api/chats/:id delete the chat with the given id
-DELETE http://{{host}}/api/chats/b0834fc8-3cee-4445-89b7-a547732d1934
+DELETE http://{{host}}/api/chats/2519bba2-2285-446c-a02d-e8fa14d6a30c
 Authorization: Bearer {{token}}
 
 
 ### PUT /api/chats/:id add a message to the chat
-POST  http://{{host}}/api/chats/130b771c-3eab-42cd-9f62-954b48316a3d
+POST  http://{{host}}/api/chats/5b6c4768-ec28-4426-96e2-15e1692feba5
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

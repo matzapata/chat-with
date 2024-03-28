@@ -11,7 +11,7 @@ export function ChatList(props: {
   }
 
   return (
-    <div className="relative mx-auto max-w-2xl px-4 divide-y">
+    <div className="relative mx-auto max-w-2xl px-4 divide-y dark:divide-gray-800">
       {props.messages.map((message, index) => (
         <ChatMessage key={index} message={message} />
       ))}

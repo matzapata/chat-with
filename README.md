@@ -7,9 +7,9 @@ Chat with any file. Leverage langchain and lemonsqueezy to create a saas with au
 
 # Server
 
-<!-- TODO: - add summarization feature (load this in hello page) -->
-<!-- TODO: - Add example questions -->
 TODO: - lemonsquezzy live (enable coupons)
+TODO: - test payments workflow ->
+TODO: - tests? e2e or smth?
 
 # Deployment
 

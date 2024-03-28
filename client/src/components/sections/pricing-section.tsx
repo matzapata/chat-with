@@ -10,10 +10,10 @@ export default async function PricingSection() {
   
 
   return (
-    <div className="py-24 sm:py-32">
+    <div className="py-24 sm:py-32" id="pricing">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl flex flex-col justify-center items-center sm:text-center">
-          <h1 className="text-2xl text-center font-semibold sm:text-3xl xl:text-[40px] relative">
+          <h1 className="text-2xl text-center font-semibold sm:text-3xl xl:text-[40px] relative text-gray-900 dark:text-white">
             Simple, transparent <span className="text-brand-600">pricing.</span>
             <svg
               width="100"
@@ -33,34 +33,34 @@ export default async function PricingSection() {
               ></path>
             </svg>
           </h1>
-          <p className="mt-6 text-lg text-gray-600 text-center">
+          <p className="mt-6 text-lg text-gray-600 dark:text-gray-300 text-center">
             No hidden fees. No credit card required. <br /> Cancel anytime.
           </p>
         </div>
 
         {/* PRO pricing card */}
-        <div className="bg-white mx-auto mt-16 max-w-2xl rounded-3xl ring-1 ring-gray-200 sm:mt-20 lg:mx -0 lg:flex lg:max-w-none">
+        <div className="bg-white dark:bg-gray-950 mx-auto mt-16 max-w-2xl rounded-3xl ring-1 ring-gray-200 dark:ring-gray-800 sm:mt-20 lg:mx -0 lg:flex lg:max-w-none">
           <div className="p-8 sm:p-10 lg:flex-auto">
-            <h3 className="text-2xl font-bold tracking-tight text-gray-900">
+            <h3 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
               {plans.pro.name}
             </h3>
-            <p className="mt-6 text-base leading-7 text-gray-600">
+            <p className="mt-6 text-base leading-7 text-gray-600 dark:text-gray-300">
               {plans.pro.description}
             </p>
             <div className="mt-10 flex items-center gap-x-4">
-              <h4 className="flex-none text-sm font-semibold leading-6 text-brand-600">
+              <h4 className="flex-none text-sm font-semibold leading-6 text-brand-600 dark:text-brand-500">
                 What’s included
               </h4>
-              <div className="h-px flex-auto bg-gray-100" />
+              <div className="h-px flex-auto bg-gray-100 dark:bg-gray-900" />
             </div>
             <ul
               role="list"
-              className="mt-8 grid grid-cols-1 gap-4 text-sm leading-6 text-gray-600 sm:grid-cols-2 sm:gap-6"
+              className="mt-8 grid grid-cols-1 gap-4 text-sm leading-6 text-gray-600 dark:text-gray-300 sm:grid-cols-2 sm:gap-6"
             >
               {plans.pro.features.map((feature) => (
                 <li key={feature} className="flex gap-x-3">
                   <CheckIcon
-                    className="h-6 w-5 flex-none text-brand-600"
+                    className="h-6 w-5 flex-none text-brand-600 dark:text-brand-500"
                     aria-hidden="true"
                   />
                   {feature}
@@ -69,16 +69,16 @@ export default async function PricingSection() {
             </ul>
           </div>
           <div className="-mt-2 p-2 lg:mt-0 lg:w-full lg:max-w-md lg:flex-shrink-0">
-            <div className="rounded-2xl bg-gray-50 py-10 text-center ring-1 ring-inset ring-gray-900/5 lg:flex lg:flex-col lg:justify-center lg:py-16">
+            <div className="rounded-2xl bg-gray-50 dark:bg-gray-900 py-10 text-center ring-1 ring-inset ring-gray-900/5 lg:flex lg:flex-col lg:justify-center lg:py-16">
               <div className="mx-auto max-w-xs px-8">
-                <p className="text-base font-semibold text-gray-600">
+                <p className="text-base font-semibold text-gray-600 dark:text-gray-300">
                   Become a pro user
                 </p>
                 <p className="mt-6 flex items-baseline justify-center gap-x-2">
-                  <span className="text-5xl font-bold tracking-tight text-gray-900">
+                  <span className="text-5xl font-bold tracking-tight text-gray-900 dark:text-white">
                     ${plans.pro.price}
                   </span>
-                  <span className="text-sm font-semibold leading-6 tracking-wide text-gray-600">
+                  <span className="text-sm font-semibold leading-6 tracking-wide text-gray-600 dark:text-gray-300">
                     USD
                   </span>
                 </p>
@@ -87,7 +87,7 @@ export default async function PricingSection() {
                   Get access
                 </GoProButton>
 
-                <p className="mt-6 text-xs leading-5 text-gray-600">
+                <p className="mt-6 text-xs leading-5 text-gray-600 dark:text-gray-300">
                   Invoices and receipts available for easy company reimbursement
                 </p>
               </div>
@@ -96,14 +96,14 @@ export default async function PricingSection() {
         </div>
 
         {/* Still access for free */}
-        <div className="bg-white mx-auto mt-16 p-6 max-w-3xl rounded-3xl ring-1 ring-gray-200 sm:mt-20 space-y-4">
-          <h1 className="text-brand-600 font-medium text-lg">
+        <div className="bg-white dark:bg-gray-950 mx-auto mt-16 p-6 max-w-3xl rounded-3xl ring-1 ring-gray-200 dark:ring-gray-800 sm:mt-20 space-y-4">
+          <h1 className="text-brand-600 dark:text-brand-500 font-medium text-lg">
             Get started for free, no credit card required
           </h1>
           <div className="space-y-4">
-            <p className="text-gray-600">
-              Dolor dolores repudiandae doloribus. Rerum sunt aut eum. Odit
-              omnis non voluptatem sunt eos nostrum.
+            <p className="text-gray-600 dark:text-gray-300">
+              Start with the free plan and upgrade to pro when you need more
+              features.
             </p>
             <RegisterLink postLoginRedirectURL="/app/chat">
               <Button

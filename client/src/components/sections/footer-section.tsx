@@ -11,7 +11,7 @@ export default function FooterSection() {
   ];
 
   return (
-    <footer className="space-y-12 py-12 border-t md:flex md:justify-between md:items-center md:space-y-0">
+    <footer className="space-y-12 py-12 border-t dark:border-t-gray-800 md:flex md:justify-between md:items-center md:space-y-0">
       <div className="px-4">
         <Logo />
       </div>
@@ -19,7 +19,7 @@ export default function FooterSection() {
       <div className="grid grid-cols-2 md:grid-cols-4 px-4 place-items-start md:place-items-center gap-y-3">
         {items.map((item, i) => (
           <Link
-            className="text-gray-600 font-semibold"
+            className="text-gray-600 dark:text-gray-300 font-semibold"
             key={i}
             href={item.href}
           >
@@ -29,7 +29,7 @@ export default function FooterSection() {
       </div>
 
       <div className="px-4">
-        <p className="text-gray-500">© {brandConfig.name.toLowerCase()}</p>
+        <p className="text-gray-600 dark:text-gray-300">© {brandConfig.name.toLowerCase()}</p>
       </div>
     </footer>
   );

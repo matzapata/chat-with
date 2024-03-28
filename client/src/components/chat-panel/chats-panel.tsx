@@ -109,13 +109,13 @@ export default function ChatsPanel(props: { initialChats: ChatMetadataDto[] }) {
       <div className="pt-12 pb-24 max-w-6xl mx-auto space-y-6">
         {/* Heading */}
         <div className="px-4 md:px-8 space-y-8 ">
-          <h1 className="font-semibold text-2xl md:3xl text-gray-900">Chats</h1>
+          <h1 className="font-semibold text-2xl md:3xl text-gray-900 dark:text-white">Chats</h1>
 
-          <div className=" space-y-1 pb-5 border-b">
-            <h2 className="text-lg font-semibold text-gray-900">
+          <div className=" space-y-1 pb-5 border-b dark:border-b-gray-700">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
               One document one chat
             </h2>
-            <p className="text-gray-600">Upload documents to create chats</p>
+            <p className="text-gray-600 dark:text-gray-300">Upload documents to create chats</p>
           </div>
         </div>
 
@@ -126,17 +126,17 @@ export default function ChatsPanel(props: { initialChats: ChatMetadataDto[] }) {
               <section>
                 <div {...getRootProps()}>
                   <input {...getInputProps()} />
-                  <div className="pointer-cursor border rounded-xl px-6 py-4 space-y-3 text-center">
-                    <div className="border shadow-sm rounded-lg p-[10px] inline-block">
-                      <IconUploadCloud className="h-6 w-6" />
+                  <div className="pointer-cursor border dark:border-gray-800 rounded-xl px-6 py-4 space-y-3 text-center">
+                    <div className="border dark:border-gray-800  shadow-sm rounded-lg p-[10px] inline-block">
+                      <IconUploadCloud className="h-6 w-6 dark:text-gray-300" />
                     </div>
 
                     <div>
                       <div className="space-x-1">
                         <Button variant="link-color">Click to upload</Button>
-                        <span className="text-gray-600">or drag and drop</span>
+                        <span className="text-gray-600 dark:text-gray-300">or drag and drop</span>
                       </div>
-                      <p className="text-gray-600">
+                      <p className="text-gray-600 dark:text-gray-300">
                         PDF, TXT, or CSV (max. 1 MB)
                       </p>
                     </div>
@@ -161,7 +161,7 @@ export default function ChatsPanel(props: { initialChats: ChatMetadataDto[] }) {
               <Input
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search..."
-                className="max-w-sm px-3 py-2"
+                className="max-w-sm px-3 py-2 mb-1"
               />
 
               {/* List of files and chats */}
@@ -198,21 +198,21 @@ export default function ChatsPanel(props: { initialChats: ChatMetadataDto[] }) {
                             className="h-10 w-10"
                           />
                           <div className="">
-                            <p className="font-medium text-sm text-gray-900">
+                            <p className="font-medium text-sm text-gray-900 dark:text-white">
                               {chat.filename}
                             </p>
-                            <p className="text-sm text-gray-600">
+                            <p className="text-sm text-gray-600 dark:text-gray-300">
                               {Math.floor(chat.filesize / 1000)} MB
                             </p>
                           </div>
                         </TableCell>
-                        <TableCell className="text-center">
-                          {chat.created_at.toDateString()}
+                        <TableCell className="text-center dark:text-white">
+                          {chat.createdAt.toDateString()}
                         </TableCell>
                         <TableCell className="text-right">
                           <DropdownMenu>
                             <DropdownMenuTrigger>
-                              <EllipsisVerticalIcon className="h-5 w-5" />
+                              <EllipsisVerticalIcon className="h-5 w-5 dark:text-white" />
                             </DropdownMenuTrigger>
                             <DropdownMenuContent>
                               {/* <DropdownMenuItem

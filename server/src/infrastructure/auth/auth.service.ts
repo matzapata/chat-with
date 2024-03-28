@@ -18,6 +18,8 @@ export class AuthService {
     });
     function getKey(header, callback) {
       client.getSigningKey(header.kid, function (err, key) {
+        if (err) return callback(err);
+        else if (!key) return callback(new Error('Key not found'));
         const signingKey = key.getPublicKey();
         callback(null, signingKey);
       });

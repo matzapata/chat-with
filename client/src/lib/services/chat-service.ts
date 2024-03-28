@@ -13,7 +13,7 @@ export interface ChatMetadataDto {
     filename: string;
     mimetype: MimeType;
     filesize: number;
-    created_at: Date;
+    createdAt: Date;
     owner: string;
 }
 
@@ -38,7 +38,7 @@ export class ChatService {
 
     async getAllChats(accessToken: string): Promise<ChatMetadataDto[]> {
         const res = await this.client.get("/api/chats", { headers: { Authorization: `Bearer ${accessToken}` } })
-        return res.data.map((c: any) => ({ ...c, created_at: new Date(c.created_at) }))
+        return res.data.map((c: any) => ({ ...c, createdAt: new Date(c.createdAt) }))
     }
 
     async createChat(accessToken: string, file: File, onUploadProgress?: (progress: number) => void): Promise<ChatMetadataDto> {
@@ -52,17 +52,17 @@ export class ChatService {
                 onUploadProgress?.(percentCompleted)
             },
         })
-        return { ...res.data, created_at: new Date(res.data.created_at) }
+        return { ...res.data, createdAt: new Date(res.data.createdAt) }
     }
 
     async getChat(accessToken: string, id: string): Promise<ChatDto> {
         const res = await this.client.get(`/api/chats/${id}`, { headers: { Authorization: `Bearer ${accessToken}` } })
         return {
-            ...res.data, messages: res.data.messages.map((m: { id: string, message: string, created_at: string, agent: "USER" | "AI" }) => ({
+            ...res.data, messages: res.data.messages.map((m: { id: string, message: string, createdAt: string, agent: "USER" | "AI" }) => ({
                 content: m.message,
                 role: m.agent === 'USER' ? MessageRole.user : MessageRole.ai,
                 context: []
-            })), created_at: new Date(res.data.created_at)
+            })), createdAt: new Date(res.data.createdAt)
         }
     }
 

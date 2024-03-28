@@ -43,7 +43,7 @@ export default function Logo() {
         </svg>
 
         <h1
-          className="text-gray-800 italic text-xl"
+          className="text-gray-800 dark:text-white italic text-xl"
           style={{
             fontFamily: 'Poppins,sans-serif',
             fontWeight: 900,

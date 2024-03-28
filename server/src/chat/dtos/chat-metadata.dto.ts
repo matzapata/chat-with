@@ -11,7 +11,7 @@ export class ChatMetadataDto {
   filesize: number;
 
   @Expose()
-  created_at: Date;
+  createdAt: Date;
 
   @Expose()
   mimetype: string;

@@ -16,7 +16,7 @@ export default function FaqSection() {
     <div id="faq" className="py-16 space-y-20 w-full">
       {/* Title */}
       <div className="mx-auto max-w-2xl flex flex-col justify-center items-center sm:text-center">
-        <h1 className="text-2xl text-center font-semibold sm:text-3xl xl:text-[40px] relative">
+        <h1 className="text-2xl text-gray-900 dark:text-white text-center font-semibold sm:text-3xl xl:text-[40px] relative">
           Frequently asked <span className="text-brand-600">questions.</span>
           <svg
             width="100"
@@ -36,21 +36,21 @@ export default function FaqSection() {
             ></path>
           </svg>
         </h1>
-        <p className="mt-6 text-lg text-gray-600 text-center">
+        <p className="mt-6 text-lg text-gray-600 dark:text-gray-300 text-center">
           Everything you need to know about the product and billing.
         </p>
       </div>
 
       {/* Questions and answers */}
       <div className="px-4 max-w-3xl mx-auto w-full">
-        <div className="divide-y border-y">
+        <div className="divide-y border-y dark:border-y-gray-800 dark:divide-gray-800">
           {brandConfig.faq.map((f, i) => (
             <div key={i} className="flex py-8 flex-1 space-x-1">
               <div className="flex-grow">
-                <h2 className="text-lg h-7 font-medium text-gray-700">
+                <h2 className="text-lg h-7 font-medium text-gray-700 dark:text-gray-400">
                   {f.question}
                 </h2>
-                {openFaqId === i && <p className="text-gray-600">{f.answer}</p>}
+                {openFaqId === i && <p className="text-gray-600 dark:text-gray-300">{f.answer}</p>}
               </div>
 
               <div>
@@ -71,7 +71,7 @@ export default function FaqSection() {
 
       {/* Contact us */}
       <div className="max-w-3xl w-full mx-auto px-4">
-        <div className="bg-gray-50 max-w-6xl mx-auto rounded-2xl space-y-6 px-6 py-8">
+        <div className="bg-gray-50 dark:bg-gray-950 dark:border-gray-800 dark:border max-w-6xl mx-auto rounded-2xl space-y-6 px-6 py-8">
           {/* Team avatars */}
           <div className="flex items-baseline justify-center">
             <Image
@@ -99,10 +99,10 @@ export default function FaqSection() {
 
           {/* Title */}
           <div className="text-center space-y-2">
-            <h1 className="text-xl font-semibold text-gray-900">
+            <h1 className="text-xl font-semibold text-gray-900 dark:text-white">
               Still have questions?
             </h1>
-            <p className="md:text-base text-gray-600">
+            <p className="md:text-base text-gray-600 dark:text-gray-300">
               Can’t find the answer you’re looking for? Please chat to our
               friendly team.
             </p>

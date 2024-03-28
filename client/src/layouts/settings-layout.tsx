@@ -37,14 +37,14 @@ export default function SettingsLayout(props: SettingsLayoutProps) {
 
         {/* Submenu */}
         {nestedItems && (
-          <div className="border-b h-10 border-b-gray-200 flex justify-center bg-white">
+          <div className="border-b h-10 border-b-gray-200 flex justify-center bg-white dark:bg-gray-950 dark:border-b-gray-800">
             <div className="px-2 md:px-8 w-full flex py-2 items-center">
               {nestedItems.map((item, i) => (
                 <Link
                   key={i}
                   href={item.link}
                   className={
-                    "px-3 py-2 text-sm font-semibold text-gray-700 rounded hover:bg-gray-50"
+                    "px-3 py-2 text-sm font-semibold text-gray-700 rounded dark:text-gray-300 dark:hover:text-gray-100 "
                   }
                 >
                   {item.title}

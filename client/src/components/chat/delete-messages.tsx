@@ -34,7 +34,7 @@ export default function DeleteMessages(props: { id: string }) {
       onClick={() => clearMessages()}
       variant={"link-gray"}
       size={"sm"}
-      className="text-gray-600"
+      className="text-gray-600 dark:text-gray-300"
     >
       Delete messages
     </Button>

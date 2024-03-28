@@ -17,7 +17,7 @@ const features =    [
   {
     title: 'User-Friendly',
     description:
-      "With its intuitive interface, anyone can quickly start using ChatWithPDF. You don't need any special skills or knowledge to use ChatWithPDF. If you can chat with a friend, you can chat with a PDF.",
+      "With its intuitive interface, anyone can quickly start using ChatWith. You don't need any special skills or knowledge to use ChatWith. If you can chat with a friend, you can chat with a PDF.",
     icon: <UsersIcon  className="h-5 w-5" />,
   },
 ]
@@ -29,7 +29,7 @@ export default function FeaturesSection() {
       className="py-16 mt-20 md:py-24 space-y-12 md:space-y-16"
     >
       <div className="mx-auto max-w-2xl flex flex-col justify-center items-center">
-        <h1 className="text-2xl text-center font-semibold sm:text-3xl xl:text-[40px] relative">
+        <h1 className="text-2xl text-center font-semibold sm:text-3xl xl:text-[40px] relative text-gray-900 dark:text-white">
           Explore key <span className="text-brand-600">features.</span>
           <svg
             width="100"
@@ -49,25 +49,25 @@ export default function FeaturesSection() {
             ></path>
           </svg>
         </h1>
-        <p className="mt-6 text-lg text-center text-gray-600">
+        <p className="mt-6 text-lg text-center text-gray-600 dark:text-gray-300">
           Elevate Your Document Experience with Chatwith. Explore the features we have to offer.
         </p>
       </div>
 
       <div className="px-4 md:px-8 mx-auto place-items-center grid grid-col-1 md:grid-cols-3 gap-10 md:gap-x-4 md:gap-y-4">
         {features.map((f, i) => (
-          <div className="border bg-white rounded-md p-5 max-w-96 h-full" key={i}>
+          <div className="border bg-white dark:bg-gray-950 dark:border-gray-800 rounded-md p-5 max-w-96 h-full" key={i}>
             {/* Icon */}
-            <div className="mb-4 bg-brand-400 h-8 w-8 rounded-full flex items-center justify-center text-white">
+            <div className="mb-4 bg-brand-400 dark:bg-gray-800 h-8 w-8 rounded-full flex items-center justify-center text-white">
               {f.icon}
             </div>
 
             {/* Text */}
             <div className="space-y-2">
-              <h2 className="text-xl font-semibold text-gray-900">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
                 {f.title}
               </h2>
-              <p className="text-gray-600 text-sm">
+              <p className="text-gray-600 dark:text-gray-400 text-sm">
                 {f.description}
               </p>
             </div>

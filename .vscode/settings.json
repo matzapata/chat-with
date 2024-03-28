@@ -14,13 +14,14 @@
     "rest-client.environmentVariables": {
         "$shared": {
             "version": "v1",
-            "token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjRiOjI1Ojc2OmNjOmFhOjYwOjBmOjU2OmE0OmNhOjk1OmE4OmFiOjhiOjVmOjIwIiwidHlwIjoiSldUIn0.eyJhdWQiOltdLCJhenAiOiIyNmQyYmZmODdmMGE0ODY4ODExNDU1MTM4NTM0MjYxYyIsImV4cCI6MTcxMTM5NzY2NiwiaWF0IjoxNzExMzExMjY1LCJpc3MiOiJodHRwczovL2NoYXR3aXRoLmtpbmRlLmNvbSIsImp0aSI6ImVkNmE0ZDkzLWEzNDItNDgwMi1hNmVmLWZkZTI3YTE5MWI5ZSIsInNjcCI6WyJvcGVuaWQiLCJwcm9maWxlIiwiZW1haWwiLCJvZmZsaW5lIl0sInN1YiI6ImtwXzUxMDVmZjUzZGQ0MzRiZTJiNjJmN2U3NWRiMTliNWNmIiwieC1oYXN1cmEtZW1haWwiOiJtYXR1emFwYXRhQGdtYWlsLmNvbSIsIngtaGFzdXJhLW9yZ2FuaXphdGlvbl9wcm9wZXJ0aWVzIjp7ImtwX3Vzcl9taWRkbGVfbmFtZSI6e319LCJ4LWhhc3VyYS1wZXJtaXNzaW9ucyI6W10sIngtaGFzdXJhLXVzZXJfcHJvcGVydGllcyI6eyJrcF91c3JfbWlkZGxlX25hbWUiOnt9fX0.He7Wo0tTKN_m75wXssFVn_I6mylxfTpwp038rFuOETi6NkKNwntDZBOT5spQp4NRhPyLG7Nz2i2LzVGIcLh2DAOs0nQuQL3VZBaU6UhNF3DIGelrLsOJCdIzLiK1UhGnXWKc09RiW3gJbHpRKLDHqV_qlvcIxfKektTdCZhUOYTeC8TnYj8a71ATe0pAw0nd6IATOnNutDfvdypsq3NCHkiHXcnhQPYtI3vdsYDMttRKTt3mqKZtNBT2LKp1P0eEzSWSrPqs_h1lNY7XdDLTR_ZljH6sNY_vbADGBMjpf5tIqvV6I41ScPmZllIFAI--3qMGBjDVi562fGtlNYV04A"
+            "token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjRiOjI1Ojc2OmNjOmFhOjYwOjBmOjU2OmE0OmNhOjk1OmE4OmFiOjhiOjVmOjIwIiwidHlwIjoiSldUIn0.eyJhdWQiOltdLCJhenAiOiIyNmQyYmZmODdmMGE0ODY4ODExNDU1MTM4NTM0MjYxYyIsImV4cCI6MTcxMTY1OTMxMSwiaWF0IjoxNzExNTcyOTEwLCJpc3MiOiJodHRwczovL2NoYXR3aXRoLmtpbmRlLmNvbSIsImp0aSI6IjZiZDExNjVkLWRlZTYtNDBkMC04MDlmLTQ5NGEwOTk1NzcxMCIsInBlcm1pc3Npb25zIjpbXSwic2NwIjpbIm9wZW5pZCIsInByb2ZpbGUiLCJlbWFpbCIsIm9mZmxpbmUiXSwic3ViIjoia3BfNTEwNWZmNTNkZDQzNGJlMmI2MmY3ZTc1ZGIxOWI1Y2YiLCJ4LWhhc3VyYS1lbWFpbCI6Im1hdHV6YXBhdGFAZ21haWwuY29tIiwieC1oYXN1cmEtb3JnYW5pemF0aW9uX3Byb3BlcnRpZXMiOnsia3BfdXNyX21pZGRsZV9uYW1lIjp7fX0sIngtaGFzdXJhLXBlcm1pc3Npb25zIjpbXSwieC1oYXN1cmEtdXNlcl9wcm9wZXJ0aWVzIjp7ImtwX3Vzcl9taWRkbGVfbmFtZSI6e319fQ.mUtlTvtHB-CLULTNlIoFq2N3YxQ2vEjT5Z2QzFAIZNG_91QPOC8TqbwcgrtCCK4ei7uRk9oxoucQp9ZbHI08YXwZRQ3JrswCcgHxz06oUQhiQy9RKUXoEVeuSFcyD3dFez7jhVaa4zUzZ7OshDw_k-LPJ6WmSQV4woFC61i1efL3zYlQOHwP1o-gyhIN9RomkJd-VnQ09qG9iTwiVdFOdIGmvTWVr8yZa4qpwMEdoROIhiVV0aCPWUsLnMokp-lXbTQb7ztXLPFZGxhaR9Jbxpd-vOwoxFwCc0BL9TuD94YUHWXR6gHkdCMqZndn_rcrSm7n1yyC25q3zUPW6CVL-w"
         },
         "local": {
-            "host": "localhost:4000",
+            // "host": "localhost:4000",
+            "host": "chatwith-server.vercel.app/"
         },
         "production": {
-            "host": "chatwith-dev.io",
+            "host": "https://chatwith-server.vercel.app/",
         }
     }
 }

@@ -69,7 +69,7 @@ export default function Contact() {
   return (
     <main className="relative">
       {/* Shadow and pattern */}
-      <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]"></div>
+      <div className="absolute inset-0 -z-10 h-full w-full bg-white dark:bg-gray-950 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]"></div>
 
       <section className="flex flex-col items-center justify-center w-[95%] lg:max-w-7xl mx-auto relative">
         <Navbar />
@@ -77,11 +77,11 @@ export default function Contact() {
         <div className="px-4 text-center space-y-4 py-16 md:py-24">
           <div className="text-center space-y-3">
             <p className="text-brand-700 font-semibold text-sm">Contact us</p>
-            <h1 className="text-4xl font-semibold text-gray-900">
+            <h1 className="text-4xl font-semibold text-gray-900 dark:text-gray-100 dark:text-white">
               Get in touch
             </h1>
           </div>
-          <p className="text-gray-600 text-lg">
+          <p className="text-gray-600 dark:text-gray-300  text-lg">
             We’d love to hear from you. Please fill out this form.
           </p>
         </div>
@@ -91,12 +91,12 @@ export default function Contact() {
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               <div className="space-y-5">
                 <div className="space-y-2">
-                  <p className="font-medium text-sm text-gray-600">From</p>
+                  <p className="font-medium text-sm text-gray-600 dark:text-gray-300">From</p>
 
                   {user ? (
-                    <p className="text-gray-900">{user.email}</p>
+                    <p className="text-gray-900 dark:text-gray-100">{user.email}</p>
                   ) : (
-                    <p className="text-gray-900">
+                    <p className="text-gray-900 dark:text-gray-100">
                       Please{" "}
                       <LoginLink
                         postLoginRedirectURL="/contact"

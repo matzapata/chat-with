@@ -11,7 +11,6 @@ import { PrismaModule } from 'src/database/prisma.module';
 import { UsersModule } from 'src/users/users.module';
 import { UserSubscriptionRepository } from './repositories/user-subscription.repository';
 import { WebhookEventsRepository } from './repositories/webhook-events.repository';
-import { PrismaService } from 'src/database/prisma.service';
 
 @Module({
   providers: [

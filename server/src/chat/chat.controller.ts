@@ -181,7 +181,7 @@ export class ChatController {
   @Get('/:id')
   @Serialize(ChatDto)
   async getChat(@Param('id') id: string) {
-    const chat = this.chatsService.findById(id);
+    const chat = this.chatsService.findById(id, { messages: true });
     if (!chat) {
       throw new NotFoundException('Chat not found');
     }

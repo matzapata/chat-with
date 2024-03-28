@@ -31,7 +31,7 @@ export default function Navbar(props: NavbarProps) {
   const items = props.items ?? [];
 
   return (
-    <div className="border-b h-16 border-b-gray-200 flex justify-center">
+    <div className="border-b h-16 bg-white dark:bg-gray-950 border-b-gray-200 dark:border-b-gray-800 flex justify-center">
       <div className="px-4 md:px-8 w-full flex justify-between py-3 items-center">
         <div className="flex items-center">
           <Logo />
@@ -40,7 +40,7 @@ export default function Navbar(props: NavbarProps) {
               <Link
                 key={i}
                 href={item.link}
-                className={"px-3 py-1 text-md font-semibold text-gray-700"}
+                className={"px-3 py-1 text-md font-semibold text-gray-700 dark:text-gray-200"}
               >
                 {item.title}
               </Link>
@@ -61,9 +61,9 @@ export default function Navbar(props: NavbarProps) {
 
           <Link
             href={"/app/settings"}
-            className="rounded-md py-2 px-[10px] hover:bg-gray-50 "
+            className="rounded-md py-2 px-[10px] hover:bg-gray-50 dark:hover:bg-gray-800"
           >
-            <IconSettings className="h-5 w-5" />
+            <IconSettings className="h-5 w-5 dark:text-gray-100" />
           </Link>
 
           <DropdownMenu>
@@ -110,7 +110,7 @@ export default function Navbar(props: NavbarProps) {
 
           <Sheet>
             <SheetTrigger asChild>
-              <button className="items-center h-9 w-9 p-0 flex justify-center">
+              <button className="items-center h-9 w-9 p-0 flex justify-center text-gray-900 dark:text-white">
                 <Bars4Icon className="h-6 w-6" />
               </button>
             </SheetTrigger>

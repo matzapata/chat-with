@@ -42,14 +42,14 @@ export function PromptForm({
       }}
       ref={formRef}
     >
-      <div className="relative flex max-h-60 w-full grow flex-col overflow-hidden bg-white px-8 sm:rounded-md sm:border sm:px-12">
+      <div className="relative flex max-h-60 w-full grow flex-col overflow-hidden bg-white dark:bg-gray-950 dark:border-gray-800 px-8 sm:rounded-md sm:border sm:px-12">
         <Tooltip>
           <TooltipTrigger asChild>
             <Link
               href="/app/chat"
               className={cn(
                 buttonVariants({ size: 'sm', variant: 'secondary-gray' }),
-                'absolute left-0 top-4 h-8 w-8 rounded-full bg-white p-0 sm:left-4'
+                'absolute left-0 top-4 h-8 w-8 rounded-full bg-white dark:bg-gray-950 dark:text-gray-300 dark:border-gray-800 p-0 sm:left-4'
               )}
             >
               <IconPlus />
@@ -67,7 +67,7 @@ export function PromptForm({
           onChange={e => setInput(e.target.value)}
           placeholder="Send a message."
           spellCheck={false}
-          className="min-h-[60px] w-full resize-none bg-transparent px-4 py-[1.3rem] focus-within:outline-none sm:text-sm"
+          className="min-h-[60px] w-full dark:text-white resize-none bg-transparent px-4 py-[1.3rem] focus-within:outline-none sm:text-sm"
         />
         <div className="absolute right-0 top-4 sm:right-4">
           <Tooltip>

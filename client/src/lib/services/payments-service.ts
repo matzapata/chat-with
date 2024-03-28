@@ -5,14 +5,14 @@ import { AxiosInstance } from "axios"
 
 export interface SubscriptionPlan {
     name: string;
-    variant_id: string | null;
+    variantId: string | null;
     interval: 'month' | 'year' | 'lifetime';
     price: number;
     description: string;
     features: string[];
     limits: {
-        max_documents: number;
-        max_messages: number;
+        maxDocuments: number;
+        maxMessages: number;
     };
 }
 export enum SubscriptionPlanKey {
@@ -34,9 +34,16 @@ export class PaymentsService {
         return res.data.url
     }
 
-    async getSubscription(accessToken: string): Promise<any> {
+    async getSubscription(accessToken: string): Promise<{
+        id: string;
+        email: string;
+        name?: string;
+        subscription: any,
+        plan: SubscriptionPlan,
+        isPro: boolean
+    }> {
         const res = await this.client.get('/api/payments/subscription', { headers: { Authorization: `Bearer ${accessToken}` } })
-        return res.data.subscription
+        return res.data
     }
 
     async createPortal(accessToken: string): Promise<string> {

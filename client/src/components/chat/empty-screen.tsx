@@ -10,9 +10,9 @@ export function EmptyScreen({
 }) {
   return (
     <div className="mx-auto max-w-2xl px-4">
-      <div className="rounded-lg border bg-white p-8">
-        <h1 className="mb-2 text-lg font-semibold">Welcome to Chatwith!</h1>
-        <p className="mb-2 leading-normal text-gray-900">
+      <div className="rounded-lg border dark:border-gray-800 bg-white dark:bg-gray-950 p-8">
+        <h1 className="mb-2 text-lg font-semibold dark:text-white">Welcome to Chatwith!</h1>
+        <p className="leading-normal text-gray-900 dark:text-gray-300">
           Make questions about your file and get exactly what you need.
         </p>
 
