@@ -24,54 +24,55 @@ export enum SubscriptionInterval {
 
 export interface SubscriptionPlan {
   name: string;
-  product_id: string;
-  product_name: string;
-  variant_id: string;
-  variant_name: string;
+  productId: string;
+  productName: string;
+  variantId: string;
+  variantName: string;
   description: string;
   price: number;
   interval: SubscriptionInterval;
-  interval_count: number;
+  intervalCount: number;
 }
 
 export interface UserSubscription {
-  product_id: string;
-  variant_id: string;
-  product_name: string;
-  variant_name: string;
-  user_email: string;
+  productId: string;
+  variantId: string;
+  orderId: string;
+  productName: string;
+  variantName: string;
+  userEmail: string;
   status: SubscriptionStatus;
-  pause_mode: 'void' | 'free' | null;
-  pause_resumes_at: Date | null;
+  pauseMode: 'void' | 'free' | null;
+  pauseResumesAt: Date | null;
   cancelled: boolean;
-  billing_anchor: number;
-  renews_at: Date;
-  ends_at: Date | null;
-  created_at: Date;
-  updated_at: Date;
-  trial_ends_at: Date | null;
-  test_mode: boolean;
+  billingAnchor: number;
+  renewsAt: Date;
+  endsAt: Date | null;
+  createdAt: Date;
+  updatedAt: Date;
+  trialEndsAt: Date | null;
+  testMode: boolean;
 }
 
 export interface WebhookEventData {
   id: string;
-  subscription_id: string;
+  subscriptionId: string;
   provider: PaymentProviders;
-  user_id: string;
-  variant_id: string;
-  order_id: string;
+  userId: string;
+  variantId: string;
+  orderId: string;
   status: SubscriptionStatus;
-  pause_mode: 'void' | 'free' | null;
-  pause_resumes_at: Date;
+  pauseMode: 'void' | 'free' | null;
+  pauseResumesAt: Date;
   cancelled: boolean;
-  trial_ends_at: Date;
-  billing_anchor: number;
-  renews_at: Date;
-  ends_at: Date;
-  created_at: Date;
-  updated_at: Date;
-  test_mode: boolean;
-  invoice_url: string | null;
+  trialEndsAt: Date;
+  billingAnchor: number;
+  renewsAt: Date;
+  endsAt: Date;
+  createdAt: Date;
+  updatedAt: Date;
+  testMode: boolean;
+  invoiceUrl: string | null;
 }
 
 export enum PaymentProviders {
@@ -80,29 +81,30 @@ export enum PaymentProviders {
 }
 
 export abstract class PaymentProvider {
-  abstract findPlanById(variant_id: string): Promise<SubscriptionPlan>;
+  // find plan by id in the payment provider
+  abstract findPlanById(variantId: string): Promise<SubscriptionPlan>;
 
+  // find all plans available in the payment provider
   abstract findAllPlans(): Promise<SubscriptionPlan[]>;
 
+  // find subscription by id in the payment provider
   abstract findSubscriptionById(
-    subscription_id: string,
+    subscriptionId: string,
   ): Promise<UserSubscription>;
 
+  // create a portal url for the subscription
   abstract createSubscriptionPortal(subscription_id: string): Promise<string>;
 
+  // create a checkout url for the subscription
   abstract createSubscriptionCheckout(
-    variant_id: string,
-    user_email: string,
-    user_id: string,
+    variantId: string,
+    userEmail: string,
+    userId: string,
   ): Promise<string>;
 
-  abstract validateWebhook(
-    body: { [key: string]: any },
-    headers: { [h: string]: any },
-  ): Promise<void>;
-
-  abstract parseWebhookEvent(
-    body: { [key: string]: any },
-    headers: { [h: string]: any },
-  ): Promise<{ event: WebhookEventName; data?: WebhookEventData }>;
+  // take the event name and the subscription id from the body and fetch the subscription
+  abstract parseWebhookEvent(body: { [key: string]: any }): Promise<{
+    event: WebhookEventName;
+    data?: WebhookEventData;
+  }>;
 }

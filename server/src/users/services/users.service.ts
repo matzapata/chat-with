@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UsersRepository } from '../repositories/users.repository';
-import { User } from '@prisma/client';
+import { Prisma, User } from '@prisma/client';
 
 @Injectable()
 export class UsersService {
@@ -10,8 +10,8 @@ export class UsersService {
     return this.repo.findUserByEmail(email);
   }
 
-  findById(id: string): Promise<User | null> {
-    return this.repo.findUserById(id);
+  findById(id: string, include?: Prisma.UserInclude): Promise<User | null> {
+    return this.repo.findUserById(id, include);
   }
 
   create(id: string, email: string): Promise<User> {

@@ -89,13 +89,7 @@ export class PaymentsController {
 
   @Post('/webhook')
   @HttpCode(200)
-  async handleWebhook(
-    @Body() body: { [key: string]: any },
-    @Body() headers: { [key: string]: any },
-  ) {
-    // Verify webhook source
-    await this.paymentService.validateWebhook(body, headers);
-
+  async handleWebhook(@Body() body: { data: any; event: string }) {
     // Parse event and data
     const { data, event } = await this.paymentService.parseWebhookEvent(body);
 
@@ -116,30 +110,30 @@ export class PaymentsController {
       }
 
       // get associated plan and user
-      const plan = await this.paymentService.findPlanById(data.variant_id);
+      const plan = await this.paymentService.findPlanById(data.variantId);
       if (!plan) throw new NotFoundException('Plan not found');
-      const user = await this.usersService.findById(data.user_id);
+      const user = await this.usersService.findById(data.userId);
       if (!user) throw new NotFoundException('User not found');
 
       if (data.status === SubscriptionStatus.cancelled) {
         await this.userSubscriptionService.deleteByUserId(user.id);
       } else if (data.status === SubscriptionStatus.active) {
         await this.userSubscriptionService.upsertByUserId(user.id, {
-          variantId: data.variant_id,
-          subscriptionId: data.subscription_id,
+          variantId: data.variantId,
+          subscriptionId: data.subscriptionId,
           provider: data.provider,
-          orderId: data.order_id,
+          orderId: data.orderId,
           status: data.status,
-          renewsAt: data.renews_at,
-          endsAt: data.ends_at,
-          trialEndsAt: data.trial_ends_at,
-          billingAnchor: data.billing_anchor,
+          renewsAt: data.renewsAt,
+          endsAt: data.endsAt,
+          trialEndsAt: data.trialEndsAt,
+          billingAnchor: data.billingAnchor,
           cancelled: data.cancelled,
-          createdAt: data.created_at,
-          updatedAt: data.updated_at,
-          pauseMode: data.pause_mode,
-          pauseResumesAt: data.pause_resumes_at,
-          testMode: data.test_mode,
+          createdAt: data.createdAt,
+          updatedAt: data.updatedAt,
+          pauseMode: data.pauseMode,
+          pauseResumesAt: data.pauseResumesAt,
+          testMode: data.testMode,
         });
       }
 

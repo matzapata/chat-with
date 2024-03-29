@@ -1,7 +1,6 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import axios, { AxiosInstance } from 'axios';
-import crypto from 'crypto';
 import {
   PaymentProvider,
   PaymentProviders,
@@ -210,14 +209,14 @@ export class LemonSqueezyPaymentProvider implements PaymentProvider {
             );
             return {
               name: product?.attributes.name,
-              product_id: String(v.attributes.product_id),
-              variant_id: v.id,
+              productId: String(v.attributes.product_id),
+              variantId: v.id,
               description: v.attributes.description.replace(/<[^>]*>?/gm, ''),
-              variant_name: v.attributes.name,
+              variantName: v.attributes.name,
               price: Number(v.attributes.price),
               interval: v.attributes.interval,
-              interval_count: v.attributes.interval_count,
-              product_name: product?.attributes.name,
+              intervalCount: v.attributes.interval_count,
+              productName: product?.attributes.name,
             };
           }),
       );
@@ -237,14 +236,14 @@ export class LemonSqueezyPaymentProvider implements PaymentProvider {
 
     return {
       name: attributes.name,
-      product_id: attributes.product_id,
-      product_name: res.data.included[0].attributes.name,
-      variant_id: res.data.data.id,
-      variant_name: attributes.name,
+      productId: attributes.product_id,
+      productName: res.data.included[0].attributes.name,
+      variantId: res.data.data.id,
+      variantName: attributes.name,
       description: attributes.description.replace(/<[^>]*>?/gm, ''),
       price: Number(attributes.price),
       interval: attributes.interval,
-      interval_count: attributes.interval_count,
+      intervalCount: attributes.interval_count,
     };
   }
 
@@ -254,26 +253,27 @@ export class LemonSqueezyPaymentProvider implements PaymentProvider {
     const res = await this.client.get(`/subscriptions/${subscription_id}`);
     const subscription = res.data.data as SubscriptionObject;
     return {
-      product_id: String(subscription.attributes.product_id),
-      variant_id: String(subscription.attributes.variant_id),
-      product_name: subscription.attributes.product_name,
-      variant_name: subscription.attributes.variant_name,
-      user_email: subscription.attributes.user_email,
+      productId: String(subscription.attributes.product_id),
+      variantId: String(subscription.attributes.variant_id),
+      orderId: String(subscription.attributes.order_id),
+      productName: subscription.attributes.product_name,
+      variantName: subscription.attributes.variant_name,
+      userEmail: subscription.attributes.user_email,
       status: subscription.attributes.status,
-      pause_mode: subscription.attributes.pause?.mode,
-      pause_resumes_at: subscription.attributes.pause?.resumes_at
+      pauseMode: subscription.attributes.pause?.mode,
+      pauseResumesAt: subscription.attributes.pause?.resumes_at
         ? new Date(subscription.attributes.pause?.resumes_at)
         : null,
       cancelled: subscription.attributes.cancelled,
-      billing_anchor: subscription.attributes.billing_anchor,
-      renews_at: new Date(subscription.attributes.renews_at),
-      ends_at: new Date(subscription.attributes.ends_at),
-      created_at: new Date(subscription.attributes.created_at),
-      updated_at: new Date(subscription.attributes.updated_at),
-      trial_ends_at: subscription.attributes.trial_ends_at
+      billingAnchor: subscription.attributes.billing_anchor,
+      renewsAt: new Date(subscription.attributes.renews_at),
+      endsAt: new Date(subscription.attributes.ends_at),
+      createdAt: new Date(subscription.attributes.created_at),
+      updatedAt: new Date(subscription.attributes.updated_at),
+      trialEndsAt: subscription.attributes.trial_ends_at
         ? new Date(subscription.attributes.trial_ends_at)
         : null,
-      test_mode: subscription.attributes.test_mode,
+      testMode: subscription.attributes.test_mode,
     };
   }
 
@@ -282,65 +282,40 @@ export class LemonSqueezyPaymentProvider implements PaymentProvider {
     return res.data.data.attributes.urls.customer_portal;
   }
 
-  // Webhook methods
-  async validateWebhook(
-    body: { [key: string]: any },
-    headers: { [key: string]: any },
-  ): Promise<void> {
-    const secret = this.configService.get<string>('LEMON_WEBHOOK_SECRET');
-    const hmac = crypto.createHmac('sha256', secret);
-    const digest = Buffer.from(
-      hmac.update(JSON.stringify(body)).digest('hex'),
-      'utf8',
-    );
-    const signature = Buffer.from(headers['X-Signature'] || '', 'utf8');
-    if (!crypto.timingSafeEqual(digest, signature)) {
-      throw new UnauthorizedException('Invalid signature.');
-    }
-  }
-
-  async parseWebhookEvent(body: {
-    [key: string]: any;
-  }): Promise<{ event: WebhookEventName; data?: WebhookEventData }> {
+  async parseWebhookEvent(body: { [key: string]: any }): Promise<{
+    event: WebhookEventName;
+    data: WebhookEventData;
+  }> {
     let event: WebhookEventName;
     let data: WebhookEventData | undefined;
 
     switch (body.meta.event_name) {
       case 'subscription_created':
       case 'subscription_updated': {
-        const subscription = body.data as SubscriptionObject;
         event = WebhookEventName.subscription_created;
+        const subscriptionId = body.data.id;
+        const subscription = await this.findSubscriptionById(subscriptionId);
+
         data = {
           id: body.data.id,
-          subscription_id: body.data.id,
+          subscriptionId: body.data.id,
           provider: this.name,
-          user_id: body.meta.custom_data.user_id,
-          variant_id: String(subscription.attributes.variant_id),
-          order_id: String(subscription.attributes.order_id),
-          status: subscription.attributes.status,
-          pause_mode: subscription.attributes.pause?.mode ?? null,
-          pause_resumes_at: subscription.attributes.pause?.resumes_at
-            ? new Date(subscription.attributes.pause.resumes_at)
-            : null,
-          cancelled: subscription.attributes.cancelled,
-          trial_ends_at: new Date(subscription.attributes.trial_ends_at),
-          billing_anchor: subscription.attributes.billing_anchor,
-          renews_at: new Date(subscription.attributes.renews_at),
-          ends_at: new Date(subscription.attributes.ends_at),
-          created_at: new Date(subscription.attributes.created_at),
-          updated_at: new Date(subscription.attributes.updated_at),
-          test_mode: subscription.attributes.test_mode,
-          invoice_url: null,
+          userId: body.meta.custom_data.user_id,
+          variantId: subscription.variantId,
+          orderId: subscription.orderId,
+          status: subscription.status,
+          pauseMode: subscription.pauseMode,
+          pauseResumesAt: subscription.pauseResumesAt,
+          cancelled: subscription.cancelled,
+          trialEndsAt: subscription.trialEndsAt,
+          billingAnchor: subscription.billingAnchor,
+          renewsAt: subscription.renewsAt,
+          endsAt: subscription.endsAt,
+          createdAt: subscription.createdAt,
+          updatedAt: subscription.updatedAt,
+          testMode: subscription.testMode,
+          invoiceUrl: null,
         };
-        break;
-      }
-      case 'subscription_payment_failed': {
-        event = WebhookEventName.subscription_payment_failed;
-        break;
-      }
-      case 'subscription_payment_success': {
-        event = WebhookEventName.subscription_payment_success;
-        // Contains invoice url
         break;
       }
       default: {
