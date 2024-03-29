@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import FooterSection from "@/components/sections/footer-section";
-import Navbar from "@/components/navbar/landing";
-import FaqSection from "@/components/sections/faq-section";
-import { Button } from "@/components/ui/button";
+import FooterSection from '@/components/sections/footer-section';
+import Navbar from '@/components/navbar/landing';
+import FaqSection from '@/components/sections/faq-section';
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -11,59 +11,62 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { toast } from "@/components/ui/use-toast";
-import { apiService } from "@/lib/services/api-service";
-import { contactService } from "@/lib/services/contact-service";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { LoginLink, useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { toast } from '@/components/ui/use-toast';
+import { contactService } from '@/lib/services/contact-service';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { LoginLink, useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { useState } from 'react';
 
 const FormSchema = z.object({
   message: z
     .string()
-    .min(100, { message: "Message is too short minimum 100 characters" })
-    .max(300, { message: "Message is too long maximum 300 characters" }),
+    .min(100, { message: 'Message is too short minimum 100 characters' })
+    .max(300, { message: 'Message is too long maximum 300 characters' }),
   subject: z
     .string()
-    .min(5, { message: "Subject is too short minimum 5 characters" })
-    .max(50, { message: "Subject is too long maximum 50 characters" }),
+    .min(5, { message: 'Subject is too short minimum 5 characters' })
+    .max(50, { message: 'Subject is too long maximum 50 characters' }),
 });
 
 export default function Contact() {
   const { user, accessTokenRaw } = useKindeBrowserClient();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      subject: "",
-      message: "",
+      subject: '',
+      message: '',
     },
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     if (!accessTokenRaw) {
       return toast({
-        variant: "destructive",
-        description: "You need to be logged in to send a message.",
+        variant: 'destructive',
+        description: 'You need to be logged in to send a message.',
       });
     }
 
+    setLoading(true);
     contactService
       .createContact(accessTokenRaw, data.message, data.subject)
       .then(() => {
-        toast({ description: "Message sent" });
+        toast({ description: 'Message sent' });
         form.reset();
       })
       .catch(() => {
         toast({
-          variant: "destructive",
-          description: "Failed to send message, please try again",
+          variant: 'destructive',
+          description: 'Failed to send message, please try again',
         });
-      });
+      })
+      .finally(() => { setLoading(true); });
   }
 
   return (
@@ -77,7 +80,7 @@ export default function Contact() {
         <div className="px-4 text-center space-y-4 py-16 md:py-24">
           <div className="text-center space-y-3">
             <p className="text-brand-700 font-semibold text-sm">Contact us</p>
-            <h1 className="text-4xl font-semibold text-gray-900 dark:text-gray-100 dark:text-white">
+            <h1 className="text-4xl font-semibold text-gray-900 dark:text-gray-100">
               Get in touch
             </h1>
           </div>
@@ -91,19 +94,23 @@ export default function Contact() {
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               <div className="space-y-5">
                 <div className="space-y-2">
-                  <p className="font-medium text-sm text-gray-600 dark:text-gray-300">From</p>
+                  <p className="font-medium text-sm text-gray-600 dark:text-gray-300">
+                    From
+                  </p>
 
                   {user ? (
-                    <p className="text-gray-900 dark:text-gray-100">{user.email}</p>
+                    <p className="text-gray-900 dark:text-gray-100">
+                      {user.email}
+                    </p>
                   ) : (
                     <p className="text-gray-900 dark:text-gray-100">
-                      Please{" "}
+                      Please{' '}
                       <LoginLink
                         postLoginRedirectURL="/contact"
                         className="text-brand-600 font-medium"
                       >
                         login
-                      </LoginLink>{" "}
+                      </LoginLink>{' '}
                       to reach out.
                     </p>
                   )}
@@ -148,7 +155,8 @@ export default function Contact() {
                   className="w-full"
                   size="lg"
                   variant="primary"
-                  disabled={!user}
+                  disabled={!user || loading}
+                  isLoading={loading}
                 >
                   Send message
                 </Button>
