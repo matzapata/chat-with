@@ -142,6 +142,7 @@ export class PaymentsController {
 
       // Send email to user notifying them of subscription update
       await this.emailService.sendEmail({
+        from: 'hello@get-chatwith.com',
         to: user.email,
         html: `Your subscription has been updated to ${data.status}`,
         subject: 'Subscription updated',

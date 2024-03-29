@@ -27,7 +27,7 @@ export class ResendEmailProvider extends EmailProvider {
     }
 
     await this.client.emails.send({
-      from: this.configService.get('RESEND_FROM_EMAIL'),
+      from: props.from ?? this.configService.get('RESEND_FROM_EMAIL'),
       to: props.to,
       subject: props.subject,
       text: props.text,
